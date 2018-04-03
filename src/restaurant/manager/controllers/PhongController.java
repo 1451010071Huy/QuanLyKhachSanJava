@@ -5,9 +5,14 @@
  */
 package restaurant.manager.controllers;
 
+import config.jdbcConfig;
 import java.net.URL;
-import java.util.List;
+import java.sql.ResultSet;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -18,12 +23,8 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import org.hibernate.Criteria;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import org.hibernate.cfg.Configuration;
 import restaurant.manager.models.LoaiPhong;
+import restaurant.manager.models.Phong;
 
 /**
  * FXML Controller class
@@ -42,7 +43,13 @@ public class PhongController implements Initializable {
     private Button btnCapNhatLP;
 
     @FXML
+    private TableColumn<Phong, Double> tblColGia1;
+
+    @FXML
     private TextField txtSoNguoi;
+
+    @FXML
+    private TableColumn<LoaiPhong, Double> tblColGia;
 
     @FXML
     private TextField txtMaLoai;
@@ -75,43 +82,88 @@ public class PhongController implements Initializable {
     private TableColumn<LoaiPhong, Integer> tblColSoNguoi;
 
     @FXML
-    private TableColumn<LoaiPhong, Double> tblColGia;
+    private TableView<Phong> tblPhong;
 
     @FXML
-    private TableView<?> tblPhong;
+    private TableColumn<Phong, Integer> tblColSoNguoi1;
 
+    @FXML
+    private TableColumn<Phong, String> tblColMaPhong;
+    @FXML
+
+    private TableColumn<Phong, String> tblColLoaiPhong1;
     @FXML
     private Button btnCapNhatphong;
 
     @FXML
     private TextField txtPhong;
 
-    private ObservableList<LoaiPhong> oserObservableList;
+    private ObservableList<LoaiPhong> listLoaiPhong;
+    private ObservableList<Phong> listPhong;
 
     private ObservableList<LoaiPhong> getLoaiPhong() {
-        Configuration cf = new Configuration();
-        cf.configure("hibernate.cfg.xml");
-        cf.addAnnotatedClass(LoaiPhong.class);
-        StandardServiceRegistryBuilder buider = new StandardServiceRegistryBuilder().applySettings(cf.getProperties());
-        SessionFactory sessionFactory = cf.buildSessionFactory(buider.build());
-        Session session = sessionFactory.openSession();
-        Criteria criteria = session.createCriteria(LoaiPhong.class);
-        List<LoaiPhong> loaiPhong = criteria.list();
-        session.close();
-        
-        oserObservableList = FXCollections.observableArrayList();
-        loaiPhong.forEach(lp -> {
-            oserObservableList.add(new LoaiPhong(lp.getMaLoai(), lp.getGia(), lp.getSoNguoi()));           
-        });
-        return oserObservableList;
+        try {
+            String sql = "SELECT * FROM loaiphong";
+            PreparedStatement p = jdbcConfig.connection.prepareStatement(sql);
+
+            ResultSet r = jdbcConfig.ExecuteQuery(p);//Thực thi câu truy vấn
+            listLoaiPhong = FXCollections.observableArrayList();
+            while (r.next()) {
+                listLoaiPhong.add(new LoaiPhong(r.getString(1),
+                        Double.parseDouble(r.getString(2)), Integer.parseInt(r.getString(3))));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(PhongController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return listLoaiPhong;
+    }
+
+    private ObservableList<Phong> getPhong() {
+        try {
+            String sql = "SELECT p.maphong, lp.maloai, lp.gia, lp.songuoi \n"
+                    + "FROM loaiphong as lp, phong as p\n"
+                    + "where lp.maloai = p.maloai";
+            PreparedStatement p = jdbcConfig.connection.prepareStatement(sql);
+
+            ResultSet r = jdbcConfig.ExecuteQuery(p);//Thực thi câu truy vấn
+            listPhong = FXCollections.observableArrayList();
+            while (r.next()) {
+                listPhong.add(new Phong(r.getString(1),
+                        r.getString(2), Double.parseDouble(r.getString(3)), Integer.parseInt(r.getString(4))));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(PhongController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return listPhong;
+    }
+
+    private void setTableLoaiPhong() throws SQLException {
+        tblLoaiPhong.setItems(getLoaiPhong());//Lấy giá trị DB rồi set cho bảng 
+        tblColMaLoai.setCellValueFactory(new PropertyValueFactory<>("maLoai"));//set mã loại (với mã loại là thuộc tính của model)
+        tblColGia.setCellValueFactory(new PropertyValueFactory<>("gia"));
+        tblColSoNguoi.setCellValueFactory(new PropertyValueFactory<>("soNguoi"));
+
+    }
+
+    private void setTablePhong() throws SQLException {
+        tblPhong.setItems(getPhong());//Lấy giá trị DB rồi set cho bảng   
+        tblColMaPhong.setCellValueFactory(new PropertyValueFactory<>("maPhong"));//set mã loại (với mã loại là thuộc tính của model)
+        tblColLoaiPhong1.setCellValueFactory(new PropertyValueFactory<>("maLoai"));
+        tblColGia1.setCellValueFactory(new PropertyValueFactory<>("gia"));
+        tblColSoNguoi1.setCellValueFactory(new PropertyValueFactory<>("soNguoi"));
+
     }
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        tblColMaLoai.setCellValueFactory(new PropertyValueFactory<>("maLoai"));
-        tblColGia.setCellValueFactory(new PropertyValueFactory<>("gia"));
-        tblColSoNguoi.setCellValueFactory(new PropertyValueFactory<>("soNguoi"));
-        tblLoaiPhong.setItems(getLoaiPhong());
+        try {
+            jdbcConfig.Connect();// Kết nối 
+            setTableLoaiPhong();
+            setTablePhong();
+            jdbcConfig.Disconnect();
+        } catch (SQLException ex) {
+            Logger.getLogger(PhongController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
 }

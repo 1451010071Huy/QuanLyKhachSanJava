@@ -20,15 +20,15 @@
                      <children>
                         <TableView fx:id="tblPhong" layoutX="292.0" layoutY="6.0" prefHeight="261.0" prefWidth="464.0" tableMenuButtonVisible="true">
                           <columns>
-                            <TableColumn prefWidth="114.0" text="Phòng" />
-                            <TableColumn prefWidth="186.0" text="Loại Phòng" />
-                              <TableColumn prefWidth="88.0" text="Số người" />
-                              <TableColumn prefWidth="75.0" text="Giá" />
+                            <TableColumn fx:id="tblColMaPhong" prefWidth="114.0" text="Mã Phòng" />
+                            <TableColumn fx:id="tblColLoaiPhong1" prefWidth="186.0" text="Loại Phòng" />
+                              <TableColumn fx:id="tblColSoNguoi1" prefWidth="88.0" text="Số người" />
+                              <TableColumn fx:id="tblColGia1" prefWidth="75.0" text="Giá" />
                           </columns>
                         </TableView>
-                        <Button fx:id="btnThemPhong" layoutX="34.0" layoutY="198.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="60.0" text="Thêm" />
-                        <Button fx:id="btnCapNhatphong" layoutX="111.0" layoutY="198.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="66.0" text="Cập nhật" />
-                        <Button fx:id="btnXoaPhong" layoutX="188.0" layoutY="198.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="66.0" text="Xóa" />
+                        <Button fx:id="btnThemPhong" layoutX="34.0" layoutY="229.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="60.0" text="Thêm" />
+                        <Button fx:id="btnCapNhatphong" layoutX="111.0" layoutY="229.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="66.0" text="Cập nhật" />
+                        <Button fx:id="btnXoaPhong" layoutX="188.0" layoutY="229.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="66.0" text="Xóa" />
                         <Label layoutX="33.0" layoutY="47.0" text="Phòng" />
                         <TextField fx:id="txtPhong" layoutX="33.0" layoutY="72.0" prefHeight="25.0" prefWidth="222.0" />
                         <Label layoutX="33.0" layoutY="120.0" text="Loại phòng" />
@@ -47,10 +47,10 @@
                         <Label layoutX="50.0" layoutY="30.0" text="Mã loại" />
                         <Label layoutX="49.0" layoutY="86.0" text="Giá" />
                         <Label layoutX="49.0" layoutY="135.0" text="Số người" />
-                        <Button fx:id="btnThemLP" layoutX="49.0" layoutY="197.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="62.0" text="Thêm" />
-                        <Button fx:id="btnCapNhatLP" layoutX="127.0" layoutY="197.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="75.0" text="Cập nhật" />
-                        <Button fx:id="btnXoaLP" layoutX="215.0" layoutY="197.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="60.0" text="Xóa" />
-                        <TableView fx:id="tblLoaiPhong" layoutX="347.0" layoutY="19.0" prefHeight="249.0" prefWidth="403.0" tableMenuButtonVisible="true">
+                        <Button fx:id="btnThemLP" layoutX="52.0" layoutY="236.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="62.0" text="Thêm" />
+                        <Button fx:id="btnCapNhatLP" layoutX="130.0" layoutY="236.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="75.0" text="Cập nhật" />
+                        <Button fx:id="btnXoaLP" layoutX="218.0" layoutY="236.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="60.0" text="Xóa" />
+                        <TableView fx:id="tblLoaiPhong" layoutX="309.0" layoutY="9.0" prefHeight="259.0" prefWidth="441.0" tableMenuButtonVisible="true">
                           <columns>
                             <TableColumn fx:id="tblColMaLoai" prefWidth="104.0" text="Mã loại" />
                               <TableColumn fx:id="tblColGia" prefWidth="149.0" text="Giá" />
