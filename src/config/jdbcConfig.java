@@ -30,11 +30,12 @@ public class jdbcConfig {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             connection = DriverManager.getConnection(URL);
             if (connection != null) {
-                System.out.println("connected");
+                System.out.println("Connected");
                 //  connection.close();
             }
             return true;
         } catch (ClassNotFoundException | SQLException e) {
+                System.err.println("Connected fail");
             return false;
         }
     }
@@ -50,7 +51,7 @@ public class jdbcConfig {
      * ExecuteQuery để thực thi câu truy vấn
      *
      * @param sql PreparedStatement (câu truy vấn)
-     * @return 
+     * @return
      */
     public static ResultSet ExecuteQuery(PreparedStatement sql) {
         try {
@@ -59,5 +60,14 @@ public class jdbcConfig {
             Logger.getLogger(jdbcConfig.class.getName()).log(Level.SEVERE, null, e);
         }
         return null;
+    }
+
+    public static int ExecuteUpdateQuery(PreparedStatement sql) {
+        try {
+            return sql.executeUpdate();
+        } catch (SQLException e) {
+            Logger.getLogger(jdbcConfig.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return 0;
     }
 }
