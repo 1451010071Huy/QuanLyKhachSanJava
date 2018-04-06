@@ -3,9 +3,8 @@
  */
 
 .mainFxmlClass {
-
+    background-color: red;
 }
-.Label{
+.AnchorPane {
     -fx-background-color: red;
-    
 }

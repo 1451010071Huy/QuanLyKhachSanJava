@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.effect.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="544.0" prefWidth="1050.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="restaurant.manager.controllers.PhieuDatPhongController">
+   <children>
+      <Pane layoutX="5.0" layoutY="6.0" prefHeight="520.0" prefWidth="327.0" stylesheets="@../css/phieudatphongfxml.css">
+         <children>
+            <GridPane layoutX="17.0" layoutY="14.0" prefHeight="224.0" prefWidth="313.0" stylesheets="@../css/phieudatphongfxml.css">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="142.0" minWidth="10.0" prefWidth="91.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="221.0" minWidth="10.0" prefWidth="193.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Label fx:id="lblMaPhieuDat" text="Label" GridPane.columnIndex="1" />
+                  <Label text="Đặt Cọc" GridPane.rowIndex="3" />
+                  <Label text="Mã phiếu đặt" />
+                  <Label text="Khách hàng" GridPane.rowIndex="1" />
+                  <Label text="Số người" GridPane.rowIndex="2" />
+                  <ComboBox fx:id="cbbKhachHang" onAction="#setKhachHang" prefHeight="25.0" prefWidth="207.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <TextField fx:id="txtSoNguoi" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <TextField fx:id="txtDatCoc" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                  <Label text="Ngày đến" GridPane.rowIndex="4" />
+                  <Label text="Ngày đi" GridPane.rowIndex="5" />
+                  <DatePicker fx:id="dpkNgayDen" prefHeight="25.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                  <DatePicker fx:id="dpkNgayDi" prefHeight="25.0" prefWidth="198.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+               </children>
+               <padding>
+                  <Insets left="10.0" right="10.0" top="10.0" />
+               </padding>
+            </GridPane>
+            <TitledPane animated="false" layoutX="6.0" layoutY="222.0" prefHeight="312.0" prefWidth="313.0" text="DANH SÁCH PHÒNG TRỐNG">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="249.0" prefWidth="292.0">
+                     <children>
+                        <TableView fx:id="tbllPhongTrong" layoutX="6.0" layoutY="52.0" prefHeight="224.0" prefWidth="302.0" tableMenuButtonVisible="true">
+                          <columns>
+                            <TableColumn fx:id="tblColPhongPT" prefWidth="75.0" text="Phòng" />
+                            <TableColumn fx:id="tblColLoaiPhongPT" prefWidth="75.0" text="Loại phòng" />
+                              <TableColumn fx:id="tblColSoNguoiPT" prefWidth="75.0" text="Số người" />
+                              <TableColumn fx:id="tblColGiaPT" prefWidth="75.0" text="Giá" />
+                          </columns>
+                        </TableView>
+                        <Button fx:id="btnTimPhong" layoutX="114.0" layoutY="14.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="90.0" text="Tìm phòng" />
+                     </children>
+                  </AnchorPane>
+              </content>
+            </TitledPane>
+            <Label layoutX="25.0" layoutY="6.0" text="TẠO PHIẾU ĐẶT PHÒNG" />
+         </children>
+      </Pane>
+      <Pane layoutX="343.0" layoutY="12.0" prefHeight="497.0" prefWidth="694.0">
+         <children>
+            <TabPane prefHeight="487.0" prefWidth="694.0" rotateGraphic="true" tabClosingPolicy="UNAVAILABLE">
+              <tabs>
+                <Tab text="Chi tiết ">
+                     <content>
+                        <AnchorPane prefHeight="463.0" prefWidth="694.0">
+                           <children>
+                              <TitledPane animated="false" layoutY="14.0" prefHeight="178.0" prefWidth="694.0" text="THÔNG TIN KHÁCH HÀNG">
+                                <content>
+                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                       <children>
+                                          <GridPane layoutX="14.0" layoutY="2.0" prefHeight="153.0" prefWidth="436.0">
+                                            <columnConstraints>
+                                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="234.0" minWidth="10.0" prefWidth="234.0" />
+                                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="173.0" minWidth="10.0" prefWidth="130.0" />
+                                            </columnConstraints>
+                                            <rowConstraints>
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                            </rowConstraints>
+                                             <children>
+                                                <Label text="Mã khách hàng" />
+                                                <Label text="Tên khách hàng" GridPane.rowIndex="1" />
+                                                <Label text="Giới tính" GridPane.rowIndex="2" />
+                                                <Label text="CMND/Passport" GridPane.rowIndex="3" />
+                                                <Label text="Địa chỉ" GridPane.rowIndex="4" />
+                                                <Label text="Cơ quan" GridPane.rowIndex="5" />
+                                                <Label text="Email" GridPane.rowIndex="7" />
+                                                <Label text="Điện thoại" GridPane.rowIndex="6" />
+                                                <Label fx:id="lblMaKhachHang" text="Label" GridPane.columnIndex="1" />
+                                                <Label fx:id="lblTenKhachHang" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                <Label fx:id="lblGioiTinh" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                <Label fx:id="lblCMND" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                                <Label fx:id="lblDiaChi" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                                <Label fx:id="lblCoQuan" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                                                <Label fx:id="lblDienThoai" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                                                <Label fx:id="lblEmail" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                                             </children>
+                                             <padding>
+                                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                             </padding>
+                                          </GridPane>
+                                       </children>
+                                    </AnchorPane>
+                                </content>
+                              </TitledPane>
+                              <TitledPane animated="false" layoutY="192.0" prefHeight="267.0" prefWidth="694.0" text="THÔNG TIN ĐẶT PHÒNG">
+                                <content>
+                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="236.0" prefWidth="692.0">
+                                       <children>
+                                          <GridPane layoutX="14.0" layoutY="1.0" prefHeight="95.0" prefWidth="470.0">
+                                            <columnConstraints>
+                                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="251.0" minWidth="10.0" prefWidth="233.0" />
+                                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="230.0" minWidth="10.0" prefWidth="217.0" />
+                                            </columnConstraints>
+                                            <rowConstraints>
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                            </rowConstraints>
+                                             <children>
+                                                <Label text="Ngày đến" />
+                                                <Label text="Ngày đi" GridPane.rowIndex="1" />
+                                                <Label text="Số người" GridPane.rowIndex="2" />
+                                                <Label text="Tiền cọc" GridPane.rowIndex="3" />
+                                                <Label fx:id="lblNgayDen" text="Label" GridPane.columnIndex="1" />
+                                                <Label fx:id="lblNgayDi" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                <Label fx:id="lblSoNguoi" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                <Label fx:id="lblTienCoc" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                             </children>
+                                             <padding>
+                                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                             </padding>
+                                          </GridPane>
+                                          <TableView fx:id="tblPhongDat" layoutX="4.0" layoutY="96.0" prefHeight="140.0" prefWidth="682.0" tableMenuButtonVisible="true">
+                                            <columns>
+                                              <TableColumn fx:id="tblColPhong" prefWidth="142.0" text="Phòng" />
+                                              <TableColumn fx:id="tblColLoaiPhong" minWidth="0.0" prefWidth="183.0" text="Loại phòng" />
+                                                <TableColumn fx:id="tblColSoNguoi" prefWidth="145.0" text="Số người" />
+                                                <TableColumn fx:id="tblColGia" prefWidth="210.0" text="Giá" />
+                                            </columns>
+                                          </TableView>
+                                       </children>
+                                    </AnchorPane>
+                                </content>
+                              </TitledPane>
+                           </children>
+                        </AnchorPane>
+                     </content>
+                </Tab>
+                <Tab text="Danh sách phiếu đặt">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <TableView fx:id="tblPhieuDatDS" layoutY="44.0" prefHeight="438.0" prefWidth="694.0">
+                                <columns>
+                                  <TableColumn fx:id="tblColMaPhieuDatDS" prefWidth="106.0" text="Mã phiếu đặt" />
+                                  <TableColumn fx:id="tblColKhachHangDS" prefWidth="92.0" text="Khách hàng" />
+                                    <TableColumn fx:id="tblColSoNguoiDS" prefWidth="112.0" text="Số lượng" />
+                                    <TableColumn fx:id="tblColNgayDenDS" prefWidth="116.0" text="Ngày đến" />
+                                    <TableColumn fx:id="tblColNgayDiDS" prefWidth="110.0" text="Ngày đi" />
+                                    <TableColumn fx:id="tblColTinhTrangDS" prefWidth="157.0" text="Tình trạng" />
+                                </columns>
+                              </TableView>
+                              <Group fx:id="groupChecked" layoutX="131.0" layoutY="14.0">
+                                 <children>
+                                    <CheckBox fx:id="chbWaitting" mnemonicParsing="false" selected="true" text="Waitting" />
+                                    <CheckBox fx:id="chbCancel" layoutX="110.0" mnemonicParsing="false" text="Cancel" />
+                                    <CheckBox fx:id="chbFinnis" layoutX="209.0" layoutY="1.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="81.0" text="Finish" />
+                                 </children>
+                              </Group>
+                              <Label layoutX="21.0" layoutY="15.0" text="Lọc danh sách" />
+                           </children>
+                        </AnchorPane>
+                  </content>
+                </Tab>
+              </tabs>
+            </TabPane>
+         </children>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+      </Pane>
+      <Button fx:id="btnDatPhong" layoutX="614.0" layoutY="514.0" mnemonicParsing="false" text="Đặt phòng" />
+      <Button fx:id="btnSua" layoutX="782.0" layoutY="514.0" mnemonicParsing="false" text="Sửa" />
+   </children>
+</AnchorPane>

@@ -45,6 +45,7 @@ public class jdbcConfig {
      */
     public static void Disconnect() throws SQLException {
         connection.close();
+        System.out.println("Disconnection");
     }
 
     /**

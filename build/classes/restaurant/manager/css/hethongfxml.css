@@ -5,3 +5,7 @@
 .mainFxmlClass {
 
 }
+.Label{
+    -fx-background-color: red;
+    
+}
