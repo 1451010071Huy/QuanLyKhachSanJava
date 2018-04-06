@@ -230,7 +230,19 @@ public class PhieuDatPhongController implements Initializable {
         while (r.next()) {
             lblMaKhachHang.setText(r.getString(1));
             lblTenKhachHang.setText(r.getString(2));
-            lblGioiTinh.setText(r.getString(3));
+            if(null == r.getString(3)){
+                lblGioiTinh.setText("");
+            }else switch (r.getString(3)) {
+                case "1":
+                    lblGioiTinh.setText("Nam");
+                    break;
+                case "0":
+                    lblGioiTinh.setText("Nữ");
+                    break;
+                default:
+                    lblGioiTinh.setText("");
+                    break;
+            }
             lblCMND.setText(r.getString(4));
             lblDiaChi.setText(r.getString(5));
             lblCoQuan.setText(r.getString(6));

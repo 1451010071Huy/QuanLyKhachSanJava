@@ -12,16 +12,16 @@ package restaurant.manager.models;
 public class KhachHang {
     private String maKhachHang;
     private String  tenKhachHang;
-    private String gioiTinh;
+    private boolean gioiTinh;
     private String cmnd;
     private String diaChi;
     private String coQuan;
-    private int soDienThoai;
+    private String soDienThoai;
     private String email;
     
     public KhachHang(){}
-    public KhachHang(String maKH, String tenKH, String gioiTinh, String cmnd,
-            String diaChi, String coQuan, int sdt, String email){
+    public KhachHang(String maKH, String tenKH, boolean gioiTinh, String cmnd,
+            String diaChi, String coQuan, String sdt, String email){
         this.maKhachHang = maKH;
         this.tenKhachHang = tenKH;
         this.gioiTinh = gioiTinh;
@@ -66,14 +66,14 @@ public class KhachHang {
     /**
      * @return the gioiTinh
      */
-    public String getGioiTinh() {
+    public boolean getGioiTinh() {
         return gioiTinh;
     }
 
     /**
      * @param gioiTinh the gioiTinh to set
      */
-    public void setGioiTinh(String gioiTinh) {
+    public void setGioiTinh(boolean gioiTinh) {
         this.gioiTinh = gioiTinh;
     }
 
@@ -122,14 +122,14 @@ public class KhachHang {
     /**
      * @return the soDienThoai
      */
-    public int getSoDienThoai() {
+    public String getSoDienThoai() {
         return soDienThoai;
     }
 
     /**
      * @param soDienThoai the soDienThoai to set
      */
-    public void setSoDienThoai(int soDienThoai) {
+    public void setSoDienThoai(String soDienThoai) {
         this.soDienThoai = soDienThoai;
     }
 
