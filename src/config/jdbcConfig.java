@@ -24,8 +24,9 @@ public class jdbcConfig {
 
     /**
      * Connect dùng để kết nối Database
+     * @return 
      */
-    public static boolean Connect() throws SQLException {
+    public static boolean Connect(){
         try {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             connection = DriverManager.getConnection(URL);
@@ -43,9 +44,13 @@ public class jdbcConfig {
     /**
      * Disconnect dùng để ngắt kết nối
      */
-    public static void Disconnect() throws SQLException {
-        connection.close();
-        System.out.println("Disconnection");
+    public static void Disconnect() {
+        try {
+            connection.close();
+            System.out.println("Disconnection");
+        } catch (SQLException ex) {
+            Logger.getLogger(jdbcConfig.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
