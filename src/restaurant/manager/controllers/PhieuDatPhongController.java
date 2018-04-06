@@ -11,8 +11,6 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -176,7 +174,6 @@ public class PhieuDatPhongController implements Initializable {
                         r.getString(5), Integer.parseInt(r.getString(6))
                 ));
             }
-
         } catch (SQLException ex) {
             System.out.println("Lỗi không xuất được phiếu đặt phòng " + ex);
         }
@@ -184,13 +181,11 @@ public class PhieuDatPhongController implements Initializable {
     }
 
     private String getCheckedFinish() {
-
         if (chbFinnis.isSelected()) {
             return "finish";
         } else {
             return "";
         }
-
     }
 
     private String getCheckedCancel() {
@@ -230,18 +225,20 @@ public class PhieuDatPhongController implements Initializable {
         while (r.next()) {
             lblMaKhachHang.setText(r.getString(1));
             lblTenKhachHang.setText(r.getString(2));
-            if(null == r.getString(3)){
+            if (null == r.getString(3)) {
                 lblGioiTinh.setText("");
-            }else switch (r.getString(3)) {
-                case "1":
-                    lblGioiTinh.setText("Nam");
-                    break;
-                case "0":
-                    lblGioiTinh.setText("Nữ");
-                    break;
-                default:
-                    lblGioiTinh.setText("");
-                    break;
+            } else {
+                switch (r.getString(3)) {
+                    case "1":
+                        lblGioiTinh.setText("Nam");
+                        break;
+                    case "0":
+                        lblGioiTinh.setText("Nữ");
+                        break;
+                    default:
+                        lblGioiTinh.setText("");
+                        break;
+                }
             }
             lblCMND.setText(r.getString(4));
             lblDiaChi.setText(r.getString(5));
@@ -263,7 +260,7 @@ public class PhieuDatPhongController implements Initializable {
 
     }
 
-    private void eventChanged(){
+    private void eventChanged() {
         chbWaitting.setOnAction(e -> {
             try {
                 setTablePhieuDatPhong();
@@ -331,10 +328,11 @@ public class PhieuDatPhongController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        btnTimPhong.setOnAction(e -> {
-            checkDatepicker();
-        });
+
         try {
+            btnTimPhong.setOnAction(e -> {
+                checkDatepicker();
+            });
             jdbcConfig.Connect(); // connect database
             setTablePhieuDatPhong();
             getTenKhachHang();
