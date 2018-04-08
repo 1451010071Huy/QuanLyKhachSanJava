@@ -1,10 +1,150 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.*?>
+<?import com.jfoenix.controls.*?>
 <?import java.lang.*?>
 <?import java.util.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" />
+<BorderPane fx:id="boderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="605.0" prefWidth="978.0" stylesheets="@css/mainfxml.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="restaurant.manager.MainController">
+   <top>
+      <HBox prefHeight="100.0" prefWidth="896.0" BorderPane.alignment="CENTER">
+         <children>
+            <HBox prefHeight="100.0" prefWidth="163.0" style="-fx-background-color: #935433;" />
+            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="709.0">
+               <children>
+                  <Pane prefHeight="100.0" prefWidth="344.0">
+                     <children>
+                        <JFXTextField alignment="BASELINE_LEFT" focusColor="#dd7e5d" layoutX="14.0" layoutY="38.0" prefHeight="25.0" prefWidth="213.0">
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                        </JFXTextField>
+                        <JFXButton layoutX="245.0" layoutY="38.0" text="Search">
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </JFXButton>
+                     </children>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                  </Pane>
+               </children>
+            </HBox>
+            <HBox prefHeight="100.0" prefWidth="131.0">
+               <children>
+                  <VBox fx:id="paneUser" alignment="CENTER" prefHeight="100.0" prefWidth="119.0">
+                     <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Xin chào" />
+                        <Text fx:id="lblUser" strokeType="OUTSIDE" strokeWidth="0.0" text="User" />
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+         </children>
+      </HBox>
+   </top>
+   <left>
+      <VBox prefHeight="505.0" prefWidth="155.0" spacing="1.0" BorderPane.alignment="CENTER">
+         <children>
+            <HBox fx:id="hbxThuePhong" alignment="CENTER" onMouseClicked="#hboxThuePhongClick" prefHeight="50.0" prefWidth="155.0" styleClass="busy">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Thuê phòng" />
+               </children>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+            </HBox>
+            <HBox fx:id="hbxDatPhong" alignment="CENTER" onMouseClicked="#hboxDatPhongClick" prefHeight="54.0" prefWidth="155.0" styleClass="busy">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Đặt phòng" />
+               </children>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </HBox>
+            <HBox fx:id="hbxHoaDon" alignment="CENTER" onMouseClicked="#hboxHoaDonClick" prefHeight="50.0" prefWidth="155.0" styleClass="busy">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Hóa đơn" />
+               </children>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </HBox>
+            <HBox fx:id="hbxNhanVien" alignment="CENTER" onMouseClicked="#hboxNhanVienClick" prefHeight="50.0" prefWidth="155.0" styleClass="busy">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Nhân viên" />
+               </children>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </HBox>
+            <HBox fx:id="hbxKhachHang" alignment="CENTER" onMouseClicked="#hboxKhachHangClick" prefHeight="50.0" prefWidth="155.0" styleClass="busy">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Khách hàng" />
+               </children>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </HBox>
+            <HBox fx:id="hbxDichVu" alignment="CENTER" onMouseClicked="#hboxDichVuClick" prefHeight="50.0" prefWidth="155.0" styleClass="busy">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Dịch vụ" />
+               </children>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </HBox>
+            <HBox fx:id="hbxPhong" alignment="CENTER" onMouseClicked="#hboxPhongClick" prefHeight="50.0" prefWidth="155.0" styleClass="busy">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Phòng" />
+               </children>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </HBox>
+            <HBox fx:id="hbxBaoCao" alignment="CENTER" onMouseClicked="#hboxBaoCaoClick" prefHeight="50.0" prefWidth="155.0" styleClass="busy">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Báo cáo" />
+               </children>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </HBox>
+            <HBox fx:id="btxQuanLyTaiKhoan" alignment="CENTER" onMouseClicked="#hboxQLTaiKhoanClick" prefHeight="50.0" prefWidth="155.0" styleClass="busy">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Quản lý tài khoản" />
+               </children>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </HBox>
+         </children>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+      </VBox>
+   </left>
+   <center>
+      <Pane fx:id="paneDSPhong" prefHeight="458.0" prefWidth="823.0" stylesheets="@css/mainfxml.css" BorderPane.alignment="CENTER">
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets></Pane>
+   </center>
+   <right>
+      <VBox prefHeight="505.0" prefWidth="51.0" BorderPane.alignment="CENTER" />
+   </right>
+</BorderPane>

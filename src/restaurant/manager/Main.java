@@ -6,13 +6,17 @@
 package restaurant.manager;
 
 import config.jdbcConfig;
+import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import restaurant.manager.models.LoaiPhong;
 
@@ -22,12 +26,14 @@ import restaurant.manager.models.LoaiPhong;
  */
 public class Main extends Application {
 
+
+
     @Override
     public void start(Stage stage) throws Exception {
         Parent root = FXMLLoader.load(getClass()
-                .getResource("/restaurant/manager/views/LoginFXML.fxml"));
+                .getResource("views/LoginFXML.fxml"));
         Scene scene = new Scene(root);
-        stage.setTitle("Login");
+        stage.setTitle("Đăng nhập");
         stage.setScene(scene);
         stage.show();
     }

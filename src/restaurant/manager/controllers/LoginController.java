@@ -9,6 +9,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 import config.jdbcConfig;
+import java.io.IOException;
 import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -17,11 +18,16 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import restaurant.manager.MainController;
 
 /**
  * FXML Controller class
@@ -52,6 +58,27 @@ public class LoginController implements Initializable {
                 while (r.next()) {
                     if (r.getString(1).equals(txtDangNhap.getText())
                             && r.getString(2).equals(txtMatKhau.getText())) {
+                        FXMLLoader loader = new FXMLLoader(getClass()
+                                .getResource("/restaurant/manager/MainFXML.fxml"));
+                        Parent root;
+                        try {
+                            root = (Parent) loader.load();
+                            MainController control = loader.getController();
+                            control.setUsername(r.getString(1));
+                            Scene scene = new Scene(root);
+                            Stage stage = new Stage();
+                            stage.initModality(Modality.APPLICATION_MODAL);//stage lock form children
+                            stage.setTitle("Trang chủ");
+                            stage.setScene(scene); 
+                            stage.show();
+                            
+                            //close form login
+                            stage = (Stage) btnDangNhap.getScene().getWindow();
+                            stage.close();
+                        } catch (IOException ex) {
+                            Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+
                         return "Đăng nhập thành công";
                     }
                 }
@@ -63,7 +90,6 @@ public class LoginController implements Initializable {
         return "Tài khoản hoặc mật khẩu không đúng";
     }
 
-    @FXML
     public void buttonPressed(KeyEvent e) {
         if (e.getCode().toString().equals("ENTER")) {
 
