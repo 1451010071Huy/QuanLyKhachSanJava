@@ -35,7 +35,7 @@
                   <Label text="Mã phiếu đặt" />
                   <Label text="Khách hàng" GridPane.rowIndex="1" />
                   <Label text="Số người" GridPane.rowIndex="2" />
-                  <ComboBox fx:id="cbbKhachHang" onAction="#setKhachHang" prefHeight="25.0" prefWidth="207.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <ComboBox fx:id="cbbKhachHang" onAction="#setKhachHang" prefHeight="25.0" prefWidth="207.0" promptText="--- Chọn khách hàng ---" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                   <TextField fx:id="txtSoNguoi" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                   <TextField fx:id="txtDatCoc" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                   <Label text="Ngày đến" GridPane.rowIndex="4" />

@@ -11,6 +11,8 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -177,6 +179,7 @@ public class PhieuDatPhongController implements Initializable {
         } catch (SQLException ex) {
             System.out.println("Lỗi không xuất được phiếu đặt phòng " + ex);
         }
+        
         return listPhieuDatPhong;
     }
 
@@ -250,14 +253,14 @@ public class PhieuDatPhongController implements Initializable {
     }
 
     private void setTablePhieuDatPhong() throws SQLException {
-        tblPhieuDatDS.setItems(getPhieuDatPhong());//Lấy giá trị DB rồi set cho bảng 
-        tblColMaPhieuDatDS.setCellValueFactory(new PropertyValueFactory<>("maPhieuDat"));
-        tblColKhachHangDS.setCellValueFactory(new PropertyValueFactory<>("maKhachHang"));
-        tblColNgayDenDS.setCellValueFactory(new PropertyValueFactory<>("ngayDen"));
-        tblColNgayDiDS.setCellValueFactory(new PropertyValueFactory<>("ngayDi"));
-        tblColSoNguoiDS.setCellValueFactory(new PropertyValueFactory<>("soNguoi"));
-        tblColTinhTrangDS.setCellValueFactory(new PropertyValueFactory<>("tinhTrang"));
-
+          Map<TableColumn,String> mapCol = new HashMap<>();
+          mapCol.put(tblColMaPhieuDatDS, "maPhieuDat");
+          mapCol.put(tblColKhachHangDS, "maKhachHang");
+          mapCol.put(tblColNgayDenDS, "ngayDen");
+          mapCol.put(tblColNgayDiDS, "ngayDi");
+          mapCol.put(tblColSoNguoiDS, "soNguoi");
+          mapCol.put(tblColTinhTrangDS, "tinhTrang");
+          jdbcConfig.setTableView(tblPhieuDatDS, mapCol, getPhieuDatPhong());
     }
 
     private void eventChanged() {
@@ -301,6 +304,8 @@ public class PhieuDatPhongController implements Initializable {
     }
     private ObservableList<Phong> listThongTinDatPhong;
 
+   
+
     private void setTableDatPhong() throws SQLException {
         try {
             //      tblPhongDat.setItems(getThongTinDatPhong());//Lấy giá trị DB rồi set cho bảng
@@ -328,7 +333,7 @@ public class PhieuDatPhongController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-
+        
         try {
             btnTimPhong.setOnAction(e -> {
                 checkDatepicker();

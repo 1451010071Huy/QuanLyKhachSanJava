@@ -126,7 +126,7 @@ public class MainController implements Initializable {
 
     @FXML
     private void hboxThuePhongClick(MouseEvent event) {
-
+        System.out.println("restaurant.manager.MainController.hboxThuePhongClick()");
     }
 
     @FXML
