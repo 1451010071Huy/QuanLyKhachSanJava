@@ -107,6 +107,7 @@ public class jdbcConfig {
     }
 
     /**
+     * Hàm này dùng để đổ dữ liệu vào TableView
      * @param table Tên TableView
      * @param mapCol Biến này là 1 dictionary Map TableColums với tên trường
      * model

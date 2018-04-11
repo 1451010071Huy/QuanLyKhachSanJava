@@ -5,33 +5,40 @@
  */
 package restaurant.manager.models;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 
 /**
  *
  * @author Luxury
  */
 public class PhieuDatPhong {
+
     private String maPhieuDat;
     private String maKhachHang;
-    private String ngayDen;
-    private String ngayDi;
+    private Timestamp ngayDen;
+    private Timestamp ngayDi;
     private double soTienCoc;
     private String username;
     private String tinhTrang;
     private int soNguoi;
+    private String tenKH;
 
-    public PhieuDatPhong(){}
-    
-    public PhieuDatPhong(String maPD, String maKH, String ngayDen, 
-            String ngayDi, String tinhTrang, int soNguoi){
+    public PhieuDatPhong() {
+    }
+
+    public PhieuDatPhong(String maPD, String maKH, Timestamp ngayDen,
+            Timestamp ngayDi, String tinhTrang, int soNguoi,
+            double soTienCoc, String tenKH) {
         this.maPhieuDat = maPD;
         this.maKhachHang = maKH;
         this.ngayDen = ngayDen;
         this.ngayDi = ngayDi;
         this.tinhTrang = tinhTrang;
         this.soNguoi = soNguoi;
+        this.soTienCoc = soTienCoc;
+        this.tenKH = tenKH;
     }
+
     /**
      * @return the maPhieuDat
      */
@@ -63,28 +70,28 @@ public class PhieuDatPhong {
     /**
      * @return the ngayDen
      */
-    public String getNgayDen() {
+    public Timestamp getNgayDen() {
         return ngayDen;
     }
 
     /**
      * @param ngayDen the ngayDen to set
      */
-    public void setNgayDen(String ngayDen) {
+    public void setNgayDen(Timestamp ngayDen) {
         this.ngayDen = ngayDen;
     }
 
     /**
      * @return the ngayDi
      */
-    public String getNgayDi() {
+    public Timestamp getNgayDi() {
         return ngayDi;
     }
 
     /**
      * @param ngayDi the ngayDi to set
      */
-    public void setNgayDi(String ngayDi) {
+    public void setNgayDi(Timestamp ngayDi) {
         this.ngayDi = ngayDi;
     }
 
@@ -142,5 +149,19 @@ public class PhieuDatPhong {
      */
     public void setSoNguoi(int soNguoi) {
         this.soNguoi = soNguoi;
+    }
+
+    /**
+     * @return the tenKH
+     */
+    public String getTenKH() {
+        return tenKH;
+    }
+
+    /**
+     * @param tenKH the tenKH to set
+     */
+    public void setTenKH(String tenKH) {
+        this.tenKH = tenKH;
     }
 }

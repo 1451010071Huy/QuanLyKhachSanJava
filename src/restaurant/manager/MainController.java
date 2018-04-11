@@ -14,7 +14,6 @@ import java.sql.SQLException;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -108,7 +107,7 @@ public class MainController implements Initializable {
 
     }
 
-    public  void openForm(String resource, String titleStage) {
+    public void openForm(String resource, String titleStage) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass()
                     .getResource(resource));
@@ -126,7 +125,9 @@ public class MainController implements Initializable {
 
     @FXML
     private void hboxThuePhongClick(MouseEvent event) {
-        System.out.println("restaurant.manager.MainController.hboxThuePhongClick()");
+        String resource = "views/PhieuThuePhongFXML.fxml";
+        String titleScene = "Thuê phòng";
+        openForm(resource, titleScene);
     }
 
     @FXML
