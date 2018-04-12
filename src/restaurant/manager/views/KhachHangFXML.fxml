@@ -7,21 +7,21 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="493.0" prefWidth="756.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="restaurant.manager.controllers.KhachHangController">
+<AnchorPane id="AnchorPane" prefHeight="511.0" prefWidth="756.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="restaurant.manager.controllers.KhachHangController">
     <stylesheets>
         <URL value="@/restaurant/manager/css/khachhangfxml.css" />
     </stylesheets>
    <children>
-      <TableView fx:id="tblKhachHang" layoutX="14.0" layoutY="279.0" prefHeight="200.0" prefWidth="728.0">
+      <TableView fx:id="tblKhachHang" layoutX="22.0" layoutY="290.0" onMouseClicked="#SelectRow" prefHeight="194.0" prefWidth="720.0">
         <columns>
-          <TableColumn prefWidth="97.0" text="Mã khách hàng" />
-          <TableColumn prefWidth="131.0" text="Tên khách hàng" />
-            <TableColumn prefWidth="71.0" text="Giới tính" />
-            <TableColumn minWidth="1.0" prefWidth="43.0" text="CMND" />
-            <TableColumn prefWidth="82.0" text="Địa chỉ" />
-            <TableColumn prefWidth="102.0" text="Cơ quan" />
-            <TableColumn prefWidth="95.0" text="Số điện thoại" />
-            <TableColumn prefWidth="106.0" text="Email" />
+          <TableColumn fx:id="tblColMaKhachHang" prefWidth="93.0" text="Mã khách hàng" />
+          <TableColumn fx:id="tblColTenKhachHang" prefWidth="105.0" text="Tên khách hàng" />
+            <TableColumn fx:id="tblColGioiTinh" prefWidth="57.0" text="Giới tính" />
+            <TableColumn fx:id="tblColCmnd" minWidth="1.0" prefWidth="99.0" text="CMND" />
+            <TableColumn fx:id="tblColDiaChi" prefWidth="107.0" text="Địa chỉ" />
+            <TableColumn fx:id="tblColCoQuan" prefWidth="65.0" text="Cơ quan" />
+            <TableColumn fx:id="tblColSoDienThoai" prefWidth="95.0" text="Số điện thoại" />
+            <TableColumn fx:id="tblColEmail" prefWidth="106.0" text="Email" />
         </columns>
       </TableView>
       <TextField fx:id="txtMaKhachHang" layoutX="162.0" layoutY="31.0" prefHeight="25.0" prefWidth="203.0" />
@@ -39,12 +39,12 @@
       <TextField fx:id="txtCmnd" layoutX="162.0" layoutY="149.0" prefHeight="25.0" prefWidth="203.0" />
       <Label layoutX="50.0" layoutY="153.0" text="CMND/Passport" />
       <Label layoutX="50.0" layoutY="113.0" text="Giới tính" />
-      <Button fx:id="btnThem" layoutX="232.0" layoutY="203.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="64.0" text="Thêm" />
-      <Button fx:id="btnCapNhat" layoutX="333.0" layoutY="203.0" mnemonicParsing="false" text="Cập nhật" />
-      <Button fx:id="btnXoa" layoutX="423.0" layoutY="203.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="64.0" text="Xóa" />
-      <Button fx:id="btnHuy" layoutX="514.0" layoutY="203.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="64.0" text="Hủy" />
+      <Button fx:id="btnThemKhachHang" layoutX="232.0" layoutY="203.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="64.0" text="Thêm" />
+      <Button fx:id="btnCapNhatKhachHang" layoutX="333.0" layoutY="203.0" mnemonicParsing="false" text="Cập nhật" />
+      <Button fx:id="btnXoaKhachHang" layoutX="423.0" layoutY="203.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="64.0" text="Xóa" />
+      <Button fx:id="btnHuyKhachHang" layoutX="514.0" layoutY="203.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="64.0" text="Hủy" />
       <ComboBox fx:id="cbbGioiTinh" layoutX="162.0" layoutY="109.0" prefHeight="25.0" prefWidth="203.0" />
-      <TextField fx:id="txtTimKiem" layoutX="126.0" layoutY="247.0" prefHeight="25.0" prefWidth="217.0" />
+      <TextField fx:id="txtTimKiem" layoutX="133.0" layoutY="247.0" onInputMethodTextChanged="#searchKhachHang" onKeyReleased="#searchKhachHang" prefHeight="25.0" prefWidth="217.0" />
       <Label layoutX="50.0" layoutY="251.0" text="Tìm kiếm" />
    </children>
 </AnchorPane>

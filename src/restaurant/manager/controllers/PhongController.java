@@ -24,6 +24,8 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
+import restaurant.manager.models.LPhong;
 import restaurant.manager.models.LoaiPhong;
 import restaurant.manager.models.Phong;
 
@@ -59,7 +61,7 @@ public class PhongController implements Initializable {
     private TextField txtGia;
 
     @FXML
-    private ComboBox<?> cbbLoaiPhong;
+    private ComboBox<LPhong> cbbLoaiPhong;
 
     @FXML
     private Button btnThemLP;
@@ -103,7 +105,6 @@ public class PhongController implements Initializable {
     private ObservableList<Phong> listPhong;
 
     private ObservableList<LoaiPhong> getLoaiPhong() throws SQLException {
-        jdbcConfig.Connect();// Kết nối 
         String sql = "SELECT * FROM loaiphong";
         PreparedStatement p = jdbcConfig.connection.prepareStatement(sql);
 
@@ -114,12 +115,10 @@ public class PhongController implements Initializable {
                     Double.parseDouble(r.getString(2)),
                     Integer.parseInt(r.getString(3))));
         }
-        jdbcConfig.Disconnect();
         return listLoaiPhong;
     }
 
-    private void insertPhong() throws SQLException {
-        jdbcConfig.Connect();
+    private void insertLoaiPhong() throws SQLException {
         String sql = String.format("INSERT INTO loaiphong(maloai, gia, songuoi)"
                 + "VALUES (?, ?, ?)");
 
@@ -129,18 +128,35 @@ public class PhongController implements Initializable {
         p.setString(3, txtSoNguoi.getText());
         int rows = jdbcConfig.ExecuteUpdateQuery(p);
         if (rows != 0) {
-            setTableLoaiPhong();
+            setTableLoaiPhong(getLoaiPhong());
         }
-        jdbcConfig.Disconnect();
+    }
 
+    private void insertPhong() throws SQLException {
+        String sql = String.format("INSERT INTO phong(maphong ,maloai) "
+                + "VALUES (?, ?)");
+        PreparedStatement p = jdbcConfig.connection.prepareStatement(sql);
+        p.setString(1, txtPhong.getText());
+        p.setString(2, cbbLoaiPhong.getValue().toString());
+        int rows = jdbcConfig.ExecuteUpdateQuery(p);
+        if (rows != 0) {
+            setTablePhong(getPhong());
+        }
+    }
+
+    private ObservableList<LPhong> getLPhong() {
+        LPhong lp1 = new LPhong("Loại 1");
+        LPhong lp2 = new LPhong("Loại 2");
+        LPhong lp3 = new LPhong("Loại 3");
+        ObservableList<LPhong> list = FXCollections.observableArrayList(lp1, lp2, lp3);
+        return list;
     }
 
     private ObservableList<Phong> getPhong() throws SQLException {
         try {
-            jdbcConfig.Connect();
             String sql = "SELECT p.maphong, lp.maloai, lp.gia, lp.songuoi \n"
                     + "FROM loaiphong as lp, phong as p\n"
-                    + "where lp.maloai = p.maloai";
+                    + "WHERE  p.maloai = lp.maloai ";
             PreparedStatement p = jdbcConfig.connection.prepareStatement(sql);
 
             ResultSet r = jdbcConfig.ExecuteQuery(p);//Thực thi câu truy vấn
@@ -151,68 +167,110 @@ public class PhongController implements Initializable {
             }
         } catch (SQLException ex) {
             Logger.getLogger(PhongController.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            jdbcConfig.Disconnect();
         }
         return listPhong;
     }
 
-    private void setTableLoaiPhong() throws SQLException {
-        tblLoaiPhong.setItems(getLoaiPhong());//Lấy giá trị DB rồi set cho bảng 
+    private void setTableLoaiPhong(ObservableList e) throws SQLException {
+        tblLoaiPhong.setItems(e);//Lấy giá trị DB rồi set cho bảng 
         tblColMaLoai.setCellValueFactory(new PropertyValueFactory<>("maLoai"));//set mã loại (với mã loại là thuộc tính của model)
         tblColGia.setCellValueFactory(new PropertyValueFactory<>("gia"));
         tblColSoNguoi.setCellValueFactory(new PropertyValueFactory<>("soNguoi"));
-
     }
 
-    private void setTablePhong() throws SQLException {
-        tblPhong.setItems(getPhong());//Lấy giá trị DB rồi set cho bảng   
+    private void setTablePhong(ObservableList e) throws SQLException {
+        tblPhong.setItems(e);//Lấy giá trị DB rồi set cho bảng   
         tblColMaPhong.setCellValueFactory(new PropertyValueFactory<>("maPhong"));//set mã loại (với mã loại là thuộc tính của model)
         tblColLoaiPhong1.setCellValueFactory(new PropertyValueFactory<>("maLoai"));
         tblColGia1.setCellValueFactory(new PropertyValueFactory<>("gia"));
         tblColSoNguoi1.setCellValueFactory(new PropertyValueFactory<>("soNguoi"));
-
     }
 
+    @FXML
+    private void SelectRowPhong(MouseEvent e) throws SQLException {
+        if (e.getClickCount() == 1) {
+            txtPhong.setText(tblPhong.getSelectionModel()
+                    .getSelectedItem().getMaPhong());
+            cbbLoaiPhong.setValue(new LPhong(tblPhong.getSelectionModel()
+                    .getSelectedItem().getMaLoai()));
+        }
+    }
+    @FXML
+    private void SelectRowLoaiPhong(MouseEvent e) throws SQLException {
+        if (e.getClickCount() == 1) {
+            txtMaLoai.setText(tblLoaiPhong.getSelectionModel()
+                    .getSelectedItem().getMaLoai());
+            txtGia.setText(String.valueOf(tblLoaiPhong.getSelectionModel()
+                    .getSelectedItem().getGia()));
+            txtSoNguoi.setText(Integer.toString(tblLoaiPhong.getSelectionModel()
+                    .getSelectedItem().getSoNguoi()));
+        }
+    }
+    
     private void deleteLoaiPhong() throws SQLException {
-        jdbcConfig.Connect();
         String sql = String.format("DELETE FROM loaiphong\n"
                 + "WHERE maloai = ?");
         PreparedStatement p = jdbcConfig.connection.prepareStatement(sql);
         p.setString(1, txtMaLoai.getText());
         int row = p.executeUpdate();
         if (row == 1) {
-            setTableLoaiPhong();
+            setTableLoaiPhong(getLoaiPhong());
         }
-        jdbcConfig.Disconnect();
+    }
+
+    private void deletePhong() throws SQLException {
+        String sql = String.format("DELETE FROM phong\n"
+                + "WHERE maphong = ?");
+        PreparedStatement p = jdbcConfig.connection.prepareStatement(sql);
+        p.setString(1, txtPhong.getText());
+        int row = p.executeUpdate();
+        if (row == 1) {
+            setTablePhong(getPhong());
+        }
     }
 
     private void updateLoaiPhong() throws SQLException {
-        jdbcConfig.Connect();
-        String sql = String.format("update loaiphong \n"
-                + "set gia = ?,\n"
-                + "	songuoi = ?\n"
-                + "where maloai = ? ");
+        String sql = String.format("UPDATE loaiphong \n"
+                + "SET gia = ?,\n"
+                + "songuoi = ?\n"
+                + "WHERE maloai = ? ");
         PreparedStatement p = jdbcConfig.connection.prepareStatement(sql);
         p.setString(1, txtGia.getText());
         p.setString(2, txtSoNguoi.getText());
         p.setString(3, txtMaLoai.getText());
         int row = p.executeUpdate();
         if (row == 1) {
-            setTableLoaiPhong();
+            setTableLoaiPhong(getLoaiPhong());
         }
-        jdbcConfig.Disconnect();
+    }
 
+    private void updatePhong() throws SQLException {
+        String sql = String.format("UPDATE phong SET \n"
+                + "maloai = ?\n"
+                + "WHERE maphong = ? ");
+        PreparedStatement p = jdbcConfig.connection.prepareStatement(sql);
+     
+        p.setString(1, cbbLoaiPhong.getValue().toString());
+        p.setString(2, txtPhong.getText());
+        int row = p.executeUpdate();
+        if (row == 1) {
+            setTablePhong(getPhong());
+        }
     }
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        jdbcConfig.Connect();
         try {
-            setTableLoaiPhong();
-            setTablePhong();
+
+            ObservableList<LPhong> listlp = getLPhong();
+            cbbLoaiPhong.getItems().addAll(listlp);
+            cbbLoaiPhong.getSelectionModel().select(0);
+            setTableLoaiPhong(getLoaiPhong());
+            setTablePhong(getPhong());
             btnThemLP.setOnAction(e -> {
                 try {
-                    insertPhong();
+                    insertLoaiPhong();
                 } catch (SQLException ex) {
                     Logger.getLogger(PhongController.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -231,6 +289,30 @@ public class PhongController implements Initializable {
                     Logger.getLogger(PhongController.class.getName()).log(Level.SEVERE, null, ex);
                 }
 
+            });
+
+            btnThemPhong.setOnAction(e -> {
+                try {
+                    insertPhong();
+                } catch (SQLException ex) {
+                    Logger.getLogger(PhongController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            });
+
+            btnXoaPhong.setOnAction(e -> {
+                try {
+                    deletePhong();
+                } catch (SQLException ex) {
+                    Logger.getLogger(PhongController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            });
+
+            btnCapNhatphong.setOnAction(e -> {
+                try {
+                    updatePhong();
+                } catch (SQLException ex) {
+                    Logger.getLogger(PhongController.class.getName()).log(Level.SEVERE, null, ex);
+                }
             });
 
         } catch (SQLException ex) {
