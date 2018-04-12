@@ -18,7 +18,7 @@
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <TableView fx:id="tblPhong" layoutX="292.0" layoutY="6.0" prefHeight="261.0" prefWidth="464.0" tableMenuButtonVisible="true">
+                        <TableView fx:id="tblPhong" layoutX="292.0" layoutY="6.0" onMouseClicked="#SelectRowPhong" prefHeight="261.0" prefWidth="464.0" tableMenuButtonVisible="true">
                           <columns>
                             <TableColumn fx:id="tblColMaPhong" prefWidth="114.0" text="Mã Phòng" />
                             <TableColumn fx:id="tblColLoaiPhong1" prefWidth="186.0" text="Loại Phòng" />
@@ -50,7 +50,7 @@
                         <Button fx:id="btnThemLP" layoutX="52.0" layoutY="236.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="62.0" text="Thêm" />
                         <Button fx:id="btnCapNhatLP" layoutX="130.0" layoutY="236.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="75.0" text="Cập nhật" />
                         <Button fx:id="btnXoaLP" layoutX="218.0" layoutY="236.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="60.0" text="Xóa" />
-                        <TableView fx:id="tblLoaiPhong" layoutX="309.0" layoutY="9.0" prefHeight="259.0" prefWidth="441.0" tableMenuButtonVisible="true">
+                        <TableView fx:id="tblLoaiPhong" layoutX="309.0" layoutY="9.0" onMouseClicked="#SelectRowLoaiPhong" prefHeight="259.0" prefWidth="441.0" tableMenuButtonVisible="true">
                           <columns>
                             <TableColumn fx:id="tblColMaLoai" prefWidth="104.0" text="Mã loại" />
                               <TableColumn fx:id="tblColGia" prefWidth="149.0" text="Giá" />
