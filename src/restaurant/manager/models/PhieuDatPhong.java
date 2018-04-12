@@ -24,6 +24,7 @@ public class PhieuDatPhong {
     private String tenKH;
 
     public PhieuDatPhong() {
+        
     }
 
     public PhieuDatPhong(String maPD, String maKH, Timestamp ngayDen,

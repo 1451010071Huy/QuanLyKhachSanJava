@@ -192,7 +192,6 @@ public class PhieuDatPhongController implements Initializable {
                 listPhongDat.add(new Phong(r.getString(1), r.getString(2),
                         r.getDouble(3), r.getInt(4)));
             }
-
         } catch (SQLException ex) {
             Logger.getLogger(PhieuDatPhongController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -286,6 +285,7 @@ public class PhieuDatPhongController implements Initializable {
         mapCol.put(tblColLoaiPhong, "maLoai");
         mapCol.put(tblColSoNguoi, "soNguoi");
         mapCol.put(tblColGia, "gia");
+        mapCol.put(tblColXoaPhong, "xoaPhong");
         jdbcConfig.setTableView(tblPhongDat, mapCol, getChiTietDatPhong());
     }
 
@@ -457,7 +457,10 @@ public class PhieuDatPhongController implements Initializable {
             dpkNgayDi.setValue(tblPhieuDatDS.getSelectionModel()
                     .getSelectedItem().getNgayDi().toLocalDateTime().toLocalDate());
             setTableChiTietDatPhong();
+            
+            
         }
+        
     }
 
     @Override
