@@ -21,7 +21,7 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         Parent root = FXMLLoader.load(getClass()
-                .getResource("views/PhieuDatPhongFXML.fxml"));
+                .getResource("views/LoginFXML.fxml"));
         Scene scene = new Scene(root);
         stage.setTitle("Đăng nhập");
         stage.setScene(scene);
