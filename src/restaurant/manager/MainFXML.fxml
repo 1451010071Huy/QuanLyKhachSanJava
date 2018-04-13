@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.geometry.*?>
 <?import com.jfoenix.controls.*?>
@@ -9,21 +11,21 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane fx:id="boderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="605.0" prefWidth="978.0" stylesheets="@css/mainfxml.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="restaurant.manager.MainController">
+<BorderPane fx:id="boderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="605.0" prefWidth="978.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="restaurant.manager.MainController">
    <top>
-      <HBox prefHeight="100.0" prefWidth="896.0" BorderPane.alignment="CENTER">
+      <HBox prefHeight="77.0" prefWidth="978.0" styleClass="vbox" BorderPane.alignment="CENTER">
          <children>
-            <HBox prefHeight="100.0" prefWidth="163.0" style="-fx-background-color: #935433;" />
-            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="709.0">
+            <HBox prefHeight="100.0" prefWidth="163.0" />
+            <HBox alignment="CENTER_LEFT" prefHeight="71.0" prefWidth="701.0">
                <children>
-                  <Pane prefHeight="100.0" prefWidth="344.0">
+                  <Pane prefHeight="41.0" prefWidth="344.0">
                      <children>
-                        <JFXTextField alignment="BASELINE_LEFT" focusColor="#dd7e5d" layoutX="14.0" layoutY="38.0" prefHeight="25.0" prefWidth="213.0">
+                        <JFXTextField alignment="BASELINE_LEFT" focusColor="#111111" layoutX="14.0" layoutY="26.0" prefHeight="25.0" prefWidth="213.0">
                            <opaqueInsets>
                               <Insets />
                            </opaqueInsets>
                         </JFXTextField>
-                        <JFXButton layoutX="245.0" layoutY="38.0" text="Search">
+                        <JFXButton layoutX="259.0" layoutY="26.0" text="Search">
                            <opaqueInsets>
                               <Insets />
                            </opaqueInsets>
@@ -31,6 +33,11 @@
                               <Cursor fx:constant="HAND" />
                            </cursor>
                         </JFXButton>
+                        <ImageView fitHeight="21.0" fitWidth="21.0" layoutX="227.0" layoutY="28.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../image/icon/001-magnifying-glass-searcher.png" />
+                           </image>
+                        </ImageView>
                      </children>
                      <opaqueInsets>
                         <Insets />
@@ -40,8 +47,13 @@
             </HBox>
             <HBox prefHeight="100.0" prefWidth="131.0">
                <children>
-                  <VBox fx:id="paneUser" alignment="CENTER" prefHeight="100.0" prefWidth="119.0">
+                  <VBox fx:id="paneUser" alignment="CENTER" prefHeight="86.0" prefWidth="119.0">
                      <children>
+                        <ImageView fitHeight="31.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../image/icon/manager.png" />
+                           </image>
+                        </ImageView>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Xin chào" />
                         <Text fx:id="lblUser" strokeType="OUTSIDE" strokeWidth="0.0" text="User" />
                      </children>
@@ -52,10 +64,15 @@
       </HBox>
    </top>
    <left>
-      <VBox prefHeight="505.0" prefWidth="155.0" spacing="1.0" BorderPane.alignment="CENTER">
+      <VBox prefHeight="410.0" prefWidth="155.0" spacing="5.0" BorderPane.alignment="CENTER">
          <children>
-            <HBox fx:id="hbxThuePhong" alignment="CENTER" onMouseClicked="#hboxThuePhongClick" prefHeight="50.0" prefWidth="155.0" styleClass="busy">
+            <HBox fx:id="hbxThuePhong" alignment="CENTER_LEFT" onMouseClicked="#hboxThuePhongClick" prefHeight="33.0" prefWidth="155.0" spacing="5.0" styleClass="vbox-hover">
                <children>
+                  <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../image/icon/005-calendar.png" />
+                     </image>
+                  </ImageView>
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Thuê phòng" />
                </children>
                <cursor>
@@ -64,17 +81,33 @@
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
+               <padding>
+                  <Insets left="10.0" />
+               </padding>
             </HBox>
-            <HBox fx:id="hbxDatPhong" alignment="CENTER" onMouseClicked="#hboxDatPhongClick" prefHeight="54.0" prefWidth="155.0" styleClass="busy">
+            <HBox fx:id="hbxDatPhong" alignment="CENTER_LEFT" onMouseClicked="#hboxDatPhongClick" prefHeight="33.0" prefWidth="155.0" spacing="5.0" styleClass="vbox-hover">
                <children>
+                  <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../image/icon/010-room-key.png" />
+                     </image>
+                  </ImageView>
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Đặt phòng" />
                </children>
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
+               <padding>
+                  <Insets left="10.0" />
+               </padding>
             </HBox>
-            <HBox fx:id="hbxHoaDon" alignment="CENTER" onMouseClicked="#hboxHoaDonClick" prefHeight="50.0" prefWidth="155.0" styleClass="busy">
+            <HBox fx:id="hbxHoaDon" alignment="CENTER_LEFT" onMouseClicked="#hboxHoaDonClick" prefHeight="33.0" prefWidth="155.0" spacing="5.0" styleClass="vbox-hover">
                <children>
+                  <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../image/icon/008-business.png" />
+                     </image>
+                  </ImageView>
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Hóa đơn" />
                </children>
                <opaqueInsets>
@@ -83,63 +116,137 @@
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
+               <padding>
+                  <Insets left="10.0" />
+               </padding>
             </HBox>
-            <HBox fx:id="hbxNhanVien" alignment="CENTER" onMouseClicked="#hboxNhanVienClick" prefHeight="50.0" prefWidth="155.0" styleClass="busy">
+            <HBox fx:id="hbxNhanVien" alignment="CENTER_LEFT" onMouseClicked="#hboxNhanVienClick" prefHeight="33.0" prefWidth="155.0" spacing="5.0" styleClass="vbox-hover">
                <children>
+                  <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../image/icon/007-employee.png" />
+                     </image>
+                  </ImageView>
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Nhân viên" />
                </children>
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
+               <padding>
+                  <Insets left="10.0" />
+               </padding>
             </HBox>
-            <HBox fx:id="hbxKhachHang" alignment="CENTER" onMouseClicked="#hboxKhachHangClick" prefHeight="50.0" prefWidth="155.0" styleClass="busy">
+            <HBox fx:id="hbxKhachHang" alignment="CENTER_LEFT" onMouseClicked="#hboxKhachHangClick" prefHeight="33.0" prefWidth="155.0" spacing="5.0" styleClass="vbox-hover">
                <children>
+                  <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../image/icon/006-rating.png" />
+                     </image>
+                  </ImageView>
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Khách hàng" />
                </children>
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
+               <padding>
+                  <Insets left="10.0" />
+               </padding>
             </HBox>
-            <HBox fx:id="hbxDichVu" alignment="CENTER" onMouseClicked="#hboxDichVuClick" prefHeight="50.0" prefWidth="155.0" styleClass="busy">
+            <HBox fx:id="hbxDichVu" alignment="CENTER_LEFT" onMouseClicked="#hboxDichVuClick" prefHeight="33.0" prefWidth="155.0" spacing="5.0" styleClass="vbox-hover">
                <children>
+                  <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../image/icon/004-room-service.png" />
+                     </image>
+                  </ImageView>
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Dịch vụ" />
                </children>
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
+               <padding>
+                  <Insets left="10.0" />
+               </padding>
             </HBox>
-            <HBox fx:id="hbxPhong" alignment="CENTER" onMouseClicked="#hboxPhongClick" prefHeight="50.0" prefWidth="155.0" styleClass="busy">
+            <HBox fx:id="hbxPhong" alignment="CENTER_LEFT" onMouseClicked="#hboxPhongClick" prefHeight="33.0" prefWidth="155.0" spacing="5.0" styleClass="vbox-hover">
                <children>
+                  <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../image/icon/009-bed.png" />
+                     </image>
+                  </ImageView>
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Phòng" />
                </children>
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
+               <padding>
+                  <Insets left="10.0" />
+               </padding>
             </HBox>
-            <HBox fx:id="hbxBaoCao" alignment="CENTER" onMouseClicked="#hboxBaoCaoClick" prefHeight="50.0" prefWidth="155.0" styleClass="busy">
+            <HBox fx:id="hbxBaoCao" alignment="CENTER_LEFT" onMouseClicked="#hboxBaoCaoClick" prefHeight="33.0" prefWidth="155.0" spacing="5.0" styleClass="vbox-hover">
                <children>
+                  <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../image/icon/003-charts.png" />
+                     </image>
+                  </ImageView>
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Báo cáo" />
                </children>
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
+               <padding>
+                  <Insets left="10.0" />
+               </padding>
             </HBox>
-            <HBox fx:id="btxQuanLyTaiKhoan" alignment="CENTER" onMouseClicked="#hboxQLTaiKhoanClick" prefHeight="50.0" prefWidth="155.0" styleClass="busy">
+            <VBox alignment="BOTTOM_LEFT" prefHeight="141.0" prefWidth="155.0" spacing="5.0">
                <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Quản lý tài khoản" />
+                  <HBox fx:id="btxQuanLyTaiKhoan" alignment="CENTER_LEFT" onMouseClicked="#hboxQLTaiKhoanClick" prefHeight="33.0" prefWidth="155.0" spacing="5.0" styleClass="vbox-hover">
+                     <children>
+                        <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../image/icon/002-people.png" />
+                           </image>
+                        </ImageView>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Quản lý tài khoản" />
+                     </children>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                     <padding>
+                        <Insets left="10.0" />
+                     </padding>
+                  </HBox>
+                  <HBox alignment="CENTER_LEFT" prefHeight="33.0" prefWidth="155.0" spacing="5.0" styleClass="vbox-hover">
+                     <children>
+                        <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../image/icon/logout.png" />
+                           </image>
+                        </ImageView>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Đăng xuất" />
+                     </children>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                     <padding>
+                        <Insets left="10.0" />
+                     </padding>
+                  </HBox>
                </children>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </HBox>
+            </VBox>
          </children>
          <opaqueInsets>
             <Insets />
          </opaqueInsets>
+         <padding>
+            <Insets left="10.0" top="20.0" />
+         </padding>
       </VBox>
    </left>
    <center>
-      <Pane fx:id="paneDSPhong" prefHeight="458.0" prefWidth="823.0" stylesheets="@css/mainfxml.css" BorderPane.alignment="CENTER">
+      <Pane fx:id="paneDSPhong" prefHeight="458.0" prefWidth="823.0" BorderPane.alignment="CENTER">
          <opaqueInsets>
             <Insets />
          </opaqueInsets></Pane>
@@ -147,4 +254,8 @@
    <right>
       <VBox prefHeight="505.0" prefWidth="51.0" BorderPane.alignment="CENTER" />
    </right>
+   <stylesheets>
+      <URL value="@css/mainfxml.css" />
+      <URL value="@css/mainfxml.css" />
+   </stylesheets>
 </BorderPane>

@@ -53,11 +53,11 @@
                      <children>
                         <TableView fx:id="tblPhongTrong" layoutX="6.0" layoutY="52.0" prefHeight="195.0" prefWidth="395.0">
                           <columns>
-                            <TableColumn fx:id="tblColPhongPT" prefWidth="70.0" text="Mã phòng" />
-                            <TableColumn fx:id="tblColLoaiPhongPT" prefWidth="82.0" text="Loại phòng" />
-                              <TableColumn fx:id="tblColSoNguoiPT" prefWidth="67.0" text="Số người" />
-                              <TableColumn fx:id="tblColGiaPT" prefWidth="118.0" text="Giá (VND)" />
-                              <TableColumn fx:id="tblColChonPhong" prefWidth="75.0" />
+                            <TableColumn fx:id="tblColPhongPT" prefWidth="107.0" text="Mã phòng" />
+                            <TableColumn fx:id="tblColLoaiPhongPT" prefWidth="70.0" text="Loại phòng" />
+                              <TableColumn fx:id="tblColSoNguoiPT" prefWidth="59.0" text="Số người" />
+                              <TableColumn fx:id="tblColGiaPT" prefWidth="117.0" text="Giá (VND)" />
+                              <TableColumn fx:id="tblColChonPhong" prefWidth="38.0" />
                           </columns>
                         </TableView>
                         <Button fx:id="btnTimPhong" layoutX="73.0" layoutY="14.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="90.0" text="Tìm phòng" />
@@ -76,9 +76,9 @@
       </VBox>
       <Pane layoutX="426.0" layoutY="1.0" prefHeight="600.0" prefWidth="687.0">
          <children>
-            <TabPane prefHeight="600.0" prefWidth="681.0" rotateGraphic="true" tabClosingPolicy="UNAVAILABLE">
+            <TabPane fx:id="tabIndex" prefHeight="600.0" prefWidth="681.0" rotateGraphic="true" tabClosingPolicy="UNAVAILABLE">
               <tabs>
-                <Tab text="Chi tiết ">
+                <Tab fx:id="tabIndex1" text="Chi tiết ">
                      <content>
                         <AnchorPane prefHeight="551.0" prefWidth="776.0">
                            <children>
@@ -175,17 +175,17 @@
                                     <Font name="System Bold" size="12.0" />
                                  </font>
                               </TitledPane>
-                              <HBox alignment="CENTER" layoutX="-1.0" layoutY="527.0" prefHeight="25.0" prefWidth="687.0" spacing="40.0">
+                              <HBox alignment="CENTER" layoutX="30.0" layoutY="527.0" prefHeight="25.0" prefWidth="687.0" spacing="40.0">
                                  <children>
-                                    <Button fx:id="btnDatPhong" mnemonicParsing="false" text="Đặt phòng" />
-                                    <Button fx:id="btnSua" mnemonicParsing="false" text="Sửa" />
+                                    <Button fx:id="btnDatPhong" mnemonicParsing="false" onAction="#datPhong" text="Đặt phòng" />
+                                    <Button fx:id="btnSua" mnemonicParsing="false" onAction="#huyDatPhong" text="Sửa" />
                                  </children>
                               </HBox>
                            </children>
                         </AnchorPane>
                      </content>
                 </Tab>
-                <Tab text="Danh sách phiếu đặt">
+                <Tab fx:id="tabIndex2" text="Danh sách phiếu đặt">
                   <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
@@ -211,7 +211,7 @@
                               <HBox alignment="CENTER" layoutX="-6.0" layoutY="522.0" prefHeight="25.0" prefWidth="687.0" spacing="40.0">
                                  <children>
                                     <Button fx:id="btnNhanPhong" mnemonicParsing="false" text="Nhận phòng" />
-                                    <Button mnemonicParsing="false" text="Sửa" />
+                                    <Button mnemonicParsing="false" onAction="#huyDatPhong" text="Hủy đặt phòng" />
                                  </children>
                               </HBox>
                            </children>

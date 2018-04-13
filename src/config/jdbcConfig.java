@@ -1,17 +1,22 @@
 package config;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Map;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.ObservableList;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import restaurant.manager.controllers.PhieuDatPhongController;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -89,11 +94,10 @@ public class jdbcConfig {
      * @param tab tableView mà bạn muốn đổ dữ liệu vào
      * @param listCols danh sách các cột
      * @param listName tên các trường của model
-     * @param obList danh sách ObservableList của bạn 
-     * @see Ví dụ :
-     * TableColumn[] tabView = {tblColMaPhieuDatDS,tblColKhachHangDS};
-     * String[] listName = {"maPhieuDat", "maKhachHang"}; 
-     * this.setTableV1(tblPhieuDatDS, tabView,
+     * @param obList danh sách ObservableList của bạn
+     * @see Ví dụ : TableColumn[] tabView =
+     * {tblColMaPhieuDatDS,tblColKhachHangDS}; String[] listName =
+     * {"maPhieuDat", "maKhachHang"}; this.setTableV1(tblPhieuDatDS, tabView,
      * listName, getPhieuDatPhong());
      * @since 1.0
      */
@@ -108,12 +112,12 @@ public class jdbcConfig {
 
     /**
      * Hàm này dùng để đổ dữ liệu vào TableView
+     *
      * @param table Tên TableView
      * @param mapCol Biến này là 1 dictionary Map TableColums với tên trường
      * model
-     * @param obList Cái này là biến ObservableList để lưu 
-     * @see Ví dụ:
-     * Map<TableColumn,String> mapCol = new HashMap<>();
+     * @param obList Cái này là biến ObservableList để lưu
+     * @see Ví dụ: Map<TableColumn,String> mapCol = new HashMap<>();
      * mapCol.put(tblColMaPhieuDatDS, "maPhieuDat");
      * mapCol.put(tblColKhachHangDS, "maKhachHang"); "ngayDen");
      * this.setTableV2(tblPhieuDatDS, mapCol, getPhieuDatPhong());
@@ -124,6 +128,10 @@ public class jdbcConfig {
         mapCol.entrySet().forEach((map) -> {
             map.getKey().setCellValueFactory(new PropertyValueFactory<>(map.getValue()));
         });
-
     }
+
+
+
+
+
 }

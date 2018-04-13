@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package restaurant.manager;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -16,13 +17,15 @@ import javafx.stage.Stage;
  */
 public class Main extends Application {
 
-
-
     @Override
     public void start(Stage stage) throws Exception {
         Parent root = FXMLLoader.load(getClass()
-                .getResource("views/LoginFXML.fxml"));
+                .getResource("views/PhieuDatPhongFXML.fxml"));
         Scene scene = new Scene(root);
+        
+        String css = Main.class.getResource(
+                "css/mainfxml.css").toExternalForm();
+        scene.getStylesheets().add(css);
         stage.setTitle("Đăng nhập");
         stage.setScene(scene);
         stage.show();
