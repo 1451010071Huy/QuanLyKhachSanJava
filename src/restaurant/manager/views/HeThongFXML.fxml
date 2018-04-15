@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import com.jfoenix.controls.*?>
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="403.0" prefWidth="563.0" styleClass="mainFxmlClass" stylesheets="@../css/hethongfxml.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="restaurant.manager.controllers.HeThongController">
+   <children>
+      <JFXTextField fx:id="txtTenNhanVien" focusColor="#444e61" layoutX="79.0" layoutY="72.0" prefHeight="25.0" prefWidth="240.0" promptText="Tên Nhân Viên" unFocusColor="#345170" />
+      <JFXTextField fx:id="txtMatKhau" focusColor="#444e61" layoutX="79.0" layoutY="116.0" prefHeight="25.0" prefWidth="240.0" promptText="Mật Khẩu" unFocusColor="#345170" />
+      <JFXTextField fx:id="txtTimKiem" focusColor="#444e61" layoutX="76.0" layoutY="158.0" onInputMethodTextChanged="#searchHeThong" onKeyReleased="#searchHeThong" prefHeight="25.0" prefWidth="472.0" promptText="Tìm Kiếm Mã / Tên Nhân Viên" unFocusColor="#345170" />
+      <JFXTextField fx:id="txtMaNhanVien" focusColor="#444e61" layoutX="76.0" layoutY="28.0" prefHeight="25.0" prefWidth="240.0" promptText="Mã Nhân Viên" unFocusColor="#345170" />
+      <JFXButton fx:id="btnThem" layoutX="362.0" layoutY="28.0" prefHeight="25.0" prefWidth="63.0" style="-fx-background-color: lightblue;" text="Thêm" textFill="#3d41a1" />
+      <JFXButton fx:id="btnXoa" layoutX="362.0" layoutY="72.0" prefHeight="25.0" prefWidth="63.0" style="-fx-background-color: lightblue;" text="Xóa" textFill="#3d41a1" />
+      <JFXButton fx:id="btnSua" layoutX="362.0" layoutY="118.0" prefHeight="25.0" prefWidth="63.0" style="-fx-background-color: lightblue;" text="Sửa" textFill="#3d41a1" />
+      <TableView fx:id="tblHeThong" layoutX="16.0" layoutY="203.0" onMouseClicked="#SelectRow" prefHeight="173.0" prefWidth="535.0">
+        <columns>
+          <TableColumn fx:id="tblColMaNhanVien" prefWidth="97.0" text="Mã Nhân Viên" />
+          <TableColumn fx:id="tblColTenNhanVien" prefWidth="108.0" text="Tên Nhân Viên" />
+            <TableColumn fx:id="tblColTenDangNhap" prefWidth="106.0" text="Tên Đăng Nhập" />
+            <TableColumn fx:id="tblColMatKhau" prefWidth="143.0" text="Mật Khẩu" />
+            <TableColumn fx:id="tblColChucVu" text="Chức Vụ" />
+        </columns>
+      </TableView>
+   </children>
+</AnchorPane>

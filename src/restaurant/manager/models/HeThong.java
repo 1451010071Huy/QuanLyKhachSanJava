@@ -10,57 +10,91 @@ package restaurant.manager.models;
  * @author Luxury
  */
 public class HeThong {
-   
-    private String manhanvien;
-    private String username;
-    private String password;
+
+    
+    private String maNhanVien;
+    private String tenNhanVien;
+    private String tenDangNhap;
+    private String matKhau;
+    private String chucVu;
 
     public HeThong(){}
-    public HeThong(String manhanvien ,String user, String pass){
-        this.manhanvien = manhanvien;
-        this.username = user;
-        this.password = pass;
+    public HeThong(String maNhanVien,String tenNhanVien ,String tenDangNhap, String matKhau, String chucVu){
+        this.maNhanVien = maNhanVien;
+        this.tenNhanVien = tenNhanVien;
+        this.tenDangNhap = tenDangNhap;
+        this.matKhau = matKhau;
+        this.chucVu = chucVu;
     }
     
     /**
-     * @return the manhanvien
+     * @return the maNhanVien
      */
-    public String getManhanvien() {
-        return manhanvien;
+    public String getMaNhanVien() {
+        return maNhanVien;
     }
 
     /**
-     * @param manhanvien the manhanvien to set
+     * @param maNhanVien the maNhanVien to set
      */
-    public void setManhanvien(String manhanvien) {
-        this.manhanvien = manhanvien;
+    public void setMaNhanVien(String maNhanVien) {
+        this.maNhanVien = maNhanVien;
     }
 
     /**
-     * @return the username
+     * @return the tenNhanVien
      */
-    public String getUsername() {
-        return username;
+    public String getTenNhanVien() {
+        return tenNhanVien;
     }
 
     /**
-     * @param username the username to set
+     * @param tenNhanVien the tenNhanVien to set
      */
-    public void setUsername(String username) {
-        this.username = username;
+    public void setTenNhanVien(String tenNhanVien) {
+        this.tenNhanVien = tenNhanVien;
     }
 
     /**
-     * @return the password
+     * @return the tenDangNhap
      */
-    public String getPassword() {
-        return password;
+    public String getTenDangNhap() {
+        return tenDangNhap;
     }
 
     /**
-     * @param password the password to set
+     * @param tenDangNhap the tenDangNhap to set
      */
-    public void setPassword(String password) {
-        this.password = password;
+    public void setTenDangNhap(String tenDangNhap) {
+        this.tenDangNhap = tenDangNhap;
     }
+
+    /**
+     * @return the matKhau
+     */
+    public String getMatKhau() {
+        return matKhau;
+    }
+
+    /**
+     * @param matKhau the matKhau to set
+     */
+    public void setMatKhau(String matKhau) {
+        this.matKhau = matKhau;
+    }
+
+    /**
+     * @return the chucVu
+     */
+    public String getChucVu() {
+        return chucVu;
+    }
+
+    /**
+     * @param chucVu the chucVu to set
+     */
+    public void setChucVu(String chucVu) {
+        this.chucVu = chucVu;
+    }
+   
 }
