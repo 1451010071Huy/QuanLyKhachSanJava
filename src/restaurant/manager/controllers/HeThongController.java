@@ -12,9 +12,9 @@ import javafx.fxml.Initializable;
 /**
  * FXML Controller class
  *
- * @author Luxury
+ * @author sky
  */
-public class HethongController implements Initializable {
+public class HeThongController implements Initializable {
 
     /**
      * Initializes the controller class.

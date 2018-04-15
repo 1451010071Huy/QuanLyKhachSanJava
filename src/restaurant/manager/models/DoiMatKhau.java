@@ -7,38 +7,21 @@ package restaurant.manager.models;
 
 /**
  *
- * @author Luxury
+ * @author sky
  */
-public class HeThong {
-   
-    private String manhanvien;
+public class DoiMatKhau {
     private String username;
     private String password;
-
-    public HeThong(){}
-    public HeThong(String manhanvien ,String user, String pass){
-        this.manhanvien = manhanvien;
-        this.username = user;
-        this.password = pass;
-    }
-    
-    /**
-     * @return the manhanvien
-     */
-    public String getManhanvien() {
-        return manhanvien;
-    }
-
-    /**
-     * @param manhanvien the manhanvien to set
-     */
-    public void setManhanvien(String manhanvien) {
-        this.manhanvien = manhanvien;
-    }
+    private String maNhanVien;
 
     /**
      * @return the username
      */
+    public DoiMatKhau(){}
+    public DoiMatKhau(String user, String pass){
+        this.username = user;
+        this.password = pass;
+    }
     public String getUsername() {
         return username;
     }
@@ -62,5 +45,19 @@ public class HeThong {
      */
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    /**
+     * @return the maNhanVien
+     */
+    public String getMaNhanVien() {
+        return maNhanVien;
+    }
+
+    /**
+     * @param maNhanVien the maNhanVien to set
+     */
+    public void setMaNhanVien(String maNhanVien) {
+        this.maNhanVien = maNhanVien;
     }
 }
