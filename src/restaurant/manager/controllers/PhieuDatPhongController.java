@@ -12,8 +12,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -56,8 +58,6 @@ public class PhieuDatPhongController implements Initializable {
     @FXML
     private TableColumn<Phong, Double> tblColGia;
     @FXML
-    private Button btnDatPhong;
-    @FXML
     private TextField txtDatCoc;
     @FXML
     private Label lblNgayDi;
@@ -71,8 +71,6 @@ public class PhieuDatPhongController implements Initializable {
     private ComboBox<String> cbbKhachHang;
     @FXML
     private Label lblGioiTinh;
-    @FXML
-    private Button btnSua;
     @FXML
     private TableColumn<PhieuDatPhong, String> tblColMaPhieuDatDS;
     @FXML
@@ -114,7 +112,7 @@ public class PhieuDatPhongController implements Initializable {
     @FXML
     private CheckBox chbWaitting;
     @FXML
-    private CheckBox chbFinnis;
+    private CheckBox chbFinish;
     @FXML
     private CheckBox chbCancel;
     @FXML
@@ -134,39 +132,42 @@ public class PhieuDatPhongController implements Initializable {
     @FXML
     private CheckBox chbBusy;
     @FXML
-    private Button btnNhanPhong;
-    @FXML
     private TableColumn<?, ?> tblColChonPhong;
     @FXML
     private TableColumn<?, ?> tblColXoaPhong;
+    @FXML
+    private TabPane tabIndex;
+    @FXML
+    private Tab tabIndex2;
 
     private ObservableList<PhieuDatPhong> listPhieuDatPhong = null;
     private ObservableList<Phong> listPhongDat = null;
     private ObservableList<KiemTraPhong> listPhongKT = null;
     private ObservableList<Phong> listPhong = null;
-    @FXML
-    private TabPane tabIndex;
-    @FXML
-    private Tab tabIndex1;
-    @FXML
-    private Tab tabIndex2;
+
+    private final String WAITTING = "waitting";
+    private final String BUSY = "busy";
+    private final String CANCEL = "cancel";
+    private final String FINISH = "finish";
+    public String user = "admin";
 
     private ObservableList<PhieuDatPhong> getPhieuDatPhong() {
+
         try {
+            PreparedStatement p;
             String sql = "SELECT maphieudat, p.makhachhang , ngayden, ngaydi,"
                     + "tinhtrang, songuoi, sotiendatcoc, tenkhachhang\n"
                     + "FROM phieudatphong as p, khachhang as k\n"
                     + "WHERE p.makhachhang = k.makhachhang AND\n"
                     + "(tinhtrang = ? OR tinhtrang = ? OR tinhtrang = ? \n"
                     + "OR tinhtrang = ?)";
-            PreparedStatement p = jdbcConfig.connection.prepareStatement(sql);
+            p = jdbcConfig.connection.prepareStatement(sql);
+            listPhieuDatPhong = FXCollections.observableArrayList();// Khởi chạy Observable
             p.setString(1, getCheckedWaitting());
             p.setString(2, getCheckedCancel());
             p.setString(3, getCheckedFinish());
             p.setString(4, getCheckedBusy());
             ResultSet r = jdbcConfig.ExecuteQuery(p);
-            listPhieuDatPhong = FXCollections.observableArrayList();// Khởi chạy Observable
-
             while (r.next()) {
 
                 listPhieuDatPhong.add(new PhieuDatPhong(
@@ -180,6 +181,7 @@ public class PhieuDatPhongController implements Initializable {
                         r.getString(8)
                 ));
             }
+            p.close();
         } catch (SQLException ex) {
             System.out.println("Lỗi không xuất được phiếu đặt phòng " + ex);
         }
@@ -187,14 +189,14 @@ public class PhieuDatPhongController implements Initializable {
         return listPhieuDatPhong;
     }
 
-    private ObservableList<Phong> getChiTietDatPhong() {
+    private ObservableList<Phong> getChiTietDatPhongById(String maPhieuDat) {
         try {
             String sql = "SELECT p.maphong, lp.maloai, gia, songuoi \n"
                     + "FROM chitietdatphong as c, phong as p, loaiphong as lp\n"
                     + "WHERE c.maphong = p.maphong AND maphieudat = ?\n"
                     + "AND lp.maloai = p.maloai";
             PreparedStatement p = jdbcConfig.connection.prepareStatement(sql);
-            p.setString(1, lblMaPhieuDat.getText());
+            p.setString(1, maPhieuDat);
             ResultSet r = jdbcConfig.ExecuteQuery(p);
             listPhongDat = FXCollections.observableArrayList();
             while (r.next()) {
@@ -204,36 +206,43 @@ public class PhieuDatPhongController implements Initializable {
         } catch (SQLException ex) {
             Logger.getLogger(PhieuDatPhongController.class.getName()).log(Level.SEVERE, null, ex);
         }
-
         return listPhongDat;
     }
 
     private String getCheckedWaitting() {
         if (chbWaitting.isSelected()) {
-            return "waitting";
+            return WAITTING;
         }
         return "";
     }
 
     private String getCheckedBusy() {
         if (chbBusy.isSelected()) {
-            return "busy";
+            return BUSY;
         }
         return "";
     }
 
     private String getCheckedCancel() {
         if (chbCancel.isSelected()) {
-            return "cancel";
+            return CANCEL;
         }
         return "";
     }
 
     private String getCheckedFinish() {
-        if (chbFinnis.isSelected()) {
-            return "finish";
+        if (chbFinish.isSelected()) {
+            return FINISH;
         }
         return "";
+    }
+
+    private String getMaPhieuDat() {
+        return tblPhieuDatDS.getSelectionModel().getSelectedItem().getMaPhieuDat();
+    }
+
+    private String getTingTrang() {
+        return tblPhieuDatDS.getSelectionModel().getSelectedItem().getTinhTrang();
     }
 
     private void getTenKhachHang() throws SQLException {
@@ -279,6 +288,7 @@ public class PhieuDatPhongController implements Initializable {
     }
 
     private void setTablePhieuDatPhong() {
+        tblPhieuDatDS.getItems().clear();
         Map<TableColumn, String> mapCol = new HashMap<>();
         mapCol.put(tblColMaPhieuDatDS, "maPhieuDat");
         mapCol.put(tblColKhachHangDS, "maKhachHang");
@@ -297,13 +307,39 @@ public class PhieuDatPhongController implements Initializable {
         mapCol.put(tblColGia, "gia");
         mapCol.put(tblColXoaPhong, "xoaPhong");
 
-        listPhongDat = getChiTietDatPhong();
+        listPhongDat = getChiTietDatPhongById(lblMaPhieuDat.getText());
+
         listPhongDat.forEach(value -> {
             value.getXoaPhong().setOnAction(e -> {
-                listPhongDat.remove(value);
+                Optional<ButtonType> result = setAlertConf(
+                        "Mã phòng : " + value.getMaPhong(),
+                        "Bạn có muốn xóa không"
+                );
+                if (result.get() == ButtonType.YES) {
+                    listPhongDat.remove(value);
+                    deletePhongDaDat(value);
+                }
             });
         });
         jdbcConfig.setTableView(tblPhongDat, mapCol, listPhongDat);
+    }
+
+    private void deletePhongDaDat(Phong phong) {
+        try {
+            String sql = "DELETE FROM chitietdatphong\n"
+                    + "WHERE maphieudat = ? AND maphong = ?";
+            PreparedStatement p = jdbcConfig.connection.prepareStatement(sql);
+            p.setString(1, lblMaPhieuDat.getText());
+            p.setString(2, phong.getMaPhong());
+
+            int i = jdbcConfig.ExecuteUpdateQuery(p);
+            if (i == 1) {
+                p.close();
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(PhieuDatPhongController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     private void setTablePhong() {
@@ -325,7 +361,11 @@ public class PhieuDatPhongController implements Initializable {
             setTablePhieuDatPhong();
 
         });
-        chbFinnis.setOnAction(e -> {
+        chbFinish.setOnAction(e -> {
+            setTablePhieuDatPhong();
+
+        });
+        chbBusy.setOnAction(e -> {
             setTablePhieuDatPhong();
 
         });
@@ -464,9 +504,9 @@ public class PhieuDatPhongController implements Initializable {
                 if (value.getChonPhong().isSelected() == true) {
                     ob.add(value);
                     value.getXoaPhong().setOnAction((ActionEvent event) -> {
-                        Optional<ButtonType> result = setAlertConf("Thông báo",
+                        Optional<ButtonType> result = setAlertConf("Mã phòng : " + value.getMaPhong(),
                                 "Bạn có muốn xóa không");
-                        if (result.get() == ButtonType.OK) {
+                        if (result.get() == ButtonType.YES) {
                             ob.remove(value);
                         }
                     });
@@ -484,43 +524,65 @@ public class PhieuDatPhongController implements Initializable {
 
     @FXML
     public void clickItemPhieuDat(MouseEvent event) throws SQLException {
-        if (event.getClickCount() == 1) //Checking double click
-        {
-            tblPhieuDatDS.getSelectionModel().selectedIndexProperty().addListener((num) -> selectItem());
-        }
+        tblPhieuDatDS.getSelectionModel().selectedIndexProperty().addListener((e) -> selectItem());
+
     }
 
     public void selectItem() {
         try {
-            lblMaPhieuDat.setText(tblPhieuDatDS.getSelectionModel()
-                    .getSelectedItem().getMaPhieuDat());
-            cbbKhachHang.setValue(tblPhieuDatDS.getSelectionModel()
-                    .getSelectedItem().getTenKH());
-            txtSoNguoi.setText(String.valueOf(tblPhieuDatDS.getSelectionModel()
-                    .getSelectedItem().getSoNguoi()));
-            txtDatCoc.setText(String.valueOf(tblPhieuDatDS.getSelectionModel()
-                    .getSelectedItem().getSoTienCoc()));
-            dpkNgayDen.setValue(tblPhieuDatDS.getSelectionModel()
-                    .getSelectedItem().getNgayDen().toLocalDateTime().toLocalDate());
-            dpkNgayDi.setValue(tblPhieuDatDS.getSelectionModel()
-                    .getSelectedItem().getNgayDi().toLocalDateTime().toLocalDate());
-
-            setTableChiTietDatPhong();
+            if (!tblPhieuDatDS.getItems().isEmpty()) {
+                lblMaPhieuDat.setText(tblPhieuDatDS.getSelectionModel()
+                        .getSelectedItem().getMaPhieuDat());
+                cbbKhachHang.setValue(tblPhieuDatDS.getSelectionModel()
+                        .getSelectedItem().getTenKH());
+                txtSoNguoi.setText(String.valueOf(tblPhieuDatDS.getSelectionModel()
+                        .getSelectedItem().getSoNguoi()));
+                txtDatCoc.setText(String.valueOf(tblPhieuDatDS.getSelectionModel()
+                        .getSelectedItem().getSoTienCoc()));
+                dpkNgayDen.setValue(tblPhieuDatDS.getSelectionModel()
+                        .getSelectedItem().getNgayDen().toLocalDateTime().toLocalDate());
+                dpkNgayDi.setValue(tblPhieuDatDS.getSelectionModel()
+                        .getSelectedItem().getNgayDi().toLocalDateTime().toLocalDate());
+                setTableChiTietDatPhong();
+            }
         } catch (SQLException ex) {
             Logger.getLogger(PhieuDatPhongController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
+    private String getNgayDen() {
+        return dpkNgayDen.getValue().toString() + " 12:00:00";
+    }
+
+    private String getNgayDi() {
+        return dpkNgayDi.getValue().toString() + " 12:00:00";
+    }
+
+    private int insertChiTietDatPhong(String id) throws SQLException {
+        int i = 0;
+        PreparedStatement pInsertPhong;
+        String query = "IF NOT EXISTS(select * from chitietdatphong "
+                + "where maphieudat=? AND maphong=?)\n"
+                + "insert into chitietdatphong(maphieudat, maphong) values(?,?)";
+        for (Phong item : tblPhongDat.getItems()) {
+            pInsertPhong = jdbcConfig.connection.prepareStatement(query);
+            pInsertPhong.setString(1, id);
+            pInsertPhong.setString(2, item.getMaPhong());
+            pInsertPhong.setString(3, id);
+            pInsertPhong.setString(4, item.getMaPhong());
+            i = jdbcConfig.ExecuteUpdateQuery(pInsertPhong);
+        }
+
+        return i;
+    }
+
     @FXML
     public void datPhong(ActionEvent a) throws SQLException {
         PreparedStatement pInsertPDP = null;
-        PreparedStatement pInsertPhong = null;
         try {
             if (checkThongTinDatPhong()) {
                 jdbcConfig.connection.setAutoCommit(false);
                 String id = util.RandomId.createNewID("PD");
-                String ngayDen = dpkNgayDen.getValue().toString() + " 12:00:00";
-                String ngayDi = dpkNgayDen.getValue().toString() + " 12:00:00";
                 String sql = "INSERT INTO phieudatphong("
                         + "maphieudat, makhachhang,ngayden, ngaydi, "
                         + "sotiendatcoc, username, tinhtrang, songuoi)\n"
@@ -528,24 +590,17 @@ public class PhieuDatPhongController implements Initializable {
                 pInsertPDP = jdbcConfig.connection.prepareStatement(sql);
                 pInsertPDP.setString(1, id);
                 pInsertPDP.setString(2, lblMaKhachHang.getText());
-                pInsertPDP.setString(3, ngayDen);
-                pInsertPDP.setString(4, ngayDi);
+                pInsertPDP.setString(3, getNgayDen());
+                pInsertPDP.setString(4, getNgayDi());
                 pInsertPDP.setString(5, txtDatCoc.getText());
-                pInsertPDP.setString(6, "admin");
-                pInsertPDP.setString(7, "waitting");
+                pInsertPDP.setString(6, user);
+                pInsertPDP.setString(7, WAITTING);
                 pInsertPDP.setString(8, txtSoNguoi.getText());
 
                 int r = pInsertPDP.executeUpdate();
                 int i = 0;
                 if (r == 1) {
-                    String query = "INSERT INTO chitietdatphong(maphieudat,maphong)\n"
-                            + "VALUES (?,?)";
-                    for (Phong item : tblPhongDat.getItems()) {
-                        pInsertPhong = jdbcConfig.connection.prepareStatement(query);
-                        pInsertPhong.setString(1, id);
-                        pInsertPhong.setString(2, item.getMaPhong());
-                        i = jdbcConfig.ExecuteUpdateQuery(pInsertPhong);
-                    }
+                    insertChiTietDatPhong(id);
                     if (i == 1) {
                         util.AlertCustom.setAlertInfo("Thông báo",
                                 "Đặt phòng thành công", "Mã phiếu : " + id
@@ -568,27 +623,129 @@ public class PhieuDatPhongController implements Initializable {
             if (pInsertPDP != null) {
                 pInsertPDP.close();
             }
-            if (pInsertPhong != null) {
-                pInsertPhong.close();
-            }
         }
     }
 
     @FXML
     private void huyDatPhong(ActionEvent e) throws SQLException {
         if (!"------".equals(lblMaPhieuDat.getText())) {
-            String sql = "UPDATE phieudatphong SET tinhtrang = 'cancel'\n"
-                    + "WHERE maphieudat = ?";
-            PreparedStatement p = jdbcConfig.connection.prepareStatement(sql);
-            p.setString(1, lblMaPhieuDat.getText());
-            int result = jdbcConfig.ExecuteUpdateQuery(p);
-            if (result == 1) {
-                setAlertInfo("Thông báo", "Hủy đặt phòng thành công",
-                        "Mã phiếu : " + lblMaPhieuDat.getText()
-                        + "\nTên khách hàng : " + lblTenKhachHang.getText());
-                this.setTablePhieuDatPhong();
-            }
+            if (!getTingTrang().equals(WAITTING)) {
+                setAlertInfo("Thông báo", "Hủy không thành công",
+                        "Phiếu đặt phòng phải là " + WAITTING);
+            } else {
+                Optional<ButtonType> alert = setAlertConf("Phiếu đặt phòng : "
+                        + lblMaPhieuDat.getText(),
+                        "Thao tác này không thể hoàn tác,"
+                        + " \nbạn có muốn hủy không!"
+                );
+                if (alert.get() == ButtonType.YES) {
+                    String sql = "UPDATE phieudatphong SET tinhtrang = ?\n"
+                            + "WHERE maphieudat = ?";
+                    PreparedStatement p = jdbcConfig.connection.prepareStatement(sql);
+                    p.setString(1, CANCEL);
+                    p.setString(2, lblMaPhieuDat.getText());
+                    int result = jdbcConfig.ExecuteUpdateQuery(p);
+                    if (result == 1) {
+                        setAlertInfo("Thông báo", "Hủy đặt phòng thành công",
+                                "Mã phiếu : " + lblMaPhieuDat.getText()
+                                + "\nTên khách hàng : " + lblTenKhachHang.getText());
+                        this.setTablePhieuDatPhong();
+                    }
 
+                }
+            }
+        }
+
+    }
+
+    @FXML
+    public void luuThayDoi(ActionEvent e) throws SQLException {
+        if (checkThongTinDatPhong()) {
+            String sql = "UPDATE phieudatphong\n"
+                    + "SET ngayden = ?,\n"
+                    + "	ngaydi = ?,\n"
+                    + "	sotiendatcoc = ?,\n"
+                    + "	songuoi = ?\n"
+                    + "WHERE maphieudat = ?";
+
+            PreparedStatement p = jdbcConfig.connection.prepareStatement(sql);
+            p.setString(1, getNgayDen());
+            p.setString(2, getNgayDi());
+            p.setDouble(3, Double.valueOf(txtDatCoc.getText()));
+            p.setInt(4, Integer.valueOf(txtSoNguoi.getText()));
+            p.setString(5, lblMaPhieuDat.getText());
+            int i = jdbcConfig.ExecuteUpdateQuery(p);
+            insertChiTietDatPhong(getMaPhieuDat());
+            if (i == 1) {
+                setTablePhieuDatPhong();
+                setAlertInfo("Thông báo", "Cập nhật thành công",
+                        "Mã phiếu đặt : " + lblMaPhieuDat.getText());
+                p.close();
+            }
+        }
+    }
+
+    @FXML
+    private void nhanPhong(ActionEvent e) throws SQLException {
+        Date now = new Date();
+
+        SimpleDateFormat timeFormat = new SimpleDateFormat("dd-MM-yyyy");
+        String current_time = timeFormat.format(now);
+        String ngayden = timeFormat.format(tblPhieuDatDS
+                .getSelectionModel().getSelectedItem().getNgayDen());
+
+        if (lblMaPhieuDat.getText().equals("------")) {
+            setAlertInfo("Thông báo", "Nhận phòng không thành công",
+                    "Vui lòng chọn 1 phiếu đặt phòng");
+        } else {
+            if (!ngayden.equals(current_time)) {
+                lblMaPhieuDat.setText("------");
+                setAlertInfo("Thông báo", "Chưa đến ngày nhận phòng hoặc phiếu đã hết hạn",
+                        "Vui lòng chọn phiếu khác");
+            } else {
+                if (!getTingTrang().equals(WAITTING)) {
+                    setAlertInfo("Thông báo", "Nhận phòng không thành công",
+                            "Chỉ nhận những phiếu WAITTING");
+                } else {
+                    jdbcConfig.connection.setAutoCommit(false);
+                    String sql = "UPDATE phieudatphong SET "
+                            + "tinhtrang = ?,\n"
+                            + "songuoi = ?, \n"
+                            + "ngayden = ?, \n"
+                            + "ngaydi = ?,\n"
+                            + "makhachhang = ?\n"
+                            + "WHERE maphieudat = ?  ";
+                    PreparedStatement pUpdatePhong = jdbcConfig.connection.prepareStatement(sql);
+                    pUpdatePhong.setString(1, BUSY);
+                    pUpdatePhong.setString(2, txtSoNguoi.getText());
+                    pUpdatePhong.setString(3, getNgayDen());
+                    pUpdatePhong.setString(4, getNgayDi());
+                    pUpdatePhong.setString(5, lblMaKhachHang.getText());
+                    pUpdatePhong.setString(6, getMaPhieuDat());
+
+                    int i = jdbcConfig.ExecuteUpdateQuery(pUpdatePhong);
+                    if (i == 1) {
+                        String idPhieuThue = util.RandomId.createNewID("PT");
+                        sql = "INSERT INTO phieuthuephong("
+                                + "maphieuthue, maphieudat, username) "
+                                + "VALUES (?,?,?)";
+                        PreparedStatement pInserPhieuThue = jdbcConfig.connection.prepareStatement(sql);
+                        pInserPhieuThue.setString(1, idPhieuThue);
+                        pInserPhieuThue.setString(2, getMaPhieuDat());
+                        pInserPhieuThue.setString(3, user);
+
+                        int u = jdbcConfig.ExecuteUpdateQuery(pInserPhieuThue);
+                        if (u == 1) {
+                            setAlertInfo("Thông báo", "Nhận phòng thành công",
+                                    "Mã phiếu thuê : " + idPhieuThue);
+                            setTablePhieuDatPhong();
+                            pInserPhieuThue.close();
+                            pUpdatePhong.close();
+                        }
+                        jdbcConfig.connection.commit();
+                    }
+                }
+            }
         }
     }
 

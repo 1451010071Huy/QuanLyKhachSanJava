@@ -18,19 +18,18 @@ public class AlertCustom {
     /**
      * @see EX: Optional<ButtonType> result = setAlertConf("Thông báo", "Bạn có
      * muốn xóa không"); if (result.get() == ButtonType.OK) { Something; }
-     *
-     * @param thongbao
      * @param header
+     * @param content
      * @return Optional<ButtonType>
      *
      */
-    public static Optional<ButtonType> setAlertConf(String thongbao,
+    public static Optional<ButtonType> setAlertConf(String content,
             String header) {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle(thongbao);
-        alert.setHeaderText(header);
-        alert.show();
 
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION,
+                content, ButtonType.YES, ButtonType.NO);
+        alert.setHeaderText(header);
+        alert.setTitle("Thông báo");
         return alert.showAndWait();
     }
 

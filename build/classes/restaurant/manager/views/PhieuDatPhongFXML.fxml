@@ -177,8 +177,8 @@
                               </TitledPane>
                               <HBox alignment="CENTER" layoutX="30.0" layoutY="527.0" prefHeight="25.0" prefWidth="687.0" spacing="40.0">
                                  <children>
-                                    <Button fx:id="btnDatPhong" mnemonicParsing="false" onAction="#datPhong" text="Đặt phòng" />
-                                    <Button fx:id="btnSua" mnemonicParsing="false" onAction="#huyDatPhong" text="Sửa" />
+                                    <Button mnemonicParsing="false" onAction="#datPhong" text="Đặt phòng" />
+                                    <Button mnemonicParsing="false" onAction="#luuThayDoi" text="Lưu thay đổi" />
                                  </children>
                               </HBox>
                            </children>
@@ -198,19 +198,22 @@
                                     <TableColumn fx:id="tblColNgayDiDS" prefWidth="110.0" text="Ngày đi" />
                                     <TableColumn fx:id="tblColTinhTrangDS" prefWidth="157.0" text="Tình trạng" />
                                 </columns>
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
                               </TableView>
                               <Group layoutX="195.0" layoutY="14.0">
                                  <children>
-                                    <CheckBox fx:id="chbWaitting" mnemonicParsing="false" selected="true" text="Waitting" />
-                                    <CheckBox fx:id="chbCancel" layoutX="152.0" mnemonicParsing="false" text="Cancel" />
-                                    <CheckBox fx:id="chbFinnis" layoutX="232.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="52.0" text="Finish" />
-                                    <CheckBox fx:id="chbBusy" layoutX="84.0" mnemonicParsing="false" text="Busy" />
+                                    <CheckBox fx:id="chbWaitting" mnemonicParsing="false" selected="true" text="waitting" />
+                                    <CheckBox fx:id="chbCancel" layoutX="152.0" mnemonicParsing="false" text="cancel" />
+                                    <CheckBox fx:id="chbFinish" layoutX="232.0" mnemonicParsing="false" text="finish" />
+                                    <CheckBox fx:id="chbBusy" layoutX="84.0" mnemonicParsing="false" text="busy" />
                                  </children>
                               </Group>
                               <Label layoutX="21.0" layoutY="15.0" text="Lọc danh sách" />
                               <HBox alignment="CENTER" layoutX="-6.0" layoutY="522.0" prefHeight="25.0" prefWidth="687.0" spacing="40.0">
                                  <children>
-                                    <Button fx:id="btnNhanPhong" mnemonicParsing="false" text="Nhận phòng" />
+                                    <Button fx:id="btnNhanPhong" mnemonicParsing="false" onAction="#nhanPhong" text="Nhận phòng" />
                                     <Button mnemonicParsing="false" onAction="#huyDatPhong" text="Hủy đặt phòng" />
                                  </children>
                               </HBox>
