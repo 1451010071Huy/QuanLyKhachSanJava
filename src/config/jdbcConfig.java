@@ -24,7 +24,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
  */
 public class jdbcConfig {
 
-    public static final String URL = "jdbc:sqlserver://localhost;databaseName=QLKS1;integratedSecurity=true;";
+    public static final String URL = "jdbc:sqlserver://localhost;databaseName=QLKS;integratedSecurity=true;";
     public static Connection connection;
 
     /**
@@ -124,9 +124,5 @@ public class jdbcConfig {
             map.getKey().setCellValueFactory(new PropertyValueFactory<>(map.getValue()));
         });
     }
-
-
-
-
 
 }

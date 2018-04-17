@@ -20,11 +20,8 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         Parent root = FXMLLoader.load(getClass()
-<<<<<<< HEAD
-                .getResource("views/PhieuThuePhongFXML.fxml"));
-=======
-                .getResource("views/HeThongFXML.fxml"));
->>>>>>> e680eb076d2c715fc29282adf3dc74c62340fa2c
+                .getResource("views/NhanVienFXML.fxml"));
+
         Scene scene = new Scene(root);
 
         String css = Main.class.getResource(
