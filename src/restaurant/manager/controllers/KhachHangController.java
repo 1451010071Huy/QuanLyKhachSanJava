@@ -232,32 +232,6 @@ public class KhachHangController implements Initializable {
         }
 
     }
-   
-//    private ObservableList<KhachHang> searchKhachHang() {
-//        try {
-//            String sql = "SELECT * FROM khachhang\n"
-//                    + "WHERE makhachhang = ? OR tenkhachhang = ? \n"
-//                    + "OR cmnd_passport= ? \n"
-//                    + "OR sodienthoai = ? OR email=?";
-//
-//            PreparedStatement p = jdbcConfig.connection.prepareStatement(sql);
-//            p.setString(1, txtTimKiem.getText());
-//            p.setString(2, txtTimKiem.getText());
-//            p.setString(3, txtTimKiem.getText());
-//            p.setString(4, txtTimKiem.getText());
-//            p.setString(5, txtTimKiem.getText());
-//
-//            ResultSet r = jdbcConfig.ExecuteQuery(p);
-//            while (r.next()) {
-//                listKhachHang.add(new KhachHang(r.getString(1),
-//                        r.getString(2), r.getString(3),
-//                        r.getString(4), r.getString(5), r.getString(6), r.getString(7), r.getString(8)));
-//            }
-//        } catch (SQLException ex) {
-//            Logger.getLogger(KhachHangController.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//        return listKhachHang;
-//    }
 
     private void ClearKhachHang() throws SQLException {
         txtMaKhachHang.setText("");
@@ -308,15 +282,7 @@ public class KhachHangController implements Initializable {
                     Logger.getLogger(NhanVienController.class.getName()).log(Level.SEVERE, null, ex);
                 }
             });
-//            btnTimKiem.setOnAction((e) -> {
-//                try {
-//                    tblKhachHang.getItems().clear();
-//                    setTableKhachHang(searchKhachHang());
-//                } catch (SQLException ex) {
-//                    Logger.getLogger(KhachHangController.class.getName()).log(Level.SEVERE, null, ex);
-//                }
-//
-//            });
+
                       
         } catch (SQLException ex) {
             Logger.getLogger(KhachHangController.class.getName()).log(Level.SEVERE, null, ex);
