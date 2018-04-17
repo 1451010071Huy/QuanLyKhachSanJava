@@ -15,17 +15,18 @@ public class DichVu {
     private String tenDichVu;
     private int gia;
     private String donViTinh;
-    
-    public DichVu(){
-    
+
+    public DichVu() {
+
     }
-    
-    public DichVu(String maDichVu, String tenDichVu , int gia , String donViTinh){
+
+    public DichVu(String maDichVu, String tenDichVu, int gia, String donViTinh) {
         this.maDichVu = maDichVu;
         this.tenDichVu = tenDichVu;
         this.gia = gia;
         this.donViTinh = donViTinh;
     }
+
     /**
      * @return the maDichVu
      */
@@ -81,5 +82,5 @@ public class DichVu {
     public void setDonViTinh(String donViTinh) {
         this.donViTinh = donViTinh;
     }
-   
+
 }

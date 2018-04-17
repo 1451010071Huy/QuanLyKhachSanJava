@@ -24,7 +24,7 @@ public class PhieuDatPhong {
     private String tenKH;
 
     public PhieuDatPhong() {
-        
+
     }
 
     public PhieuDatPhong(String maPD, String maKH, Timestamp ngayDen,
@@ -38,6 +38,16 @@ public class PhieuDatPhong {
         this.soNguoi = soNguoi;
         this.soTienCoc = soTienCoc;
         this.tenKH = tenKH;
+    }
+
+    public PhieuDatPhong(String maPD, String maKH, int soNguoi, Timestamp ngayDen,
+            Timestamp ngayDi, String tinhTrang) {
+        this.maPhieuDat = maPD;
+        this.maKhachHang = maKH;
+        this.ngayDen = ngayDen;
+        this.ngayDi = ngayDi;
+        this.tinhTrang = tinhTrang;
+        this.soNguoi = soNguoi;
     }
 
     /**

@@ -36,8 +36,8 @@
                   <Label text="Khách hàng" GridPane.rowIndex="1" />
                   <Label text="Số người" GridPane.rowIndex="2" />
                   <ComboBox fx:id="cbbKhachHang" onAction="#setKhachHang" prefHeight="25.0" prefWidth="240.0" promptText="--- Chọn khách hàng ---" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <TextField fx:id="txtSoNguoi" prefHeight="25.0" prefWidth="252.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                  <TextField fx:id="txtDatCoc" prefHeight="25.0" prefWidth="240.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                  <TextField fx:id="txtSoNguoi" prefHeight="25.0" prefWidth="252.0" promptText="0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <TextField fx:id="txtDatCoc" prefHeight="25.0" prefWidth="240.0" promptText="0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                   <Label text="Ngày đến" GridPane.rowIndex="4" />
                   <Label text="Ngày đi" GridPane.rowIndex="5" />
                   <DatePicker fx:id="dpkNgayDen" prefHeight="25.0" prefWidth="233.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
@@ -82,9 +82,9 @@
                      <content>
                         <AnchorPane prefHeight="551.0" prefWidth="776.0">
                            <children>
-                              <TitledPane layoutY="14.0" prefHeight="178.0" prefWidth="776.0" text="THÔNG TIN KHÁCH HÀNG">
+                              <TitledPane layoutY="14.0" prefHeight="178.0" prefWidth="681.0" text="THÔNG TIN KHÁCH HÀNG">
                                 <content>
-                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="152.0" prefWidth="651.0">
+                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="152.0" prefWidth="303.0">
                                        <children>
                                           <GridPane layoutX="14.0" layoutY="2.0" prefHeight="153.0" prefWidth="446.0">
                                             <columnConstraints>
@@ -165,7 +165,7 @@
                                               <TableColumn fx:id="tblColLoaiPhong" minWidth="0.0" prefWidth="183.0" text="Loại phòng" />
                                                 <TableColumn fx:id="tblColSoNguoi" prefWidth="92.0" text="Số người" />
                                                 <TableColumn fx:id="tblColGia" prefWidth="176.0" text="Giá (VND)" />
-                                                <TableColumn fx:id="tblColXoaPhong" prefWidth="37.0" text="Xóa" />
+                                                <TableColumn fx:id="tblColXoaPhong" prefWidth="51.0" text="Xóa" />
                                             </columns>
                                           </TableView>
                                        </children>
@@ -189,7 +189,7 @@
                   <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
-                              <TableView fx:id="tblPhieuDatDS" layoutY="44.0" onMouseClicked="#clickItemPhieuDat" prefHeight="471.0" prefWidth="694.0">
+                              <TableView fx:id="tblPhieuDatDS" layoutY="44.0" onMouseClicked="#clickItemPhieuDat" prefHeight="471.0" prefWidth="673.0">
                                 <columns>
                                   <TableColumn fx:id="tblColMaPhieuDatDS" prefWidth="106.0" text="Mã phiếu đặt" />
                                   <TableColumn fx:id="tblColKhachHangDS" prefWidth="92.0" text="Khách hàng" />
@@ -198,9 +198,7 @@
                                     <TableColumn fx:id="tblColNgayDiDS" prefWidth="110.0" text="Ngày đi" />
                                     <TableColumn fx:id="tblColTinhTrangDS" prefWidth="157.0" text="Tình trạng" />
                                 </columns>
-                                 <cursor>
-                                    <Cursor fx:constant="HAND" />
-                                 </cursor>
+  
                               </TableView>
                               <Group layoutX="195.0" layoutY="14.0">
                                  <children>
