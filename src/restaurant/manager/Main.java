@@ -20,7 +20,7 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         Parent root = FXMLLoader.load(getClass()
-                .getResource("views/HeThongFXML.fxml"));
+                .getResource("views/KhachHangFXML.fxml"));
         Scene scene = new Scene(root);
         
         String css = Main.class.getResource(
