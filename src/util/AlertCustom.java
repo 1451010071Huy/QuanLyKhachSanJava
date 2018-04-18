@@ -17,7 +17,7 @@ public class AlertCustom {
 
     /**
      * @see EX: Optional<ButtonType> result = setAlertConf("Thông báo", "Bạn có
-     * muốn xóa không"); if (result.get() == ButtonType.OK) { Something; }
+     * muốn xóa không"); if (result.get() == ButtonType.YES) { Something; }
      * @param header
      * @param content
      * @return Optional<ButtonType>

@@ -34,12 +34,12 @@
             <Label fx:id="lblStatus" layoutX="50.0" layoutY="192.0" textFill="#fa0505" />
             <ImageView fitHeight="27.0" fitWidth="24.0" layoutX="14.0" layoutY="91.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../image/icons8-user-50.png" />
+                  <Image url="@../../../image/icons8-user-50.png" />
                </image>
             </ImageView>
             <ImageView fitHeight="27.0" fitWidth="24.0" layoutX="14.0" layoutY="139.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../image/icons8-lock-50.png" />
+                  <Image url="@../../../image/icons8-lock-50.png" />
                </image>
             </ImageView>
          </children>
