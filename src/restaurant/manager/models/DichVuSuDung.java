@@ -12,7 +12,7 @@ import javafx.scene.control.Button;
  * @author Luxury
  */
 public class DichVuSuDung {
-    
+
     private String maDichVu;
     private String tenDichVu;
     private String ngaySuDung;
@@ -21,11 +21,12 @@ public class DichVuSuDung {
     private double gia;
     private double thanhTien;
     private Button btnXoaDV;
+    private String maPhong;
 
     public DichVuSuDung() {
     }
 
-    public DichVuSuDung(String tenDV, String ngaySuDung, int soLuong, 
+    public DichVuSuDung(String tenDV, String ngaySuDung, int soLuong,
             String donViTinh, double gia, double thanhTien, String maDV) {
         this.tenDichVu = tenDV;
         this.ngaySuDung = ngaySuDung;
@@ -37,6 +38,17 @@ public class DichVuSuDung {
         this.maDichVu = maDV;
     }
 
+    public DichVuSuDung(String tenDV, String maPhong, String ngaySuDung, int soLuong,
+            String donViTinh, double gia, double thanhTien) {
+        this.tenDichVu = tenDV;
+        this.maPhong = maPhong;
+        this.ngaySuDung = ngaySuDung;
+        this.soLuong = soLuong;
+        this.gia = gia;
+        this.donViTinh = donViTinh;
+        this.thanhTien = thanhTien;
+    }
+   
     /**
      * @return the tenDichVu
      */
@@ -148,5 +160,19 @@ public class DichVuSuDung {
     public void setMaDichVu(String maDichVu) {
         this.maDichVu = maDichVu;
     }
-    
+
+    /**
+     * @return the maPhong
+     */
+    public String getMaPhong() {
+        return maPhong;
+    }
+
+    /**
+     * @param maPhong the maPhong to set
+     */
+    public void setMaPhong(String maPhong) {
+        this.maPhong = maPhong;
+    }
+
 }

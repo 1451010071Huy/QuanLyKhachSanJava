@@ -41,7 +41,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TablePosition;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
@@ -541,14 +540,9 @@ public class PhieuDatPhongController implements Initializable {
     }
 
     @FXML
-    public void clickItemPhieuDat(MouseEvent event) throws SQLException {
-        tblPhieuDatDS.getSelectionModel().selectedIndexProperty().addListener((e) -> selectItem());
-
-    }
-
-    public void selectItem() {
+    public void selectItem(MouseEvent e) {
         try {
-            if (!tblPhieuDatDS.getItems().isEmpty()) {
+            if (tblPhieuDatDS.getSelectionModel().getSelectedItem() != null) {
                 lblMaPhieuDat.setText(tblPhieuDatDS.getSelectionModel()
                         .getSelectedItem().getMaPhieuDat());
                 cbbKhachHang.setValue(tblPhieuDatDS.getSelectionModel()

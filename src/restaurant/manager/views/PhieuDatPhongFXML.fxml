@@ -189,7 +189,7 @@
                   <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
-                              <TableView fx:id="tblPhieuDatDS" layoutY="44.0" onMouseClicked="#clickItemPhieuDat" prefHeight="471.0" prefWidth="673.0">
+                              <TableView fx:id="tblPhieuDatDS" layoutY="44.0" onMouseClicked="#selectItem" prefHeight="471.0" prefWidth="673.0">
                                 <columns>
                                   <TableColumn fx:id="tblColMaPhieuDatDS" prefWidth="106.0" text="Mã phiếu đặt" />
                                   <TableColumn fx:id="tblColKhachHangDS" prefWidth="92.0" text="Khách hàng" />
