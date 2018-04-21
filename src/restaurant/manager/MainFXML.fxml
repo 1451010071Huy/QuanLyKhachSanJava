@@ -112,22 +112,6 @@
                   <Insets left="10.0" />
                </padding>
             </HBox>
-            <HBox fx:id="hbxNhanVien" alignment="CENTER_LEFT" onMouseClicked="#hboxNhanVienClick" prefHeight="33.0" prefWidth="155.0" spacing="5.0" styleClass="vbox-hover">
-               <children>
-                  <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../image/icon/007-employee.png" />
-                     </image>
-                  </ImageView>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Nhân viên" />
-               </children>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-               <padding>
-                  <Insets left="10.0" />
-               </padding>
-            </HBox>
             <HBox fx:id="hbxKhachHang" alignment="CENTER_LEFT" onMouseClicked="#hboxKhachHangClick" prefHeight="33.0" prefWidth="155.0" spacing="5.0" styleClass="vbox-hover">
                <children>
                   <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
@@ -136,6 +120,22 @@
                      </image>
                   </ImageView>
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Khách hàng" />
+               </children>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <padding>
+                  <Insets left="10.0" />
+               </padding>
+            </HBox>
+            <HBox fx:id="hbxNhanVien" alignment="CENTER_LEFT" onMouseClicked="#hboxNhanVienClick" prefHeight="33.0" prefWidth="155.0" spacing="5.0" styleClass="vbox-hover">
+               <children>
+                  <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../image/icon/007-employee.png" />
+                     </image>
+                  </ImageView>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Nhân viên" />
                </children>
                <cursor>
                   <Cursor fx:constant="HAND" />
@@ -194,7 +194,7 @@
             </HBox>
             <VBox alignment="BOTTOM_LEFT" prefHeight="141.0" prefWidth="155.0" spacing="5.0">
                <children>
-                  <HBox fx:id="btxQuanLyTaiKhoan" alignment="CENTER_LEFT" onMouseClicked="#hboxQLTaiKhoanClick" prefHeight="33.0" prefWidth="155.0" spacing="5.0" styleClass="vbox-hover">
+                  <HBox fx:id="hbxQuanLyTaiKhoan" alignment="CENTER_LEFT" onMouseClicked="#hboxQLTaiKhoanClick" prefHeight="33.0" prefWidth="155.0" spacing="5.0" styleClass="vbox-hover">
                      <children>
                         <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                            <image>

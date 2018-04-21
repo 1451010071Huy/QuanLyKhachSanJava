@@ -11,6 +11,7 @@ import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,6 +22,7 @@ import javafx.scene.Cursor;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -29,6 +31,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 /**
  *
@@ -60,9 +63,9 @@ public class MainController implements Initializable {
     @FXML
     private HBox hbxBaoCao;
     @FXML
-    private HBox btxQuanLyTaiKhoan;
-    @FXML
     private HBox hbxDatPhong;
+    @FXML
+    private HBox hbxQuanLyTaiKhoan;
 
     public void setUsername(String username) {
         this.lblUser.setText(username);
@@ -91,6 +94,7 @@ public class MainController implements Initializable {
                     x = 20;
                     i = 1;
                 }
+                
                 btnPhong.getStyleClass().removeAll("addBobOk, focus");
                 //In this way you're sure you have no styles applied to your object button
                 btnPhong.getStyleClass().add("addBobOk");
@@ -128,10 +132,14 @@ public class MainController implements Initializable {
                 System.out.println("admin");
                 break;
             case "Quản lý":
-                System.err.println("quản lý");
+                hbxQuanLyTaiKhoan.setDisable(true);
                 break;
             case "Nhân viên":
-                System.err.println("nhân viên");
+                hbxBaoCao.setDisable(true);
+                hbxNhanVien.setDisable(true);
+                hbxQuanLyTaiKhoan.setDisable(true);
+                hbxPhong.setDisable(true);
+                hbxDichVu.setDisable(true);
                 break;
             default:
                 break;
@@ -155,14 +163,14 @@ public class MainController implements Initializable {
     }
 
     @FXML
-    private void hboxThuePhongClick(MouseEvent event) {
+    public void hboxThuePhongClick(MouseEvent event) {
         String resource = "views/PhieuThuePhongFXML.fxml";
         String titleScene = "Thuê phòng";
         openForm(resource, titleScene);
     }
 
     @FXML
-    private void hboxDatPhongClick(MouseEvent event) {
+    public void hboxDatPhongClick(MouseEvent event) {
         String resource = "views/PhieuDatPhongFXML.fxml";
         String titleScene = "Quản lý đặt phòng";
         openForm(resource, titleScene);
@@ -170,61 +178,84 @@ public class MainController implements Initializable {
     }
 
     @FXML
-    private void hboxHoaDonClick(MouseEvent event) {
+    public void hboxHoaDonClick(MouseEvent event) {
         String resource = "views/HoaDonFXML.fxml";
         String titleScene = "Quản lý hóa đơn";
         openForm(resource, titleScene);
     }
 
     @FXML
-    private void hboxNhanVienClick(MouseEvent event) {
+    public void hboxNhanVienClick(MouseEvent event) {
         String resource = "views/NhanVienFXML.fxml";
         String titleScene = "Quản lý nhân viên";
         openForm(resource, titleScene);
     }
 
     @FXML
-    private void hboxKhachHangClick(MouseEvent event) {
+    public void hboxKhachHangClick(MouseEvent event) {
         String resource = "views/KhachHangFXML.fxml";
         String titleScene = "Quản lý khách hàng";
         openForm(resource, titleScene);
     }
 
     @FXML
-    private void hboxDichVuClick(MouseEvent event) {
+    public void hboxDichVuClick(MouseEvent event) {
         String resource = "views/DichVuFXML.fxml";
         String titleScene = "Quản lý dịch vụ";
         openForm(resource, titleScene);
     }
 
     @FXML
-    private void hboxPhongClick(MouseEvent event) {
+    public void hboxPhongClick(MouseEvent event) {
         String resource = "views/PhongFXML.fxml";
         String titleScene = "Quản lý phòng";
         openForm(resource, titleScene);
     }
 
     @FXML
-    private void hboxBaoCaoClick(MouseEvent event) {
+    public void hboxBaoCaoClick(MouseEvent event) {
         String resource = "views/BarChartFXML.fxml";
         String titleScene = "Báo cáo thống kê";
         openForm(resource, titleScene);
     }
 
     @FXML
-    private void hboxQLTaiKhoanClick(MouseEvent event) {
+    public void hboxQLTaiKhoanClick(MouseEvent event) {
         String resource = "views/HeThongFXML.fxml";
         String titleScene = "Quản lý tài khoản";
         openForm(resource, titleScene);
     }
 
     @FXML
-    private void hboxDangXuat(MouseEvent event) {
-        System.err.println("Dang Xuat");
+    public void hboxDangXuat(MouseEvent event) {
+        try {
+            Optional<ButtonType> result = util.AlertCustom
+                    .setAlertConf("Bấm yes để đăng xuất",
+                            "Bạn có muốn đăng xuất không");
+            if (result.get() == ButtonType.YES) {
+                FXMLLoader loader = new FXMLLoader(getClass()
+                        .getResource("views/LoginFXML.fxml"));
+                Parent root;
+                root = (Parent) loader.load();
+                Scene scene = new Scene(root);
+                Stage stage = new Stage();
+                stage.initStyle(StageStyle.UNDECORATED);
+                stage.setTitle("Đăng nhập");
+                stage.setScene(scene);
+                stage.show();
+
+                //close form main
+                stage = (Stage) lblUser.getScene().getWindow();
+                stage.close();
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @Override
-    public void initialize(URL url, ResourceBundle rb) {
+    public void initialize(URL url, ResourceBundle rb
+    ) {
         jdbcConfig.Connect();
         getDSPhong();
 
