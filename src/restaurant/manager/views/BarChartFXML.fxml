@@ -8,15 +8,39 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" fx:id="anchorPane" prefHeight="344.0" prefWidth="665.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="restaurant.manager.controllers.BarChartFXMLController">
+<AnchorPane id="AnchorPane" fx:id="anchorPane" prefHeight="458.0" prefWidth="762.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="restaurant.manager.controllers.BarChartFXMLController">
    <children>
-      <BarChart fx:id="barChart" layoutX="-1.0" prefHeight="457.0" prefWidth="763.0">
-        <xAxis>
-          <CategoryAxis side="BOTTOM" />
-        </xAxis>
-        <yAxis>
-          <NumberAxis side="LEFT" />
-        </yAxis>
-      </BarChart>
+      <TabPane prefHeight="457.0" prefWidth="762.0" tabClosingPolicy="UNAVAILABLE">
+        <tabs>
+          <Tab text="Thống Kê Theo Hóa Đơn">
+               <content>
+                  <BarChart fx:id="barChart1">
+                    <xAxis>
+                      <CategoryAxis side="BOTTOM" />
+                    </xAxis>
+                    <yAxis>
+                      <NumberAxis side="LEFT" />
+                    </yAxis>
+                  </BarChart>
+               </content>
+          </Tab>
+          <Tab text="Thống Kê Theo Ngày">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <BarChart fx:id="barChart2" layoutY="29.0" prefHeight="380.0" prefWidth="762.0">
+                          <xAxis>
+                            <CategoryAxis side="BOTTOM" />
+                          </xAxis>
+                          <yAxis>
+                            <NumberAxis side="LEFT" />
+                          </yAxis>
+                        </BarChart>
+                     </children>
+                  </AnchorPane>
+            </content>
+          </Tab>
+        </tabs>
+      </TabPane>
    </children>
 </AnchorPane>

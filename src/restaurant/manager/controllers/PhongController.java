@@ -1,9 +1,15 @@
+package restaurant.manager.controllers;
+
+
+
+
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package restaurant.manager.controllers;
+
 
 import config.jdbcConfig;
 import java.net.URL;
@@ -15,9 +21,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
@@ -100,7 +106,7 @@ public class PhongController implements Initializable {
 
     @FXML
     private TextField txtPhong;
-
+    private Alert alert = new Alert(Alert.AlertType.INFORMATION);
     private ObservableList<LoaiPhong> listLoaiPhong;
     private ObservableList<Phong> listPhong;
 
@@ -123,24 +129,29 @@ public class PhongController implements Initializable {
                 + "VALUES (?, ?, ?)");
 
         PreparedStatement p = jdbcConfig.connection.prepareStatement(sql);
-        p.setString(1, txtMaLoai.getText());
+        p.setString(1, getIDLoaiPhong());
         p.setString(2, txtGia.getText());
         p.setString(3, txtSoNguoi.getText());
         int rows = jdbcConfig.ExecuteUpdateQuery(p);
         if (rows != 0) {
             setTableLoaiPhong(getLoaiPhong());
+            thongBao();
+            alert.setContentText("Thêm Thành Công");
         }
     }
 
     private void insertPhong() throws SQLException {
+        String id = util.RandomId.createNewID("PH");
         String sql = String.format("INSERT INTO phong(maphong ,maloai) "
                 + "VALUES (?, ?)");
         PreparedStatement p = jdbcConfig.connection.prepareStatement(sql);
-        p.setString(1, txtPhong.getText());
+        p.setString(1, getIDPhong());
         p.setString(2, cbbLoaiPhong.getValue().toString());
         int rows = jdbcConfig.ExecuteUpdateQuery(p);
         if (rows != 0) {
             setTablePhong(getPhong());
+            thongBao();
+            alert.setContentText("Thêm Thành Công");
         }
     }
 
@@ -195,6 +206,7 @@ public class PhongController implements Initializable {
                     .getSelectedItem().getMaLoai()));
         }
     }
+
     @FXML
     private void SelectRowLoaiPhong(MouseEvent e) throws SQLException {
         if (e.getClickCount() == 1) {
@@ -206,7 +218,7 @@ public class PhongController implements Initializable {
                     .getSelectedItem().getSoNguoi()));
         }
     }
-    
+
     private void deleteLoaiPhong() throws SQLException {
         String sql = String.format("DELETE FROM loaiphong\n"
                 + "WHERE maloai = ?");
@@ -215,6 +227,8 @@ public class PhongController implements Initializable {
         int row = p.executeUpdate();
         if (row == 1) {
             setTableLoaiPhong(getLoaiPhong());
+            thongBao();
+            alert.setContentText("Xóa Thành Công");
         }
     }
 
@@ -226,6 +240,8 @@ public class PhongController implements Initializable {
         int row = p.executeUpdate();
         if (row == 1) {
             setTablePhong(getPhong());
+            thongBao();
+            alert.setContentText("Xóa Thành Công");
         }
     }
 
@@ -241,6 +257,8 @@ public class PhongController implements Initializable {
         int row = p.executeUpdate();
         if (row == 1) {
             setTableLoaiPhong(getLoaiPhong());
+            thongBao();
+            alert.setContentText("Sửa Thành Công");
         }
     }
 
@@ -249,20 +267,43 @@ public class PhongController implements Initializable {
                 + "maloai = ?\n"
                 + "WHERE maphong = ? ");
         PreparedStatement p = jdbcConfig.connection.prepareStatement(sql);
-     
+
         p.setString(1, cbbLoaiPhong.getValue().toString());
         p.setString(2, txtPhong.getText());
         int row = p.executeUpdate();
         if (row == 1) {
             setTablePhong(getPhong());
+            thongBao();
+            alert.setContentText("Sửa Thành Công");
         }
+    }
+    private void thongBao(){
+        alert.setTitle("Thông Báo");
+        alert.setHeaderText(null);
+        alert.show();
+    }
+    private String getIDPhong() {
+        return util.RandomId.createNewID("PH");
+    }
+
+    private String getIDLoaiPhong() {
+        return util.RandomId.createNewID("LP");
+    }
+
+    private void getDefaultValue() {
+        txtPhong.setText(getIDPhong());
+        txtPhong.setEditable(false);
+        txtMaLoai.setText(getIDLoaiPhong());
+        txtMaLoai.setEditable(false);
     }
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        jdbcConfig.Connect();
-        try {
 
+        jdbcConfig.Connect();
+        getDefaultValue();
+        try {
+           
             ObservableList<LPhong> listlp = getLPhong();
             cbbLoaiPhong.getItems().addAll(listlp);
             cbbLoaiPhong.getSelectionModel().select(0);
@@ -314,7 +355,7 @@ public class PhongController implements Initializable {
                     Logger.getLogger(PhongController.class.getName()).log(Level.SEVERE, null, ex);
                 }
             });
-
+            
         } catch (SQLException ex) {
             Logger.getLogger(PhongController.class.getName()).log(Level.SEVERE, null, ex);
         }
