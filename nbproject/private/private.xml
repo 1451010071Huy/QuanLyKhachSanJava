@@ -3,16 +3,13 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/F:/HUY/Java/RestaurantManager/src/config/jdbcConfig.java</file>
             <file>file:/F:/HUY/Java/RestaurantManager/src/restaurant/manager/Main.java</file>
-            <file>file:/F:/HUY/Java/RestaurantManager/nbproject/jfx-impl.xml</file>
-            <file>file:/F:/HUY/Java/RestaurantManager/src/restaurant/manager/models/DichVu.java</file>
-            <file>file:/F:/HUY/Java/RestaurantManager/src/restaurant/manager/controllers/PhieuThuePhongController.java</file>
-            <file>file:/F:/HUY/Java/RestaurantManager/src/restaurant/manager/MainController.java</file>
+            <file>file:/F:/HUY/Java/RestaurantManager/src/util/AlertCustom.java</file>
+            <file>file:/F:/HUY/Java/RestaurantManager/src/restaurant/manager/css/loginfxml.css</file>
             <file>file:/F:/HUY/Java/RestaurantManager/src/restaurant/manager/controllers/LoginController.java</file>
-            <file>file:/F:/HUY/Java/RestaurantManager/src/restaurant/manager/controllers/HeThongController.java</file>
+            <file>file:/F:/HUY/Java/RestaurantManager/src/restaurant/manager/views/LoginFXML.fxml</file>
             <file>file:/F:/HUY/Java/RestaurantManager/src/restaurant/manager/controllers/PhieuDatPhongController.java</file>
-            <file>file:/F:/HUY/Java/RestaurantManager/src/restaurant/manager/models/PhieuDatPhong.java</file>
+            <file>file:/F:/HUY/Java/RestaurantManager/src/restaurant/manager/controllers/HoaDonController.java</file>
         </group>
     </open-files>
 </project-private>

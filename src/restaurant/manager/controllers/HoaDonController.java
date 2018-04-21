@@ -8,6 +8,7 @@ package restaurant.manager.controllers;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import config.jdbcConfig;
+import java.awt.Color;
 import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -32,10 +33,20 @@ import restaurant.manager.models.DichVuSuDung;
 import restaurant.manager.models.HoaDon;
 import restaurant.manager.models.PhongSuDung;
 
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.print.PageFormat;
+import java.awt.print.Paper;
+import java.awt.print.Printable;
+import java.awt.print.PrinterException;
+import java.awt.print.PrinterJob;
+import static java.awt.print.Printable.NO_SUCH_PAGE;
+import static java.awt.print.Printable.PAGE_EXISTS;
+import static util.FormatNumber.formatNumber;
+
 public class HoaDonController implements Initializable {
 
-    @FXML
-    private JFXTextField txtTiemKiem;
     @FXML
     private TableView<HoaDon> tblPhieuThue;
     @FXML
@@ -103,7 +114,12 @@ public class HoaDonController implements Initializable {
     private TableColumn<?, ?> tblColMaPhongSD;
     @FXML
     private TableColumn<?, ?> tblColGiaSD;
-
+    @FXML
+    private Label lblTongTien;
+    @FXML
+    private Label lblTienThanhToan;
+    @FXML
+    private JFXTextField txtTimKiem;
     private ObservableList<HoaDon> listMaPhieuThue = null;
     private ObservableList<DichVuSuDung> listDichVuSuDung = null;
     private ObservableList<PhongSuDung> listPhongSudung = null;
@@ -112,10 +128,7 @@ public class HoaDonController implements Initializable {
     private int tongTienDichVu = 0;
     private int tongTienPhong = 0;
     private int tienThanhToan = 0;
-    @FXML
-    private Label lblTongTien;
-    @FXML
-    private Label lblTienThanhToan;
+    private int tienCoc = 0;
 
     private ObservableList<HoaDon> getMaPhieuThue() {
         try {
@@ -252,7 +265,7 @@ public class HoaDonController implements Initializable {
             p.setString(1, id);
             ResultSet r = jdbcConfig.ExecuteQuery(p);
             while (r.next()) {
-                lblTienDatCoc.setText(r.getString(1));
+                tienCoc = r.getInt(1);
             }
         } catch (SQLException ex) {
             Logger.getLogger(HoaDonController.class.getName()).log(Level.SEVERE, null, ex);
@@ -272,7 +285,7 @@ public class HoaDonController implements Initializable {
                 PreparedStatement p = jdbcConfig.connection.prepareStatement(sql);
                 p.setString(1, lblMaHoaDon.getText());
                 p.setString(2, txtNgayThanhToan.getText());
-                p.setString(3, lblTienThanhToan.getText());
+                p.setInt(3, tienThanhToan);
                 p.setString(4, idMaPhieuThue);
                 p.setString(5, lblMaKH.getText());
                 p.setString(6, username);
@@ -322,15 +335,20 @@ public class HoaDonController implements Initializable {
                 getTablePhongSDById(idMaPhieuThue);
                 getKHByIdPhieuThue(idMaPhieuThue);
                 getTienCoc(idMaPhieuThue);
-                lblTienPhong.setText(String.valueOf(tongTienPhong));
-                lblTienDichVu.setText(String.valueOf(tongTienDichVu));
-                tienThanhToan = tongTienPhong + tongTienDichVu
-                        - Integer.valueOf(lblTienDatCoc.getText());
-                lblTongTien.setText(String.valueOf(tongTienPhong + tongTienDichVu));
-                lblTienThanhToan.setText(String.valueOf(tienThanhToan));
+                lblTienDatCoc.setText(formatNumber(tienCoc));
+                lblTienPhong.setText(formatNumber(tongTienPhong));
+                lblTienDichVu.setText(formatNumber(tongTienDichVu));
+                tienThanhToan = (tongTienPhong + tongTienDichVu) - tienCoc;
+                lblTongTien.setText(formatNumber(tongTienPhong + tongTienDichVu));
+                lblTienThanhToan.setText(String.format("%s VNĐ", formatNumber(tienThanhToan)));
             }
         }
 
+    }
+
+    private String getTenNhanVien() {
+        return tblPhieuThue.getSelectionModel()
+                .getSelectedItem().getTenNV();
     }
 
     private void setDefaultValue() {
@@ -347,6 +365,171 @@ public class HoaDonController implements Initializable {
         lblTienThanhToan.setText("------");
     }
 
+    public void inHoaDon() {
+        PrinterJob pj = PrinterJob.getPrinterJob();
+        pj.setPrintable(new BillPrintable(), getPageFormat(pj));
+        try {
+            pj.setJobName("hoadon");// ten cua hoa don
+
+            pj.print(); // in hoa don
+
+        } catch (PrinterException ex) {
+        }
+    }
+
+    //đổi cm -> ppi (1 cm = 0,393700787 inch)
+    private double convertCmToPPI(double cm) {
+        return toPPI(cm * 0.393600787);
+    }
+
+    //Hàm này để chuyển đổi ppi sang inch 
+    private double toPPI(double inch) {
+        return inch * 72d;
+    }
+
+    public PageFormat getPageFormat(PrinterJob pj) {
+
+        PageFormat pf = pj.defaultPage();
+        Paper paper = pf.getPaper();
+
+        double width = convertCmToPPI(8);      //chiều rộng của hóa đơn, mặc định là 72ppi cho mỗi inch
+        double height = convertCmToPPI(18);
+        paper.setSize(width, height);
+        paper.setImageableArea(
+                10,
+                10,
+                width,
+                height - convertCmToPPI(1)
+        );   //xác định kích thước vùng hiển thị hóa đơn là khoảng 
+        //với x, y là lề trái và phải
+
+        pf.setOrientation(PageFormat.PORTRAIT);//Xác định in theo chiều ngang hay dọc của hóa đơn
+        pf.setPaper(paper);
+
+        return pf;
+    }
+
+    public String getSpace(String string) {
+        String space = "";
+        String[] ar = string.split("");
+        for (int i = 0; i < (22 - ar.length); i++) {
+            space += " ";
+        }
+        return space;
+    }
+
+    public class BillPrintable implements Printable {
+
+        @Override
+        public int print(Graphics graphics, PageFormat pageFormat, int pageIndex)
+                throws PrinterException {
+
+            int result = NO_SUCH_PAGE;
+            if (pageIndex == 0) {
+
+                Graphics2D g2d = (Graphics2D) graphics;
+
+                g2d.translate((int) pageFormat.getImageableX(), (int) pageFormat.getImageableY());
+
+                int y = 20;
+                int ySpacing10 = 10;
+                int ySpacing13 = 13;
+                int ySpacing15 = 15;
+                int ySpacing18 = 18;
+                g2d.setFont(new Font("Monospaced", Font.BOLD, 13));
+                g2d.drawString("KHÁCH SẠN OU ", 12, y);
+                y += ySpacing13;
+                g2d.drawString("471 Nguyễn Kiệm-P.9-Q.PN ", 12, y);
+                y += ySpacing13;
+                g2d.drawString("ĐT : 028 3930 0210", 12, y);
+                y += ySpacing10;
+                g2d.drawString("____________________________________", 12, y);
+                y += ySpacing15;
+                g2d.setColor(Color.decode("#036C05"));
+                g2d.setFont(new Font("Monospaced", Font.BOLD, 13));
+                g2d.drawString("HÓA ĐƠN TÍNH TIỀN", 55, y);
+                g2d.setFont(new Font("Monospaced", Font.PLAIN, 11));
+                g2d.setColor(Color.BLACK);
+                y += ySpacing10;
+                g2d.drawString(util.CurrentTime.getCurrentTime(), 59, y);
+                y += ySpacing18;
+                g2d.drawString("Nhân viên: " + getTenNhanVien(), 12, y);
+                y += ySpacing10;
+                g2d.drawString("Khách hàng: " + lblTenKH.getText(), 12, y);
+
+                String ngayDen = "";
+
+                for (PhongSuDung dv : listPhongSudung) {
+                    ngayDen = dv.getNgayDen();
+                }
+                y += ySpacing10;
+                g2d.drawString("Ngày đến: " + ngayDen, 12, y);
+                y += ySpacing13;
+                g2d.drawString("-------------------------------------", 10, y);
+                y += ySpacing10;
+                g2d.drawString("Tên dịch vụ(SL)       Giá(VNĐ)", 10, y);
+                y += ySpacing10;
+                g2d.drawString("-------------------------------------", 10, y);
+                y += ySpacing13;
+                for (DichVuSuDung dv : listDichVuSuDung) {
+                    g2d.drawString(String.format(" %s(%s)%s%s",
+                            dv.getTenDichVu(),
+                            dv.getSoLuong(),
+                            getSpace(dv.getTenDichVu() + "(1)"),
+                            formatNumber((int) dv.getGia())), 10, y);
+                    y += ySpacing10;
+                }
+                y += ySpacing10;
+                g2d.drawString("-------------------------------------", 10, y);
+                y += ySpacing10;
+                g2d.drawString("Tên phòng             Giá(VNĐ)", 10, y);
+                y += ySpacing10;
+                g2d.drawString("-------------------------------------", 10, y);
+                y += ySpacing10;
+                for (PhongSuDung p : listPhongSudung) {
+                    g2d.drawString(String.format(" %s%s%s", p.getMaPhong(),
+                            getSpace(p.getMaPhong()),
+                            formatNumber((int) p.getGiaPhong())), 10, y);
+                    y += ySpacing10;
+                }
+                y += ySpacing10;
+                g2d.drawString("=====================================", 10, y);
+                y += ySpacing15;
+                g2d.drawString("TIỀN CỌC     :         "
+                        + lblTienDatCoc.getText(), 10, y);
+                y += ySpacing13;
+                g2d.drawString("TIỀN PHÒNG   :         "
+                        + lblTienPhong.getText(), 10, y);
+                y += ySpacing13;
+                g2d.drawString("TIỀN DỊCH VỤ :         "
+                        + lblTienDichVu.getText(), 10, y);
+                y += ySpacing13;
+                g2d.drawString("GIẢM GIÁ     :         " + "0", 10, y);
+                y += ySpacing10;
+                g2d.drawString("_____________________________________", 10, y);
+                y += ySpacing18;
+                g2d.setFont(new Font("Monospaced", Font.BOLD, 11));
+                g2d.drawString("THANH TOÁN             "
+                        + formatNumber(tienThanhToan), 10, y);
+                g2d.setFont(new Font("Monospaced", Font.PLAIN, 11));
+                y += ySpacing18;
+                g2d.drawString("*************************************", 10, y);
+                y += ySpacing10;
+                g2d.setColor(Color.decode("#036C05"));
+                g2d.setFont(new Font("Monospaced", Font.BOLD, 11));
+                g2d.drawString(" HÂN HẠNH ĐƯỢC PHỤC VỤ QUÝ KHÁCH ", 10, y);
+                g2d.setFont(new Font("Monospaced", Font.PLAIN, 11));
+                g2d.setColor(Color.BLACK);
+                y += ySpacing10;
+                g2d.drawString("*************************************", 10, y);
+                y += ySpacing10;
+
+                result = PAGE_EXISTS;
+            }
+            return result;
+        }
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         jdbcConfig.Connect();
@@ -360,14 +543,22 @@ public class HoaDonController implements Initializable {
             }
         });
         btnTinhTien.setOnAction((e) -> {
-            Optional<ButtonType> r = util.AlertCustom.setAlertConf(
-                    "Thao tác này không thể hoàn tác\n"
-                    + "Khách hàng : " + lblTenKH.getText(),
-                    "Bạn có muốn tính tiền không");
-            if (r.get() == ButtonType.YES) {
-                tinhTien();
+            if (!getMaPhieuThue().equals("------")) {
+                Optional<ButtonType> r = util.AlertCustom.setAlertConf(
+                        "Bạn có muốn in hóa đơn không\n"
+                        + "Khách hàng : " + lblTenKH.getText(),
+                        "Bấm yes để in và thanh toán!");
+                if (r.get() == ButtonType.YES) {
+                    inHoaDon();
+                    tinhTien();
+                } else {
+                    tinhTien();
+                }
+            } else {
+                util.AlertCustom.setAlertInfo("Thông báo",
+                        "Tính tiền không thành công",
+                        "Vui lòng chọn phiếu thuê");
             }
         });
-
     }
 }

@@ -71,7 +71,6 @@ public class MainController implements Initializable {
     private void getDSPhong() {
         try {
             final int kichThuoc = 80;
-            jdbcConfig.Connect();
             String sql = "SELECT * FROM phong";
             PreparedStatement p = jdbcConfig.connection.prepareStatement(sql);
             ResultSet r = jdbcConfig.ExecuteQuery(p);
@@ -107,6 +106,38 @@ public class MainController implements Initializable {
 
     }
 
+    public void setPermissionUsername(String username) {
+        try {
+            String sql = "SELECT chucvu FROM hethong as ht, nhanvien as nv\n"
+                    + "WHERE ht.manhanvien = nv.manhanvien AND ht.username = ?";
+            PreparedStatement p = jdbcConfig.connection.prepareStatement(sql);
+            p.setString(1, username);
+            ResultSet r = jdbcConfig.ExecuteQuery(p);
+            while (r.next()) {
+                setPermistion(r.getString(1));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+
+    private void setPermistion(String permisstion) {
+        switch (permisstion) {
+            case "admin":
+                System.out.println("admin");
+                break;
+            case "Quản lý":
+                System.err.println("quản lý");
+                break;
+            case "Nhân viên":
+                System.err.println("nhân viên");
+                break;
+            default:
+                break;
+        }
+    }
+
     public void openForm(String resource, String titleStage) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass()
@@ -140,7 +171,9 @@ public class MainController implements Initializable {
 
     @FXML
     private void hboxHoaDonClick(MouseEvent event) {
-        System.out.println("restaurant.manager.MainController.hboxHoaDonClick()");
+        String resource = "views/HoaDonFXML.fxml";
+        String titleScene = "Quản lý hóa đơn";
+        openForm(resource, titleScene);
     }
 
     @FXML
@@ -173,17 +206,28 @@ public class MainController implements Initializable {
 
     @FXML
     private void hboxBaoCaoClick(MouseEvent event) {
-
+        String resource = "views/BarChartFXML.fxml";
+        String titleScene = "Báo cáo thống kê";
+        openForm(resource, titleScene);
     }
 
     @FXML
     private void hboxQLTaiKhoanClick(MouseEvent event) {
-        System.out.println("restaurant.manager.MainController.hboxQLTaiKhoan()");
+        String resource = "views/HeThongFXML.fxml";
+        String titleScene = "Quản lý tài khoản";
+        openForm(resource, titleScene);
+    }
+
+    @FXML
+    private void hboxDangXuat(MouseEvent event) {
+        System.err.println("Dang Xuat");
     }
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        jdbcConfig.Connect();
         getDSPhong();
+
     }
 
 }

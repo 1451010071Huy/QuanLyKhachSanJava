@@ -10,6 +10,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 /**
  *
@@ -27,7 +28,10 @@ public class Main extends Application {
                 "css/mainfxml.css").toExternalForm();
         scene.getStylesheets().add(css);
         stage.setTitle("Đăng nhập");
+        stage.initStyle(StageStyle.UNDECORATED);
         stage.setScene(scene);
+        stage.setResizable(false);
+        stage.centerOnScreen();
         stage.show();
     }
 
