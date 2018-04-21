@@ -1,9 +1,15 @@
+package restaurant.manager.controllers;
+
+
+
+
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package restaurant.manager.controllers;
+
 
 import config.jdbcConfig;
 import java.net.URL;
@@ -17,6 +23,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
@@ -43,7 +50,6 @@ public class DichVuController implements Initializable {
     private TextField txtGia;
     @FXML
     private ComboBox<DonViTinh> CbbDonViTinh;
-
     private ObservableList<DichVu> listDichVu;
     @FXML
     private TableColumn<DichVu, String> tblColMaDichVu;
@@ -55,7 +61,7 @@ public class DichVuController implements Initializable {
     private TableColumn<DichVu, String> tblColDonViTinh;
     @FXML
     private TableView<DichVu> tblDichVu;
- 
+    private Alert alert = new Alert(Alert.AlertType.INFORMATION);
     private ObservableList<DichVu> getDichVu() throws SQLException {
         String sql = "SELECT * FROM dichvu";
         PreparedStatement p = jdbcConfig.connection.prepareStatement(sql);
@@ -108,10 +114,11 @@ public class DichVuController implements Initializable {
         p.setString(2, txtTenDichVu.getText());
         p.setString(3, txtGia.getText());
         p.setString(4, CbbDonViTinh.getValue().toString());
-     
         int rows = jdbcConfig.ExecuteUpdateQuery(p);
         if (rows != 0) {
             setDichVu(getDichVu());
+            thongBao();
+            alert.setContentText("Thêm Thành Công");
         }
     }
     
@@ -123,6 +130,8 @@ public class DichVuController implements Initializable {
         int row = p.executeUpdate();
         if (row == 1) {
             setDichVu(getDichVu());
+            thongBao();
+            alert.setContentText("Xóa Thành Công");
         }
     }
     
@@ -140,15 +149,30 @@ public class DichVuController implements Initializable {
         int row = p.executeUpdate();
         if (row == 1) {
             setDichVu(getDichVu());
+            thongBao();
+            alert.setContentText("Sửa Thành Công");
         }
     }
     
+     private void thongBao(){
+        alert.setTitle("Thông Báo");
+        alert.setHeaderText(null);
+        alert.show();
+    }
+    private String getMaDichVu() {
+        return util.RandomId.createNewID("DV");
+    }
+    private void getDefaultValue() {
+        txtMaDichVu.setText(getMaDichVu());
+        txtMaDichVu.setEditable(false);
+    }
+     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         jdbcConfig.Connect();
+        getDefaultValue();
         try {
             setDichVu(getDichVu());
-            
             ObservableList<DonViTinh> listgt = getDonViTinh();
             CbbDonViTinh.getItems().addAll(listgt);
             CbbDonViTinh.getSelectionModel().select(0); 

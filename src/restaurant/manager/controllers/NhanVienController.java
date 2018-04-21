@@ -1,9 +1,15 @@
+package restaurant.manager.controllers;
+
+
+
+
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package restaurant.manager.controllers;
+
 
 import config.jdbcConfig;
 import java.awt.event.ActionEvent;
@@ -23,6 +29,7 @@ import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
@@ -87,6 +94,7 @@ public class NhanVienController implements Initializable {
     Button btnHuy;
     private ObservableList<NhanVien> listNhanVien;
     private FilteredList<NhanVien> filteredData;
+    private Alert alert = new Alert(Alert.AlertType.INFORMATION);
     private ObservableList<NhanVien> getNhanVien() throws SQLException {
         String sql = "SELECT * FROM nhanvien";
         PreparedStatement p = jdbcConfig.connection.prepareStatement(sql);
@@ -202,6 +210,8 @@ public class NhanVienController implements Initializable {
         int rows = jdbcConfig.ExecuteUpdateQuery(p);
         if (rows != 0) {
             setNhanVien(getNhanVien());
+            thongBao();
+            alert.setContentText("Thêm Thành Công");
         }
     }
 
@@ -212,6 +222,8 @@ public class NhanVienController implements Initializable {
         int row = p.executeUpdate();
         if (row == 1) {
             setNhanVien(getNhanVien());
+            thongBao();
+            alert.setContentText("Xóa Thành Công");
         }
     }
  
@@ -236,6 +248,8 @@ public class NhanVienController implements Initializable {
         int row = p.executeUpdate();
         if (row == 1) {
             setNhanVien(getNhanVien());
+            thongBao();
+            alert.setContentText("Sửa Thành Công");
         }
     }
     private void ClearNhanVien() throws SQLException {
@@ -246,11 +260,23 @@ public class NhanVienController implements Initializable {
         dpkNgaySinh.setValue(null);
     }   
     
+     private void thongBao(){
+        alert.setTitle("Thông Báo");
+        alert.setHeaderText(null);
+        alert.show();
+    }
+    private String getIDNhanVien() {
+        return util.RandomId.createNewID("NV");
+    }
+
+    private void getDefaultValue() {
+        txtMaNhanVien.setText(getIDNhanVien());
+    }
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         jdbcConfig.Connect();
+        getDefaultValue();
         try {
-
             ObservableList<GioiTinh> listgt = getGioiTinh();
             cbbGioiTinh.getItems().addAll(listgt);
             cbbGioiTinh.getSelectionModel().select(0);

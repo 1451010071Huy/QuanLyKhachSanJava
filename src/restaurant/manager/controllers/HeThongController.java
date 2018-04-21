@@ -1,9 +1,15 @@
+package restaurant.manager.controllers;
+
+
+
+
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package restaurant.manager.controllers;
+
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
@@ -22,6 +28,7 @@ import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -65,7 +72,7 @@ public class HeThongController implements Initializable {
     private TableView<HeThong> tblHeThong;
     private ObservableList<HeThong> listHeThong;
     private FilteredList<HeThong> filteredData;
-    
+    private Alert alert = new Alert(Alert.AlertType.INFORMATION);
     
     private ObservableList<HeThong> getHeThong() throws SQLException {
         String sql = "SELECT ht.manhanvien, nv.tennhanvien, ht.username ,"
@@ -105,6 +112,8 @@ public class HeThongController implements Initializable {
         int rows = jdbcConfig.ExecuteUpdateQuery(p);
         if (rows != 0) {
             setTableHeThong(getHeThong());
+            thongBao();
+            alert.setContentText("Thêm Thành Công");
         }
     }
     private void updateHeThong() throws SQLException {
@@ -119,6 +128,8 @@ public class HeThongController implements Initializable {
         int row = p.executeUpdate();
         if (row == 1) {
             setTableHeThong(getHeThong());
+            thongBao();
+            alert.setContentText("Sửa Thành Công");
         }
     }
     private void deleteHeThong() throws SQLException {
@@ -129,10 +140,10 @@ public class HeThongController implements Initializable {
         int row = p.executeUpdate();
         if (row == 1) {
             setTableHeThong(getHeThong());
+            thongBao();
+            alert.setContentText("Xóa Thành Công");
         }
     }
-    
-    
     @FXML
     private void searchHeThong()
     {
@@ -169,6 +180,12 @@ public class HeThongController implements Initializable {
             txtMatKhau.setText(tblHeThong.getSelectionModel()
                     .getSelectedItem().getMatKhau());   
         }
+    }
+    
+    private void thongBao(){
+        alert.setTitle("Thông Báo");
+        alert.setHeaderText(null);
+        alert.show();
     }
     /**
      * Initializes the controller class.

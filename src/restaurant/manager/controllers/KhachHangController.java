@@ -1,9 +1,15 @@
+package restaurant.manager.controllers;
+
+
+
+
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package restaurant.manager.controllers;
+
 
 import config.jdbcConfig;
 import java.net.URL;
@@ -20,6 +26,7 @@ import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
@@ -86,7 +93,7 @@ public class KhachHangController implements Initializable {
     private Button btnTimKiem;
     private ObservableList<KhachHang> listKhachHang;
     private FilteredList<KhachHang> filteredData;
-    
+    private Alert alert = new Alert(Alert.AlertType.INFORMATION);
     private ObservableList<GioiTinh> getGioiTinh() {
         GioiTinh g1 = new GioiTinh("Nam");
         GioiTinh g2 = new GioiTinh("Nữ");
@@ -127,27 +134,27 @@ public class KhachHangController implements Initializable {
     private void searchKhachHang()
     {
         txtTimKiem.textProperty().addListener((observableValue,oldValue,newValue)->{
-		filteredData.setPredicate((Predicate<? super KhachHang>)KhachHang->{
-			if(newValue==null||newValue.isEmpty()){
-				return true;
-			}
-			String lowerCaseFilter=newValue.toLowerCase();
-			if(KhachHang.getMaKhachHang().toLowerCase().contains(lowerCaseFilter)){
-				return true;
-			}
-			else if(KhachHang.getTenKhachHang().toLowerCase().contains(lowerCaseFilter)){
-				return true;
-			}
-                        else if(KhachHang.getDiaChi().toLowerCase().contains(lowerCaseFilter)){
-				return true;
-                        }
-                        else if(KhachHang.getSdt().toLowerCase().contains(lowerCaseFilter)){
-				return true;
-                        }
-                        else if(KhachHang.getCmnd().toLowerCase().contains(lowerCaseFilter)){
-				return true;
-                        }
-			return false;
+            filteredData.setPredicate((Predicate<? super KhachHang>)KhachHang->{
+                if(newValue==null||newValue.isEmpty()){
+                    return true;
+		}
+		String lowerCaseFilter=newValue.toLowerCase();
+		if(KhachHang.getMaKhachHang().toLowerCase().contains(lowerCaseFilter)){
+                    return true;
+		}
+		else if(KhachHang.getTenKhachHang().toLowerCase().contains(lowerCaseFilter)){
+                    return true;
+		}
+                else if(KhachHang.getDiaChi().toLowerCase().contains(lowerCaseFilter)){
+                    return true;
+                }
+                else if(KhachHang.getSdt().toLowerCase().contains(lowerCaseFilter)){
+                    return true;
+                }
+                else if(KhachHang.getCmnd().toLowerCase().contains(lowerCaseFilter)){
+                    return true;
+                }
+                    return false;
 		});
 	});
 	SortedList<KhachHang> sortedData=new SortedList<>(filteredData);
@@ -193,6 +200,8 @@ public class KhachHangController implements Initializable {
         int rows = jdbcConfig.ExecuteUpdateQuery(p);
         if (rows != 0) {
             setTableKhachHang(getKhachHang());
+            thongBao();
+            alert.setContentText("Thêm Thành Công");
         }
     }
 
@@ -203,6 +212,8 @@ public class KhachHangController implements Initializable {
         int row = p.executeUpdate();
         if (row == 1) {
             setTableKhachHang(getKhachHang());
+            thongBao();
+            alert.setContentText("Xóa Thành Công");
         }
     }
 
@@ -229,8 +240,9 @@ public class KhachHangController implements Initializable {
         int row = p.executeUpdate();
         if (row == 1) {
             setTableKhachHang(getKhachHang());
+            thongBao();
+            alert.setContentText("Sửa Thành Công");
         }
-
     }
 
     private void ClearKhachHang() throws SQLException {
@@ -243,11 +255,22 @@ public class KhachHangController implements Initializable {
         txtCmnd.setText("");      
     }   
     
+    private void thongBao(){
+        alert.setTitle("Thông Báo");
+        alert.setHeaderText(null);
+        alert.show();
+    }
+    private String getIDKhachHang() {
+        return util.RandomId.createNewID("KH");
+    }
+    private void getDefaultValue() {
+        txtMaKhachHang.setText(getIDKhachHang());
+    }
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        try {
-            jdbcConfig.Connect();
-
+        jdbcConfig.Connect();
+        getDefaultValue();
+        try {         
             ObservableList<GioiTinh> listgt = getGioiTinh();
             cbbGioiTinh.getItems().addAll(listgt);
             cbbGioiTinh.getSelectionModel().select(0);
