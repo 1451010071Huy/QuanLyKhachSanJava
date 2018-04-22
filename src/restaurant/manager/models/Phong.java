@@ -15,27 +15,13 @@ import javafx.scene.control.CheckBox;
  */
 public class Phong implements Serializable {
 
-    /**
-     * @return the xoaPhong
-     */
-    public Button getXoaPhong() {
-        return xoaPhong;
-    }
-
-    /**
-     * @param xoaPhong the xoaPhong to set
-     */
-    public void setXoaPhong(Button xoaPhong) {
-        this.xoaPhong = xoaPhong;
-    }
-
     private String maPhong;
     private String maLoai;
     private double gia;
     private int soNguoi;
     private CheckBox chonPhong;
     private Button xoaPhong;
-    
+
     public Phong() {
     }
 
@@ -46,6 +32,11 @@ public class Phong implements Serializable {
         this.soNguoi = soNguoi;
         this.chonPhong = new CheckBox();
         this.xoaPhong = new Button("X");
+    }
+
+    public Phong(String maPhong, String maLoai) {
+        this.maPhong = maPhong;
+        this.maLoai = maLoai;
     }
 
     /**
@@ -121,4 +112,17 @@ public class Phong implements Serializable {
     /**
      * @return the selectPhong
      */
+    /**
+     * @return the xoaPhong
+     */
+    public Button getXoaPhong() {
+        return xoaPhong;
+    }
+
+    /**
+     * @param xoaPhong the xoaPhong to set
+     */
+    public void setXoaPhong(Button xoaPhong) {
+        this.xoaPhong = xoaPhong;
+    }
 }

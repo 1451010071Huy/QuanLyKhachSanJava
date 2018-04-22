@@ -34,7 +34,7 @@ import restaurant.manager.models.DichVuSuDung;
 import restaurant.manager.models.KhachHang;
 import restaurant.manager.models.PhieuThuePhong;
 import static util.AlertCustom.setAlertConf;
-
+import static util.FormatNumber.formatNumber;
 /**
  * FXML Controller class
  *
@@ -401,7 +401,7 @@ public class PhieuThuePhongController implements Initializable {
             Logger.getLogger(PhieuThuePhongController.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        lblTongThanhTien.setText(String.valueOf(tongTien));
+        lblTongThanhTien.setText(formatNumber((int)tongTien) + " VNĐ");
     }
 
     public void sendIdPhieuThue(String idPhieuThue) {
