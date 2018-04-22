@@ -50,7 +50,7 @@ public class Phong implements Serializable {
     private int soNguoi;
     private CheckBox chonPhong;
     private Button xoaPhong;
-    
+
     public Phong() {
     }
 
@@ -62,6 +62,11 @@ public class Phong implements Serializable {
         this.trangThai = trangThai;
         this.chonPhong = new CheckBox();
         this.xoaPhong = new Button("X");
+    }
+
+    public Phong(String maPhong, String maLoai) {
+        this.maPhong = maPhong;
+        this.maLoai = maLoai;
     }
 
     /**
@@ -137,4 +142,17 @@ public class Phong implements Serializable {
     /**
      * @return the selectPhong
      */
+    /**
+     * @return the xoaPhong
+     */
+    public Button getXoaPhong() {
+        return xoaPhong;
+    }
+
+    /**
+     * @param xoaPhong the xoaPhong to set
+     */
+    public void setXoaPhong(Button xoaPhong) {
+        this.xoaPhong = xoaPhong;
+    }
 }
