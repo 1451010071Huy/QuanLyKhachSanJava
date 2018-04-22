@@ -163,10 +163,8 @@ public class PhongController implements Initializable {
         }
     }
     private ObservableList<TrangThaiPhong> getTrangThaiPhong() {
-        TrangThaiPhong ttp1 = new TrangThaiPhong("Còn Phòng");
-        TrangThaiPhong ttp2 = new TrangThaiPhong("Đã Đặt");
-        TrangThaiPhong ttp3 = new TrangThaiPhong("Hết Phòng");
-        ObservableList<TrangThaiPhong> list = FXCollections.observableArrayList(ttp1, ttp2, ttp3);
+        TrangThaiPhong ttp1 = new TrangThaiPhong("Phòng Trống");
+        ObservableList<TrangThaiPhong> list = FXCollections.observableArrayList(ttp1);
         return list;
     }
     
@@ -284,14 +282,12 @@ public class PhongController implements Initializable {
 
     private void updatePhong() throws SQLException {
         String sql = String.format("UPDATE phong SET \n"
-                + "maloai = ?\n,"
-                + "trangthai = ?\n"
+                + "maloai = ?\n"
                 + "WHERE maphong = ? ");
         PreparedStatement p = jdbcConfig.connection.prepareStatement(sql);
 
         p.setString(1, cbbLoaiPhong.getValue().toString());
-        p.setString(2, cbbTrangThaiPhong.getValue().toString());
-        p.setString(3, txtPhong.getText());
+        p.setString(2, txtPhong.getText());
         int row = p.executeUpdate();
         if (row == 1) {
             setTablePhong(getPhong());
