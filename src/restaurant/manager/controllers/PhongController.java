@@ -34,6 +34,7 @@ import javafx.scene.input.MouseEvent;
 import restaurant.manager.models.LPhong;
 import restaurant.manager.models.LoaiPhong;
 import restaurant.manager.models.Phong;
+import restaurant.manager.models.TrangThaiPhong;
 
 /**
  * FXML Controller class
@@ -68,7 +69,10 @@ public class PhongController implements Initializable {
 
     @FXML
     private ComboBox<LPhong> cbbLoaiPhong;
-
+    
+    @FXML
+    private ComboBox<TrangThaiPhong> cbbTrangThaiPhong;
+    
     @FXML
     private Button btnThemLP;
 
@@ -94,6 +98,9 @@ public class PhongController implements Initializable {
     private TableView<Phong> tblPhong;
 
     @FXML
+    private TableColumn<Phong, String> tblColTrangThai;
+    
+    @FXML
     private TableColumn<Phong, Integer> tblColSoNguoi1;
 
     @FXML
@@ -103,7 +110,7 @@ public class PhongController implements Initializable {
     private TableColumn<Phong, String> tblColLoaiPhong1;
     @FXML
     private Button btnCapNhatphong;
-
+    
     @FXML
     private TextField txtPhong;
     private Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -142,11 +149,12 @@ public class PhongController implements Initializable {
 
     private void insertPhong() throws SQLException {
         String id = util.RandomId.createNewID("PH");
-        String sql = String.format("INSERT INTO phong(maphong ,maloai) "
-                + "VALUES (?, ?)");
+        String sql = String.format("INSERT INTO phong(maphong ,maloai,trangthai) "
+                + "VALUES (?, ?, ?)");
         PreparedStatement p = jdbcConfig.connection.prepareStatement(sql);
         p.setString(1, getIDPhong());
         p.setString(2, cbbLoaiPhong.getValue().toString());
+        p.setString(3, cbbTrangThaiPhong.getValue().toString());
         int rows = jdbcConfig.ExecuteUpdateQuery(p);
         if (rows != 0) {
             setTablePhong(getPhong());
@@ -154,18 +162,24 @@ public class PhongController implements Initializable {
             alert.setContentText("Thêm Thành Công");
         }
     }
-
+    private ObservableList<TrangThaiPhong> getTrangThaiPhong() {
+        TrangThaiPhong ttp1 = new TrangThaiPhong("Phòng Trống");
+        ObservableList<TrangThaiPhong> list = FXCollections.observableArrayList(ttp1);
+        return list;
+    }
+    
     private ObservableList<LPhong> getLPhong() {
         LPhong lp1 = new LPhong("Loại 1");
         LPhong lp2 = new LPhong("Loại 2");
         LPhong lp3 = new LPhong("Loại 3");
-        ObservableList<LPhong> list = FXCollections.observableArrayList(lp1, lp2, lp3);
+        LPhong lp4 = new LPhong("Loại 4");
+        ObservableList<LPhong> list = FXCollections.observableArrayList(lp1, lp2, lp3,lp4);
         return list;
     }
 
     private ObservableList<Phong> getPhong() throws SQLException {
         try {
-            String sql = "SELECT p.maphong, lp.maloai, lp.gia, lp.songuoi \n"
+            String sql = "SELECT p.maphong, lp.maloai, lp.gia, lp.songuoi, p.trangthai \n"
                     + "FROM loaiphong as lp, phong as p\n"
                     + "WHERE  p.maloai = lp.maloai ";
             PreparedStatement p = jdbcConfig.connection.prepareStatement(sql);
@@ -174,7 +188,8 @@ public class PhongController implements Initializable {
             listPhong = FXCollections.observableArrayList();
             while (r.next()) {
                 listPhong.add(new Phong(r.getString(1),
-                        r.getString(2), Double.parseDouble(r.getString(3)), Integer.parseInt(r.getString(4))));
+                r.getString(2),Double.parseDouble(r.getString(3)),
+                Integer.parseInt(r.getString(4)),r.getString(5)));
             }
         } catch (SQLException ex) {
             Logger.getLogger(PhongController.class.getName()).log(Level.SEVERE, null, ex);
@@ -195,6 +210,7 @@ public class PhongController implements Initializable {
         tblColLoaiPhong1.setCellValueFactory(new PropertyValueFactory<>("maLoai"));
         tblColGia1.setCellValueFactory(new PropertyValueFactory<>("gia"));
         tblColSoNguoi1.setCellValueFactory(new PropertyValueFactory<>("soNguoi"));
+        tblColTrangThai.setCellValueFactory(new PropertyValueFactory<>("trangThai"));
     }
 
     @FXML
@@ -204,6 +220,8 @@ public class PhongController implements Initializable {
                     .getSelectedItem().getMaPhong());
             cbbLoaiPhong.setValue(new LPhong(tblPhong.getSelectionModel()
                     .getSelectedItem().getMaLoai()));
+            cbbTrangThaiPhong.setValue(new TrangThaiPhong(tblPhong.getSelectionModel()
+                    .getSelectedItem().getTrangThai()));
         }
     }
 
@@ -307,6 +325,10 @@ public class PhongController implements Initializable {
             ObservableList<LPhong> listlp = getLPhong();
             cbbLoaiPhong.getItems().addAll(listlp);
             cbbLoaiPhong.getSelectionModel().select(0);
+            
+            ObservableList<TrangThaiPhong> listttp = getTrangThaiPhong();
+            cbbTrangThaiPhong.getItems().addAll(listttp);
+            cbbTrangThaiPhong.getSelectionModel().select(0);
             setTableLoaiPhong(getLoaiPhong());
             setTablePhong(getPhong());
             btnThemLP.setOnAction(e -> {
