@@ -5,6 +5,57 @@
  */
 package restaurant.manager.controllers;
 
+import config.jdbcConfig;
+import java.io.IOException;
+import java.net.URL;
+import java.sql.CallableStatement;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import restaurant.manager.models.KiemTraPhong;
+import restaurant.manager.models.PhieuDatPhong;
+import restaurant.manager.models.Phong;
+import static util.AlertCustom.*;
+
+/**
+ * FXML Controller class
+ *
+ * @author Luxury
+ */
 public class PhieuDatPhongController implements Initializable {
 
     @FXML
@@ -784,4 +835,5 @@ public class PhieuDatPhongController implements Initializable {
         }
 
     }
+
 }
