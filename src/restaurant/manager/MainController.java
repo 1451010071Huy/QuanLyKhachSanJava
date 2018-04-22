@@ -117,7 +117,6 @@ public class MainController implements Initializable {
     private void setPermistion(String permisstion) {
         switch (permisstion) {
             case "admin":
-                System.out.println("admin");
                 break;
             case "Quản lý":
                 hbxQuanLyTaiKhoan.setDisable(true);
@@ -300,18 +299,18 @@ public class MainController implements Initializable {
             //then you specify the class you would give to the button
             paneDSPhong.getChildren().add(btnPhong); //add button to your pane   
         }
-        
+
     }
-    
-    private void contextMenu(){
-        paneDSPhong.setOnMouseClicked((e->{
-            
+
+    private void contextMenu() {
+        paneDSPhong.setOnMouseClicked((e -> {
+
         }));
         ContextMenu contextMenu = new ContextMenu();
         MenuItem hoaDon = new MenuItem("Hóa đơn");
         contextMenu.getItems().add(hoaDon);
     }
-    
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         getDSPhong();
