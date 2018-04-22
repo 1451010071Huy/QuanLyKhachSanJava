@@ -587,7 +587,11 @@ public class PhieuDatPhongController implements Initializable {
 
         return i;
     }
-
+    
+    private void insertTrangThaiPhong(String idPhong){
+        String sql = "INSERT INTO trangthaiphong(maphong,trangthai) ";
+    }
+    
     @FXML
     public void datPhong(ActionEvent a) throws SQLException {
         try {

@@ -5,6 +5,7 @@
  */
 package restaurant.manager;
 
+import com.jfoenix.controls.JFXTextField;
 import config.jdbcConfig;
 import java.io.IOException;
 import java.net.URL;
@@ -15,6 +16,8 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -23,15 +26,20 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import restaurant.manager.models.Phong;
 
 /**
  *
@@ -66,48 +74,28 @@ public class MainController implements Initializable {
     private HBox hbxDatPhong;
     @FXML
     private HBox hbxQuanLyTaiKhoan;
+    @FXML
+    private JFXTextField txtTimKiem;
+    ObservableList<Phong> listPhong = null;
 
     public void setUsername(String username) {
         this.lblUser.setText(username);
     }
 
-    private void getDSPhong() {
+    private ObservableList<Phong> getDSPhong() {
         try {
-            final int kichThuoc = 80;
             String sql = "SELECT * FROM phong";
             PreparedStatement p = jdbcConfig.connection.prepareStatement(sql);
             ResultSet r = jdbcConfig.ExecuteQuery(p);
-            double i = 1;
-            int x = 20;
-            int y = 20;
+            listPhong = FXCollections.observableArrayList();
             while (r.next()) {
-                btnPhong = new Button();
-                btnPhong.setMinWidth(kichThuoc);
-                btnPhong.setMinHeight(kichThuoc);
-                btnPhong.setText(r.getString(1) + "\n" + r.getString(2));
-                btnPhong.setLayoutX(x);
-                btnPhong.setLayoutY(y);
-                x += 100;
-                i++;
-                if (i == 9) {
-                    y += kichThuoc + 20;
-                    x = 20;
-                    i = 1;
-                }
-                
-                btnPhong.getStyleClass().removeAll("addBobOk, focus");
-                //In this way you're sure you have no styles applied to your object button
-                btnPhong.getStyleClass().add("addBobOk");
-                btnPhong.setCursor(Cursor.HAND);
-                //then you specify the class you would give to the button
-
-                paneDSPhong.getChildren().add(btnPhong); //add button to your pane
+                listPhong.add(new Phong(r.getString(1), r.getString(2)));
             }
 
         } catch (SQLException ex) {
             Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        return listPhong;
     }
 
     public void setPermissionUsername(String username) {
@@ -253,12 +241,81 @@ public class MainController implements Initializable {
         }
     }
 
-    @Override
-    public void initialize(URL url, ResourceBundle rb
-    ) {
-        jdbcConfig.Connect();
-        getDSPhong();
+    @FXML
+    public void timKiemPhong() {
+        paneDSPhong.getChildren().clear();
+        listPhong.clear();
+        try {
+            String sql = "SELECT * FROM phong\n"
+                    + "WHERE maphong LIKE ? OR maloai LIKE ?";
+            PreparedStatement p = jdbcConfig.connection.prepareStatement(sql);
+            p.setString(1, "%" + txtTimKiem.getText().trim() + "%");
+            p.setString(2, "%" + txtTimKiem.getText().trim() + "%");
+            ResultSet r = jdbcConfig.ExecuteQuery(p);
 
+            while (r.next()) {
+                listPhong.add(new Phong(r.getString(1), r.getString(2)));
+            }
+            drawPhong();
+        } catch (SQLException ex) {
+            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        Label lblStatus = new Label();
+        lblStatus.setText("");
+        lblStatus.setFont(Font.font(15));
+        lblStatus.layoutXProperty().bind(paneDSPhong.widthProperty()
+                .subtract(lblStatus.widthProperty()).divide(2));//Cho nó ra giữa theo chiều rộng pane
+        lblStatus.layoutYProperty().bind(paneDSPhong.heightProperty()
+                .subtract(lblStatus.heightProperty()).divide(2));//Cho nó ra giữa theo chiều cao pane
+        if (listPhong.isEmpty()) {
+            lblStatus.setText("   Không tìm thấy phòng nào.\n"
+                    + "Vui lòng sử dụng từ khóa khác!");
+        } else {
+            lblStatus.setText("");
+        }
+        paneDSPhong.getChildren().add(lblStatus);
+    }
+
+    public void drawPhong() {
+        double i = 1;
+        int x = 20;
+        int y = 20;
+        for (Phong p : listPhong) {
+            final int kichThuoc = 80;
+            btnPhong = new Button();
+            btnPhong.setMinWidth(kichThuoc);
+            btnPhong.setMinHeight(kichThuoc);
+            btnPhong.setText(p.getMaPhong() + "\n" + p.getMaLoai());
+            btnPhong.setLayoutX(x);
+            btnPhong.setLayoutY(y);
+            x += 100;
+            i++;
+            if (i == 9) {
+                y += kichThuoc + 20;
+                x = 20;
+                i = 1;
+            }
+            btnPhong.getStyleClass().add("room");
+            btnPhong.setCursor(Cursor.HAND);
+            //then you specify the class you would give to the button
+            paneDSPhong.getChildren().add(btnPhong); //add button to your pane   
+        }
+        
+    }
+    
+    private void contextMenu(){
+        paneDSPhong.setOnMouseClicked((e->{
+            
+        }));
+        ContextMenu contextMenu = new ContextMenu();
+        MenuItem hoaDon = new MenuItem("Hóa đơn");
+        contextMenu.getItems().add(hoaDon);
+    }
+    
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        getDSPhong();
+        drawPhong();
     }
 
 }

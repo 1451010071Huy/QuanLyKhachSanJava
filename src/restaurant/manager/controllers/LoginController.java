@@ -39,7 +39,7 @@ import restaurant.manager.MainController;
  * @author Luxury
  */
 public class LoginController implements Initializable {
-    
+
     @FXML
     private JFXTextField txtDangNhap;
     @FXML
@@ -50,16 +50,16 @@ public class LoginController implements Initializable {
     private Label lblStatus;
     @FXML
     private JFXButton btnThoat;
-    
+
     public String checkDangNhap() {
-        
+
         if ("".equals(txtMatKhau.getText())) {
             return "Mật khẩu không được để trống";
         } else if ("".equals(txtDangNhap.getText())) {
             return "Tên đăng nhập không được để trống";
         } else {
             try {
-                
+
                 String sql = "SELECT username, password FROM hethong ";
                 PreparedStatement p = jdbcConfig.connection.prepareStatement(sql);
                 ResultSet r = jdbcConfig.ExecuteQuery(p);
@@ -87,43 +87,42 @@ public class LoginController implements Initializable {
                         } catch (IOException ex) {
                             Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
                         }
-                        jdbcConfig.Disconnect();
                         return "Đăng nhập thành công";
                     }
                 }
-                
+
             } catch (SQLException ex) {
                 Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         return "Tài khoản hoặc mật khẩu không đúng";
     }
-    
+
     public void buttonPressed(KeyEvent e) {
         if (e.getCode().toString().equals("ENTER")) {
-            
+
         }
     }
-    
+
     @FXML
     public void textAction(KeyEvent e) {
         if (e.getCode().equals(KeyCode.ENTER)) {
             lblStatus.setText(checkDangNhap());
         }
     }
-    
+
     @FXML
     private void thoat(MouseEvent e) {
         exit();
     }
-    
+
     @FXML
     private void minimize(MouseEvent e) {
         Stage stage;
         stage = (Stage) btnDangNhap.getScene().getWindow();
         stage.setIconified(true);
     }
-    
+
     private void exit() {
         Optional<ButtonType> r = util.AlertCustom.setAlertConf(
                 "Bấm Yes để thoát", "Bạn có muốn thoát không");
@@ -132,7 +131,7 @@ public class LoginController implements Initializable {
             Platform.exit();
         }
     }
-    
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         jdbcConfig.Connect();
@@ -142,7 +141,7 @@ public class LoginController implements Initializable {
         btnThoat.setOnAction((e) -> {
             exit();
         });
-        
+
     }
-    
+
 }

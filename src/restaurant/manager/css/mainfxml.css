@@ -8,19 +8,44 @@ and open the template in the editor.
     Author     : Luxury
 */
 
-.addBobOk{
+.room{
+    -fx-background-color:#CCCCCC;
+    -fx-background-radius: 5,5,4;
+    -fx-background-insets: 0 0 -1 0,0,1;
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.4) , 5, 0.0 , 0 , 1 );
+    -fx-text-alignment: center;
+}
+.room:hover{
+    -fx-background-color:#B3B3B3;
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.4) , 5, 0.0 , 0 , 1 );
+    -fx-text-alignment: center;
+}
+
+.room-waitting{
     -fx-background-color:#90EE90;
     -fx-background-radius: 5,5,4;
     -fx-background-insets: 0 0 -1 0,0,1;
     -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.4) , 5, 0.0 , 0 , 1 );
     -fx-text-alignment: center;
 }
-.addBobOk:hover{
-    -fx-background-color:#64EE64;
+.room-waitting:hover{
+    -fx-background-color:#868F92;
     -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.4) , 5, 0.0 , 0 , 1 );
     -fx-text-alignment: center;
 }
 
+.room-busy{
+    -fx-background-color:#D3BA65;
+    -fx-background-radius: 5,5,4;
+    -fx-background-insets: 0 0 -1 0,0,1;
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.4) , 5, 0.0 , 0 , 1 );
+    -fx-text-alignment: center;
+}
+.room-busy:hover{
+    -fx-background-color:#BE9819;
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.4) , 5, 0.0 , 0 , 1 );
+    -fx-text-alignment: center;
+}
 .vbox-hover:hover{
     -fx-background-color:#90EE90;
 }
