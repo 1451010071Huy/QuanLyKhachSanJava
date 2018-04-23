@@ -72,7 +72,7 @@ public class HeThongController implements Initializable {
     private TableView<HeThong> tblHeThong;
     private ObservableList<HeThong> listHeThong;
     private FilteredList<HeThong> filteredData;
-    private Alert alert = new Alert(Alert.AlertType.INFORMATION);
+    private final Alert alert = new Alert(Alert.AlertType.INFORMATION);
     
     private ObservableList<HeThong> getHeThong() throws SQLException {
         String sql = "SELECT ht.manhanvien, nv.tennhanvien, ht.username ,"
@@ -173,12 +173,16 @@ public class HeThongController implements Initializable {
     @FXML
     private void SelectRow(MouseEvent e) throws SQLException {
         if (e.getClickCount() == 1) {
-            txtMaNhanVien.setText(tblHeThong.getSelectionModel()
+            try {
+                txtMaNhanVien.setText(tblHeThong.getSelectionModel()
                     .getSelectedItem().getMaNhanVien());
-            txtTenNhanVien.setText(tblHeThong.getSelectionModel()
-                    .getSelectedItem().getTenDangNhap());
-            txtMatKhau.setText(tblHeThong.getSelectionModel()
-                    .getSelectedItem().getMatKhau());   
+                txtTenNhanVien.setText(tblHeThong.getSelectionModel()
+                        .getSelectedItem().getTenDangNhap());
+                txtMatKhau.setText(tblHeThong.getSelectionModel()
+                    .getSelectedItem().getMatKhau());  
+            } catch (NullPointerException ex) {
+                 System.out.println("Click in NUll");
+            }            
         }
     }
     

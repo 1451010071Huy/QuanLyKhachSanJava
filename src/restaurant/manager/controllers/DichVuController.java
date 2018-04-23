@@ -9,8 +9,6 @@ package restaurant.manager.controllers;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
-
 import config.jdbcConfig;
 import java.net.URL;
 import java.sql.PreparedStatement;
@@ -78,14 +76,19 @@ public class DichVuController implements Initializable {
     @FXML
     private void SelectRow(MouseEvent e) throws SQLException {
         if (e.getClickCount() == 1) {
-            txtMaDichVu.setText(tblDichVu.getSelectionModel()
+            try {
+                txtMaDichVu.setText(tblDichVu.getSelectionModel()
                     .getSelectedItem().getMaDichVu());
-            txtTenDichVu.setText(tblDichVu.getSelectionModel()
-                    .getSelectedItem().getTenDichVu());
-            txtGia.setText(Integer.toString(tblDichVu.getSelectionModel()
-                    .getSelectedItem().getGia()));
-            CbbDonViTinh.setValue(new DonViTinh(tblDichVu.getSelectionModel()
-                    .getSelectedItem().getDonViTinh()));
+                txtTenDichVu.setText(tblDichVu.getSelectionModel()
+                        .getSelectedItem().getTenDichVu());
+                txtGia.setText(Integer.toString(tblDichVu.getSelectionModel()
+                        .getSelectedItem().getGia()));
+                CbbDonViTinh.setValue(new DonViTinh(tblDichVu.getSelectionModel()
+                        .getSelectedItem().getDonViTinh()));  
+            } catch (NullPointerException ex) {
+                 System.out.println("Click in NUll");
+            }     
+            
         }
     }
     

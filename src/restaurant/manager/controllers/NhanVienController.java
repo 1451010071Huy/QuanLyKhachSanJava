@@ -10,9 +10,7 @@ package restaurant.manager.controllers;
  * and open the template in the editor.
  */
 
-
 import config.jdbcConfig;
-import java.awt.event.ActionEvent;
 import java.net.URL;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -94,7 +92,7 @@ public class NhanVienController implements Initializable {
     Button btnHuy;
     private ObservableList<NhanVien> listNhanVien;
     private FilteredList<NhanVien> filteredData;
-    private Alert alert = new Alert(Alert.AlertType.INFORMATION);
+    private final Alert alert = new Alert(Alert.AlertType.INFORMATION);
     private ObservableList<NhanVien> getNhanVien() throws SQLException {
         String sql = "SELECT * FROM nhanvien";
         PreparedStatement p = jdbcConfig.connection.prepareStatement(sql);
@@ -159,7 +157,6 @@ public class NhanVienController implements Initializable {
                     .getSelectedItem().getMaNhanVien());	
             } catch (NullPointerException ex) {
                  System.out.println("Exception in TechmasterNPE1()");
-                 throw ex;
             }       
         }
     }
@@ -197,22 +194,48 @@ public class NhanVienController implements Initializable {
     }  
     
     private void insertNhanVien() throws SQLException {
-        String sql = String.format("INSERT INTO nhanvien(manhanvien ,tennhanvien ,ngaysinh "
-                + ",phai , diachi ,phone ,chucvu ) VALUES(? ,? , ? , ? , ?, ?, ?)");
-        PreparedStatement p = jdbcConfig.connection.prepareStatement(sql);
-        p.setString(1, txtMaNhanVien.getText());
-        p.setString(2, txtTenNhanVien.getText());
-        p.setString(3, dpkNgaySinh.getValue().toString());
-        p.setString(4, cbbGioiTinh.getValue().toString());
-        p.setString(5, txtDiaChi.getText());
-        p.setString(6, txtSoDienThoai.getText());
-        p.setString(7, cbbChucVu.getValue().toString());
-        int rows = jdbcConfig.ExecuteUpdateQuery(p);
-        if (rows != 0) {
-            setNhanVien(getNhanVien());
+        try {
+            if(txtMaNhanVien.getText().equals("")){
+                thongBao();
+                alert.setContentText("Mã Nhân Viên Không Được Rỗng");
+            }
+            else if(txtTenNhanVien.getText().equals("")){
+                thongBao();
+                alert.setContentText("Tên Nhân Viên Không Được Rỗng");
+            }
+            else if(txtDiaChi.getText().equals("")){
+                thongBao();
+                alert.setContentText("Địa Chỉ Nhân Viên Không Được Rỗng");
+            }
+            else if(txtSoDienThoai.getText().equals("")){
+                thongBao();
+                alert.setContentText("Số Điện Thoại Nhân Viên Không Được Rỗng");
+            }
+            else
+            {
+                String sql = String.format("INSERT INTO nhanvien(manhanvien "
+                +",tennhanvien,ngaysinh,phai , diachi ,phone ,chucvu )"
+                +" VALUES(? ,? , ? , ? , ?, ?, ?)");
+                PreparedStatement p = jdbcConfig.connection.prepareStatement(sql);
+                p.setString(1, txtMaNhanVien.getText());
+                p.setString(2, txtTenNhanVien.getText());
+                p.setString(3, dpkNgaySinh.getValue().toString());
+                p.setString(4, cbbGioiTinh.getValue().toString());
+                p.setString(5, txtDiaChi.getText());
+                p.setString(6, txtSoDienThoai.getText());
+                p.setString(7, cbbChucVu.getValue().toString());   
+                int rows = jdbcConfig.ExecuteUpdateQuery(p);
+                if (rows != 0) {
+                    setNhanVien(getNhanVien());
+                    thongBao();
+                    alert.setContentText("Thêm Thành Công");
+                }           
+            }
+        } catch (Exception e) {
             thongBao();
-            alert.setContentText("Thêm Thành Công");
+            alert.setContentText("Ngày Sinh Nhân Viên Không Được Rỗng");
         }
+       
     }
 
     private void deleteKhachHang() throws SQLException {
@@ -228,29 +251,53 @@ public class NhanVienController implements Initializable {
     }
  
     private void updateNhanVien() throws SQLException {
-        String sql = String.format("UPDATE nhanvien \n"
-                + "SET tennhanvien = ? ,\n"
-                + "	ngaysinh = ?, \n"
-                + "	phai= ?,\n"
-                + "	diachi = ?,\n"
-                + "	phone = ?,\n"
-                + "	chucvu = ?\n"
-                + "WHERE manhanvien = ?;"
-        );
-        PreparedStatement p = jdbcConfig.connection.prepareStatement(sql);
-        p.setString(1, txtTenNhanVien.getText());
-        p.setString(2, dpkNgaySinh.getValue().toString());
-        p.setString(3, cbbGioiTinh.getValue().toString());
-        p.setString(4, txtDiaChi.getText());
-        p.setString(5, txtSoDienThoai.getText());
-        p.setString(6, cbbChucVu.getValue().toString());
-        p.setString(7, txtMaNhanVien.getText());
-        int row = p.executeUpdate();
-        if (row == 1) {
-            setNhanVien(getNhanVien());
+        try {
+            if(txtMaNhanVien.getText().equals("")){
+                thongBao();
+                alert.setContentText("Mã Nhân Viên Không Được Rỗng");
+            }
+            else if(txtTenNhanVien.getText().equals("")){
+                thongBao();
+                alert.setContentText("Tên Nhân Viên Không Được Rỗng");
+            }
+            else if(txtDiaChi.getText().equals("")){
+                thongBao();
+                alert.setContentText("Địa Chỉ Nhân Viên Không Được Rỗng");
+            }
+            else if(txtSoDienThoai.getText().equals("")){
+                thongBao();
+                alert.setContentText("Số Điện Thoại Nhân Viên Không Được Rỗng");
+            }
+            else
+            {
+                String sql = String.format("UPDATE nhanvien \n"
+                                          + "SET tennhanvien = ? ,\n"
+                                          + "	ngaysinh = ?, \n"
+                                          + "	phai= ?,\n"
+                                          + "	diachi = ?,\n"
+                                          + "	phone = ?,\n"
+                                          + "	chucvu = ?\n"
+                                          + "WHERE manhanvien = ?;");
+                PreparedStatement p = jdbcConfig.connection.prepareStatement(sql);
+                p.setString(1, txtTenNhanVien.getText());
+                p.setString(2, dpkNgaySinh.getValue().toString());
+                p.setString(3, cbbGioiTinh.getValue().toString());
+                p.setString(4, txtDiaChi.getText());
+                p.setString(5, txtSoDienThoai.getText());
+                p.setString(6, cbbChucVu.getValue().toString());
+                p.setString(7, txtMaNhanVien.getText());
+                int row = p.executeUpdate();
+                if (row == 1) {
+                    setNhanVien(getNhanVien());
+                    thongBao();
+                    alert.setContentText("Sửa Thành Công");
+                }
+            }
+        } catch (Exception e) {
             thongBao();
-            alert.setContentText("Sửa Thành Công");
+            alert.setContentText("Ngày Sinh Nhân Viên Không Được Rỗng");
         }
+        
     }
     private void ClearNhanVien() throws SQLException {
         txtMaNhanVien.setText("");

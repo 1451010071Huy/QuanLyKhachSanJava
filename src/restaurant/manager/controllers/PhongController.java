@@ -31,7 +31,6 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
-import restaurant.manager.models.LPhong;
 import restaurant.manager.models.LoaiPhong;
 import restaurant.manager.models.Phong;
 import restaurant.manager.models.TrangThaiPhong;
@@ -68,7 +67,7 @@ public class PhongController implements Initializable {
     private TextField txtGia;
 
     @FXML
-    private ComboBox<LPhong> cbbLoaiPhong;
+    private ComboBox<String> cbbLoaiPhong;
     
     @FXML
     private ComboBox<TrangThaiPhong> cbbTrangThaiPhong;
@@ -153,7 +152,7 @@ public class PhongController implements Initializable {
                 + "VALUES (?, ?, ?)");
         PreparedStatement p = jdbcConfig.connection.prepareStatement(sql);
         p.setString(1, getIDPhong());
-        p.setString(2, cbbLoaiPhong.getValue().toString());
+        p.setString(2, cbbLoaiPhong.getValue());
         p.setString(3, cbbTrangThaiPhong.getValue().toString());
         int rows = jdbcConfig.ExecuteUpdateQuery(p);
         if (rows != 0) {
@@ -167,16 +166,15 @@ public class PhongController implements Initializable {
         ObservableList<TrangThaiPhong> list = FXCollections.observableArrayList(ttp1);
         return list;
     }
-    
-    private ObservableList<LPhong> getLPhong() {
-        LPhong lp1 = new LPhong("Loại 1");
-        LPhong lp2 = new LPhong("Loại 2");
-        LPhong lp3 = new LPhong("Loại 3");
-        LPhong lp4 = new LPhong("Loại 4");
-        ObservableList<LPhong> list = FXCollections.observableArrayList(lp1, lp2, lp3,lp4);
-        return list;
+    private void getLPhong() throws SQLException {
+        String sql = "SELECT maloai FROM loaiphong";
+        PreparedStatement p = jdbcConfig.connection.prepareStatement(sql);
+        ResultSet r = jdbcConfig.ExecuteQuery(p);
+        while (r.next()) {
+            cbbLoaiPhong.getItems().add(r.getString(1));
+        }
     }
-
+    
     private ObservableList<Phong> getPhong() throws SQLException {
         try {
             String sql = "SELECT p.maphong, lp.maloai, lp.gia, lp.songuoi, p.trangthai \n"
@@ -218,7 +216,7 @@ public class PhongController implements Initializable {
         if (e.getClickCount() == 1) {
             txtPhong.setText(tblPhong.getSelectionModel()
                     .getSelectedItem().getMaPhong());
-            cbbLoaiPhong.setValue(new LPhong(tblPhong.getSelectionModel()
+            cbbLoaiPhong.setValue((tblPhong.getSelectionModel()
                     .getSelectedItem().getMaLoai()));
             cbbTrangThaiPhong.setValue(new TrangThaiPhong(tblPhong.getSelectionModel()
                     .getSelectedItem().getTrangThai()));
@@ -286,7 +284,7 @@ public class PhongController implements Initializable {
                 + "WHERE maphong = ? ");
         PreparedStatement p = jdbcConfig.connection.prepareStatement(sql);
 
-        p.setString(1, cbbLoaiPhong.getValue().toString());
+        p.setString(1, cbbLoaiPhong.getValue());
         p.setString(2, txtPhong.getText());
         int row = p.executeUpdate();
         if (row == 1) {
@@ -310,9 +308,7 @@ public class PhongController implements Initializable {
 
     private void getDefaultValue() {
         txtPhong.setText(getIDPhong());
-        txtPhong.setEditable(false);
         txtMaLoai.setText(getIDLoaiPhong());
-        txtMaLoai.setEditable(false);
     }
 
     @Override
@@ -320,12 +316,8 @@ public class PhongController implements Initializable {
 
         jdbcConfig.Connect();
         getDefaultValue();
-        try {
-           
-            ObservableList<LPhong> listlp = getLPhong();
-            cbbLoaiPhong.getItems().addAll(listlp);
-            cbbLoaiPhong.getSelectionModel().select(0);
-            
+        try {   
+            getLPhong();
             ObservableList<TrangThaiPhong> listttp = getTrangThaiPhong();
             cbbTrangThaiPhong.getItems().addAll(listttp);
             cbbTrangThaiPhong.getSelectionModel().select(0);
