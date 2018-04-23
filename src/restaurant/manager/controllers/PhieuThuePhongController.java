@@ -411,19 +411,23 @@ public class PhieuThuePhongController implements Initializable {
 
     public void sendIdPhieuThueVaPhong(String idPhieuThue, String idPhong) {
         cbbMaPhieuThue.getSelectionModel().select(idPhieuThue);
-        getPhongByMaPhieuThue();
+        getPhieuThuePhong();
+        getMaPhong();
+        getTableDichVu();
         cbbMaPhong.getSelectionModel().select(idPhong);
+        getTableSuDungDV();
+
     }
 
     private void setDefaultValue() {
         jdbcConfig.Connect();
         txtNgaySDDichVu.setEditable(false);
         txtNgaySDDichVu.setText(util.CurrentTime.getCurrentTime());
-        getTongThanhTien();
-        getTableDichVu();
         getPhieuThuePhong();
         getTableSuDungDV();
-
+        getTongThanhTien();
+        getTableDichVu();
+        getMaPhong();
     }
 
     @Override
