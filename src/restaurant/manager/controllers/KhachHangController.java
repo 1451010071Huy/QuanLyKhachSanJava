@@ -89,11 +89,9 @@ public class KhachHangController implements Initializable {
     private Button btnXoaKhachHang;
     @FXML
     private Button btnHuyKhachHang;
-    @FXML
-    private Button btnTimKiem;
     private ObservableList<KhachHang> listKhachHang;
     private FilteredList<KhachHang> filteredData;
-    private Alert alert = new Alert(Alert.AlertType.INFORMATION);
+    private final Alert alert = new Alert(Alert.AlertType.INFORMATION);
     private ObservableList<GioiTinh> getGioiTinh() {
         GioiTinh g1 = new GioiTinh("Nam");
         GioiTinh g2 = new GioiTinh("Nữ");
@@ -165,44 +163,71 @@ public class KhachHangController implements Initializable {
     @FXML
     private void SelectRow(MouseEvent e) throws SQLException {
         if (e.getClickCount() == 1) {
-            txtMaKhachHang.setText(tblKhachHang.getSelectionModel()
+            try {
+                txtMaKhachHang.setText(tblKhachHang.getSelectionModel()
                     .getSelectedItem().getMaKhachHang());
-            txtTenKhachHang.setText(tblKhachHang.getSelectionModel()
-                    .getSelectedItem().getTenKhachHang());
-            txtCmnd.setText(tblKhachHang.getSelectionModel()
-                    .getSelectedItem().getCmnd());
-            txtDiaChi.setText(tblKhachHang.getSelectionModel()
-                    .getSelectedItem().getDiaChi());
-            txtCoQuan.setText(tblKhachHang.getSelectionModel()
-                    .getSelectedItem().getCoQuan());
-            txtSoDienThoai.setText(tblKhachHang.getSelectionModel()
-                    .getSelectedItem().getSdt());
-            txtEmail.setText(tblKhachHang.getSelectionModel()
-                    .getSelectedItem().getEmail());
-            cbbGioiTinh.setValue(new GioiTinh(tblKhachHang.getSelectionModel()
-                    .getSelectedItem().getGioiTinh()));
+                txtTenKhachHang.setText(tblKhachHang.getSelectionModel()
+                        .getSelectedItem().getTenKhachHang());
+                txtCmnd.setText(tblKhachHang.getSelectionModel()
+                        .getSelectedItem().getCmnd());
+                txtDiaChi.setText(tblKhachHang.getSelectionModel()
+                        .getSelectedItem().getDiaChi());
+                txtCoQuan.setText(tblKhachHang.getSelectionModel()
+                        .getSelectedItem().getCoQuan());
+                txtSoDienThoai.setText(tblKhachHang.getSelectionModel()
+                        .getSelectedItem().getSdt());
+                txtEmail.setText(tblKhachHang.getSelectionModel()
+                        .getSelectedItem().getEmail());
+                cbbGioiTinh.setValue(new GioiTinh(tblKhachHang.getSelectionModel()
+                        .getSelectedItem().getGioiTinh()));
+            } catch (NullPointerException ex) {
+                 System.out.println("Click in NUll");
+            }             
         }
     }
 
     private void insertKhachHang() throws SQLException {
-        String sql = String.format("INSERT INTO khachhang(makhachhang, tenkhachhang, gioitinh,"
+        try {
+            if(txtMaKhachHang.getText().equals("")){
+                thongBao();
+                alert.setContentText("Mã Khách Hàng Không Được Rỗng");
+            }
+            else if(txtTenKhachHang.getText().equals("")){
+                thongBao();
+                alert.setContentText("Tên Khách Hàng Không Được Rỗng");
+            }
+            else if(txtDiaChi.getText().equals("")){
+                thongBao();
+                alert.setContentText("Địa Chỉ Khách Hàng Không Được Rỗng");
+            }
+            else if(txtSoDienThoai.getText().equals("")){
+                thongBao();
+                alert.setContentText("Số Điện Thoại Khách Hàng Không Được Rỗng");
+            }
+            else
+            {
+               String sql = String.format("INSERT INTO khachhang(makhachhang, tenkhachhang, gioitinh,"
                 + "cmnd_passport , diachi ,coquan , sodienthoai ,email)"
                 + "VALUES (?, ?, ?, ? , ? ,? ,? , ?)");
-        PreparedStatement p = jdbcConfig.connection.prepareStatement(sql);
-        p.setString(1, txtMaKhachHang.getText());
-        p.setString(2, txtTenKhachHang.getText());
-        p.setString(3, cbbGioiTinh.getValue().toString());
-        p.setString(4, txtCmnd.getText());
-        p.setString(5, txtDiaChi.getText());
-        p.setString(6, txtCoQuan.getText());
-        p.setString(7, txtSoDienThoai.getText());
-        p.setString(8, txtEmail.getText());
-        int rows = jdbcConfig.ExecuteUpdateQuery(p);
-        if (rows != 0) {
-            setTableKhachHang(getKhachHang());
-            thongBao();
-            alert.setContentText("Thêm Thành Công");
+                PreparedStatement p = jdbcConfig.connection.prepareStatement(sql);
+                p.setString(1, txtMaKhachHang.getText());
+                p.setString(2, txtTenKhachHang.getText());
+                p.setString(3, cbbGioiTinh.getValue().toString());
+                p.setString(4, txtCmnd.getText());
+                p.setString(5, txtDiaChi.getText());
+                p.setString(6, txtCoQuan.getText());
+                p.setString(7, txtSoDienThoai.getText());
+                p.setString(8, txtEmail.getText());
+                int rows = jdbcConfig.ExecuteUpdateQuery(p);
+                if (rows != 0) {
+                    setTableKhachHang(getKhachHang());
+                    thongBao();
+                    alert.setContentText("Thêm Thành Công");
+                }          
+            }
+        } catch (Exception e) {
         }
+        
     }
 
     private void deleteKhachHang() throws SQLException {
@@ -218,31 +243,52 @@ public class KhachHangController implements Initializable {
     }
 
     private void updateKhachHang() throws SQLException {
-
-        String sql = String.format("UPDATE khachhang SET tenkhachhang = ?,\n"
-                + "gioitinh = ?,\n"
-                + "cmnd_passport = ?,\n"
-                + "diachi = ?,\n"
-                + "coquan = ?,\n"
-                + "sodienthoai = ?,\n"
-                + "email = ?\n"
-                + "WHERE makhachhang = ?;"
-        );
-        PreparedStatement p = jdbcConfig.connection.prepareStatement(sql);
-        p.setString(1, txtTenKhachHang.getText());
-        p.setString(2, cbbGioiTinh.getValue().toString());
-        p.setString(3, txtCmnd.getText());
-        p.setString(4, txtDiaChi.getText());
-        p.setString(5, txtCoQuan.getText());
-        p.setString(6, txtSoDienThoai.getText());
-        p.setString(7, txtEmail.getText());
-        p.setString(8, txtMaKhachHang.getText());
-        int row = p.executeUpdate();
-        if (row == 1) {
-            setTableKhachHang(getKhachHang());
-            thongBao();
-            alert.setContentText("Sửa Thành Công");
+        try {
+            if(txtMaKhachHang.getText().equals("")){
+                thongBao();
+                alert.setContentText("Mã Khách Hàng Không Được Rỗng");
+            }
+            else if(txtTenKhachHang.getText().equals("")){
+                thongBao();
+                alert.setContentText("Tên Khách Hàng Không Được Rỗng");
+            }
+            else if(txtDiaChi.getText().equals("")){
+                thongBao();
+                alert.setContentText("Địa Chỉ Khách Hàng Không Được Rỗng");
+            }
+            else if(txtSoDienThoai.getText().equals("")){
+                thongBao();
+                alert.setContentText("Số Điện Thoại Khách Hàng Không Được Rỗng");
+            }
+            else
+            {
+               String sql = String.format("UPDATE khachhang SET tenkhachhang = ?,\n"
+                                                + "gioitinh = ?,\n"
+                                                + "cmnd_passport = ?,\n"
+                                                + "diachi = ?,\n"
+                                                + "coquan = ?,\n"
+                                                + "sodienthoai = ?,\n"
+                                                + "email = ?\n"
+                                                + "WHERE makhachhang = ?;");
+                PreparedStatement p = jdbcConfig.connection.prepareStatement(sql);
+                p.setString(1, txtTenKhachHang.getText());
+                p.setString(2, cbbGioiTinh.getValue().toString());
+                p.setString(3, txtCmnd.getText());
+                p.setString(4, txtDiaChi.getText());
+                p.setString(5, txtCoQuan.getText());
+                p.setString(6, txtSoDienThoai.getText());
+                p.setString(7, txtEmail.getText());
+                p.setString(8, txtMaKhachHang.getText());
+                int row = p.executeUpdate();
+                if (row == 1) {
+                    setTableKhachHang(getKhachHang());
+                    thongBao();
+                    alert.setContentText("Sửa Thành Công");
+                }         
+            }
+        } catch (Exception e) {
         }
+        
     }
 
     private void ClearKhachHang() throws SQLException {
