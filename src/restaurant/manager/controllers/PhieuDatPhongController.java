@@ -46,6 +46,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import restaurant.manager.MainController;
 import restaurant.manager.models.KiemTraPhong;
 import restaurant.manager.models.PhieuDatPhong;
 import restaurant.manager.models.Phong;
@@ -156,6 +157,9 @@ public class PhieuDatPhongController implements Initializable {
     private final String BUSY = "busy";
     private final String CANCEL = "cancel";
     private final String FINISH = "finish";
+    private final String DADAT = "Đã đặt";
+    private final String PHONGTRONG = "Phòng trống";
+    private final String HETPHONG = "Hết phòng";
     public String user = "admin";
     @FXML
     private Tab tabIndex1;
@@ -275,21 +279,7 @@ public class PhieuDatPhongController implements Initializable {
         while (r.next()) {
             lblMaKhachHang.setText(r.getString(1));
             lblTenKhachHang.setText(r.getString(2));
-            if (null == r.getString(3)) {
-                lblGioiTinh.setText("");
-            } else {
-                switch (r.getString(3)) {
-                    case "1":
-                        lblGioiTinh.setText("Nam");
-                        break;
-                    case "0":
-                        lblGioiTinh.setText("Nữ");
-                        break;
-                    default:
-                        lblGioiTinh.setText("");
-                        break;
-                }
-            }
+            lblGioiTinh.setText(r.getString(3));
             lblCMND.setText(r.getString(4));
             lblDiaChi.setText(r.getString(5));
             lblCoQuan.setText(r.getString(6));
@@ -328,11 +318,25 @@ public class PhieuDatPhongController implements Initializable {
                 );
                 if (result.get() == ButtonType.YES) {
                     listPhongDat.remove(value);
+                    recoverTrangThaiPhong(value.getMaPhong());
                     deletePhongDaDat(value);
                 }
             });
         });
         jdbcConfig.setTableView(tblPhongDat, mapCol, listPhongDat);
+    }
+
+    private void recoverTrangThaiPhong(String idPhong) {
+        try {
+            String sql = "UPDATE phong SET trangthai = ?\n"
+                    + "WHERE maphong = ?";
+            PreparedStatement p = jdbcConfig.connection.prepareStatement(sql);
+            p.setString(1, PHONGTRONG);
+            p.setString(2, idPhong);
+            jdbcConfig.ExecuteUpdateQuery(p);
+        } catch (SQLException ex) {
+            Logger.getLogger(PhieuDatPhongController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     private void deletePhongDaDat(Phong phong) {
@@ -583,15 +587,33 @@ public class PhieuDatPhongController implements Initializable {
             pInsertPhong.setString(3, id);
             pInsertPhong.setString(4, item.getMaPhong());
             i = jdbcConfig.ExecuteUpdateQuery(pInsertPhong);
+            if (i == 1) {
+                int j = updateTrangThaiPhong(item.getMaPhong(), DADAT);
+                if (j == 0) {
+                    i = 0;
+                }
+            }
         }
 
         return i;
     }
-    
-    private void insertTrangThaiPhong(String idPhong){
-        String sql = "INSERT INTO trangthaiphong(maphong,trangthai) ";
+
+    private int updateTrangThaiPhong(String idPhong, String trangThai) {
+        int i = 0;
+        try {
+            String sql = "UPDATE phong SET trangthai = ?\n"
+                    + "WHERE maphong = ?";
+
+            PreparedStatement p = jdbcConfig.connection.prepareStatement(sql);
+            p.setString(1, trangThai);
+            p.setString(2, idPhong);
+            i = jdbcConfig.ExecuteUpdateQuery(p);
+        } catch (SQLException ex) {
+            Logger.getLogger(PhieuDatPhongController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return i;
     }
-    
+
     @FXML
     public void datPhong(ActionEvent a) throws SQLException {
         try {
@@ -618,6 +640,7 @@ public class PhieuDatPhongController implements Initializable {
                     pInsertPDP.close();
                     int i = insertChiTietDatPhong(id);
                     if (i == 1) {
+                        tblPhongDat.getItems().clear();
                         util.AlertCustom.setAlertInfo("Thông báo",
                                 "Đặt phòng thành công", "Mã phiếu : " + id
                                 + "\nKhách hàng : " + lblTenKhachHang.getText()
@@ -633,10 +656,6 @@ public class PhieuDatPhongController implements Initializable {
                     }
                     jdbcConfig.connection.commit();
                     setTablePhieuDatPhong();
-
-                    PhieuDatPhong pdp = new PhieuDatPhong(id, lblMaKhachHang.getText(),
-                            Integer.valueOf(txtSoNguoi.getText()), Timestamp.valueOf(getNgayDen()),
-                            Timestamp.valueOf(getNgayDi()), WAITTING);
 
                 }
             }
@@ -657,7 +676,7 @@ public class PhieuDatPhongController implements Initializable {
     }
 
     @FXML
-    private void huyDatPhong(ActionEvent e) throws SQLException {
+    public void huyDatPhong(ActionEvent e) throws SQLException {
         if (!"------".equals(lblMaPhieuDat.getText())) {
             if (!getTingTrang().equals(WAITTING)) {
                 setAlertInfo("Thông báo", "Hủy không thành công",
@@ -676,6 +695,9 @@ public class PhieuDatPhongController implements Initializable {
                     p.setString(2, lblMaPhieuDat.getText());
                     int result = jdbcConfig.ExecuteUpdateQuery(p);
                     if (result == 1) {
+                        listPhongDat.forEach((phong) -> {
+                            updateTrangThaiPhong(phong.getMaPhong(), PHONGTRONG);
+                        });
                         setAlertInfo("Thông báo", "Hủy đặt phòng thành công",
                                 "Mã phiếu : " + lblMaPhieuDat.getText()
                                 + "\nTên khách hàng : " + lblTenKhachHang.getText());
@@ -709,8 +731,10 @@ public class PhieuDatPhongController implements Initializable {
                 insertChiTietDatPhong(getMaPhieuDat());
                 if (i == 1) {
                     setTablePhieuDatPhong();
+                    setTableChiTietDatPhong();
                     setAlertInfo("Thông báo", "Cập nhật thành công",
                             "Mã phiếu đặt : " + lblMaPhieuDat.getText());
+
                     p.close();
                 }
             }
@@ -718,9 +742,9 @@ public class PhieuDatPhongController implements Initializable {
     }
 
     @FXML
-    private void nhanPhong(ActionEvent e) throws SQLException {
-        Date now = new Date();
+    public void nhanPhong(ActionEvent e) throws SQLException {
 
+        Date now = new Date();
         SimpleDateFormat timeFormat = new SimpleDateFormat("dd-MM-yyyy");
         String current_time = timeFormat.format(now);
         String ngayden;
@@ -769,10 +793,14 @@ public class PhieuDatPhongController implements Initializable {
                         pInserPhieuThue.setString(3, user);
 
                         int u = jdbcConfig.ExecuteUpdateQuery(pInserPhieuThue);
-                        jdbcConfig.connection.commit();
-                        if (u == 1) {
-                            setTablePhieuDatPhong();
 
+                        if (u == 1) {
+                            listPhongDat = getChiTietDatPhongById(getMaPhieuDat());
+                            listPhongDat.forEach((phong) -> {
+                                updateTrangThaiPhong(phong.getMaPhong(), HETPHONG);
+                            });
+                            jdbcConfig.connection.commit();
+                            setTablePhieuDatPhong();
                             openFormPhieuThuePhong(idPhieuThue);
                             pInserPhieuThue.close();
                             pUpdatePhong.close();

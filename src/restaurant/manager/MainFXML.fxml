@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.shape.*?>
 <?import java.net.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.text.*?>
@@ -15,19 +16,19 @@
    <top>
       <HBox alignment="BASELINE_CENTER" prefHeight="77.0" prefWidth="978.0" styleClass="vbox" BorderPane.alignment="CENTER">
          <children>
-            <HBox alignment="CENTER" prefHeight="82.0" prefWidth="147.0">
+            <HBox alignment="CENTER_LEFT" prefHeight="77.0" prefWidth="228.0">
                <children>
-                  <ImageView fitHeight="82.0" fitWidth="106.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="78.0" fitWidth="215.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../image/LOGO%20TRUONG.png" />
                      </image>
                   </ImageView>
                </children></HBox>
-            <HBox alignment="CENTER_LEFT" prefHeight="82.0" prefWidth="727.0">
+            <HBox alignment="CENTER_LEFT" prefHeight="78.0" prefWidth="636.0">
                <children>
                   <Pane prefHeight="77.0" prefWidth="368.0">
                      <children>
-                        <JFXTextField fx:id="txtTimKiem" alignment="BASELINE_LEFT" focusColor="#111111" layoutX="14.0" layoutY="26.0" onInputMethodTextChanged="#timKiemPhong" onKeyReleased="#timKiemPhong" prefHeight="25.0" prefWidth="213.0" promptText="Tìm kiếm phòng">
+                        <JFXTextField fx:id="txtTimKiem" alignment="BASELINE_LEFT" focusColor="LIGHTGREEN" focusTraversable="false" layoutX="14.0" layoutY="26.0" onInputMethodTextChanged="#timKiemPhong" onKeyReleased="#timKiemPhong" prefHeight="25.0" prefWidth="213.0" promptText="Tìm kiếm phòng" unFocusColor="#5dbd3f">
                            <opaqueInsets>
                               <Insets />
                            </opaqueInsets>
@@ -44,9 +45,9 @@
                   </Pane>
                </children>
             </HBox>
-            <HBox prefHeight="100.0" prefWidth="131.0">
+            <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="131.0">
                <children>
-                  <VBox fx:id="paneUser" alignment="CENTER" prefHeight="77.0" prefWidth="132.0">
+                  <VBox fx:id="paneUser" alignment="CENTER" prefHeight="78.0" prefWidth="112.0">
                      <children>
                         <ImageView fitHeight="31.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -54,7 +55,7 @@
                            </image>
                         </ImageView>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Xin chào" />
-                        <Text fx:id="lblUser" strokeType="OUTSIDE" strokeWidth="0.0" text="User" />
+                        <Text fx:id="lblUser" fill="#2ed769" stroke="#70eed9" strokeType="OUTSIDE" strokeWidth="0.5" text="User" />
                      </children>
                   </VBox>
                </children>
@@ -245,13 +246,76 @@
       </VBox>
    </left>
    <center>
-      <Pane fx:id="paneDSPhong" prefHeight="458.0" prefWidth="823.0" BorderPane.alignment="CENTER">
+      <Pane fx:id="paneDSPhong" prefHeight="474.0" prefWidth="772.0" styleClass="body" BorderPane.alignment="CENTER">
          <opaqueInsets>
             <Insets />
          </opaqueInsets></Pane>
    </center>
    <right>
-      <VBox prefHeight="505.0" prefWidth="51.0" BorderPane.alignment="CENTER" />
+      <VBox alignment="TOP_CENTER" prefHeight="505.0" prefWidth="51.0" spacing="10.0">
+         <children>
+            <StackPane fx:id="imgRefresh" prefHeight="35.0" prefWidth="51.0">
+               <children>
+                  <ImageView fitHeight="39.0" fitWidth="39.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../image/icon/reload.png" />
+                     </image>
+                     <cursor>
+                        <Cursor fx:constant="DEFAULT" />
+                     </cursor>
+                  </ImageView>
+                  <Label fx:id="lblTongPhong" text="0" />
+               </children>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </StackPane>
+            <StackPane fx:id="filterPT" prefHeight="30.0" prefWidth="47.0">
+               <children>
+                  <Circle fill="DODGERBLUE" radius="19.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" styleClass="circle-default">
+                     <cursor>
+                        <Cursor fx:constant="DEFAULT" />
+                     </cursor>
+                  </Circle>
+                  <Label fx:id="lblPhongT" text="0" />
+               </children>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </StackPane>
+            <StackPane fx:id="filterPD" prefHeight="25.0" prefWidth="45.0">
+               <children>
+                  <Circle fill="DODGERBLUE" radius="19.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" styleClass="circle-waitting">
+                     <cursor>
+                        <Cursor fx:constant="DEFAULT" />
+                     </cursor>
+                  </Circle>
+                  <Label fx:id="lblPhongDat" text="0" />
+               </children>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </StackPane>
+            <StackPane fx:id="filterHP" prefHeight="17.0" prefWidth="25.0">
+               <children>
+                  <Circle fill="DODGERBLUE" radius="19.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" styleClass="circle-busy">
+                     <cursor>
+                        <Cursor fx:constant="DEFAULT" />
+                     </cursor>
+                  </Circle>
+                  <Label fx:id="lblHetPhong" text="0" />
+               </children>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </StackPane>
+         </children>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <padding>
+            <Insets top="30.0" />
+         </padding></VBox>
    </right>
    <stylesheets>
       <URL value="@css/mainfxml.css" />

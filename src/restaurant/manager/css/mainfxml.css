@@ -29,7 +29,7 @@ and open the template in the editor.
     -fx-text-alignment: center;
 }
 .room-waitting:hover{
-    -fx-background-color:#868F92;
+    -fx-background-color:#5DBD3F;
     -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.4) , 5, 0.0 , 0 , 1 );
     -fx-text-alignment: center;
 }
@@ -50,6 +50,28 @@ and open the template in the editor.
     -fx-background-color:#90EE90;
 }
 
-.vbox{
-    -fx-background-color:#90EE90;
+.body {
+    -fx-background-image: url(../../../image/home.jpg);
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: 100% 100%;
+}
+
+.circle-waitting{
+    -fx-fill : #90EE90;
+}
+.circle-busy{
+    -fx-fill : #D3BA65;
+}
+.circle-default{
+    -fx-fill: #CCCCCC;
+}
+
+.circle-waitting :hover{
+    -fx-fill : #5DBD3F;
+}
+.circle-busy :hover{
+    -fx-fill : #BE9819;
+}
+.circle-default :hover{
+    -fx-fill: #B3B3B3;
 }
