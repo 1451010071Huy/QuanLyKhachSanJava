@@ -124,6 +124,7 @@ public class HoaDonController implements Initializable {
     private ObservableList<DichVuSuDung> listDichVuSuDung = null;
     private ObservableList<PhongSuDung> listPhongSudung = null;
     private final String FINISH = "finish";
+    private final String PHONGTRONG = "Phòng Trống";
     private final String username = "admin";
     private int tongTienDichVu = 0;
     private int tongTienPhong = 0;
@@ -316,7 +317,8 @@ public class HoaDonController implements Initializable {
                     int j = jdbcConfig.ExecuteUpdateQuery(p2);
                     if (j == 1) {
                         listPhongSudung.forEach((value)->{
-                            updateTrangThaiPhong(value.getMaPhong(), "Phòng trống");
+                            
+                            updateTrangThaiPhong(value.getMaPhong(), PHONGTRONG);
                         });
                         p.close();
                         p2.close();

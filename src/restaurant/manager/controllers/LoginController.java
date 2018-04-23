@@ -53,9 +53,9 @@ public class LoginController implements Initializable {
 
     public String checkDangNhap() {
 
-        if ("".equals(txtMatKhau.getText())) {
+        if ("".equals(txtMatKhau.getText().trim())) {
             return "Mật khẩu không được để trống";
-        } else if ("".equals(txtDangNhap.getText())) {
+        } else if ("".equals(txtDangNhap.getText().trim())) {
             return "Tên đăng nhập không được để trống";
         } else {
             try {
