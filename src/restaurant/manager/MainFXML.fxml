@@ -14,19 +14,19 @@
 
 <BorderPane fx:id="boderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="605.0" prefWidth="978.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="restaurant.manager.MainController">
    <top>
-      <HBox alignment="BASELINE_CENTER" prefHeight="77.0" prefWidth="978.0" styleClass="vbox" BorderPane.alignment="CENTER">
+      <HBox alignment="BASELINE_CENTER" prefHeight="77.0" prefWidth="978.0" spacing="10.0" styleClass="vbox">
          <children>
             <HBox alignment="CENTER_LEFT" prefHeight="77.0" prefWidth="228.0">
                <children>
-                  <ImageView fitHeight="78.0" fitWidth="215.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="65.0" fitWidth="232.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../image/LOGO%20TRUONG.png" />
                      </image>
                   </ImageView>
                </children></HBox>
-            <HBox alignment="CENTER_LEFT" prefHeight="78.0" prefWidth="636.0">
+            <HBox alignment="CENTER_LEFT" prefHeight="77.0" prefWidth="642.0">
                <children>
-                  <Pane prefHeight="77.0" prefWidth="368.0">
+                  <Pane prefHeight="77.0" prefWidth="258.0">
                      <children>
                         <JFXTextField fx:id="txtTimKiem" alignment="BASELINE_LEFT" focusColor="LIGHTGREEN" focusTraversable="false" layoutX="14.0" layoutY="26.0" onInputMethodTextChanged="#timKiemPhong" onKeyReleased="#timKiemPhong" prefHeight="25.0" prefWidth="213.0" promptText="Tìm kiếm phòng" unFocusColor="#5dbd3f">
                            <opaqueInsets>
@@ -47,7 +47,7 @@
             </HBox>
             <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="131.0">
                <children>
-                  <VBox fx:id="paneUser" alignment="CENTER" prefHeight="78.0" prefWidth="112.0">
+                  <VBox fx:id="paneUser" alignment="CENTER" prefHeight="77.0" prefWidth="132.0">
                      <children>
                         <ImageView fitHeight="31.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -64,7 +64,7 @@
       </HBox>
    </top>
    <left>
-      <VBox prefHeight="410.0" prefWidth="155.0" spacing="5.0" BorderPane.alignment="CENTER">
+      <VBox prefHeight="410.0" prefWidth="155.0" spacing="5.0">
          <children>
             <HBox fx:id="hbxThuePhong" alignment="CENTER_LEFT" onMouseClicked="#hboxThuePhongClick" prefHeight="33.0" prefWidth="155.0" spacing="5.0" styleClass="vbox-hover">
                <children>
@@ -261,10 +261,13 @@
                         <Image url="@../../image/icon/reload.png" />
                      </image>
                      <cursor>
-                        <Cursor fx:constant="DEFAULT" />
+                        <Cursor fx:constant="HAND" />
                      </cursor>
                   </ImageView>
-                  <Label fx:id="lblTongPhong" text="0" />
+                  <Label fx:id="lblTongPhong" text="0">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor></Label>
                </children>
                <cursor>
                   <Cursor fx:constant="HAND" />
@@ -274,10 +277,13 @@
                <children>
                   <Circle fill="DODGERBLUE" radius="19.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" styleClass="circle-default">
                      <cursor>
-                        <Cursor fx:constant="DEFAULT" />
+                        <Cursor fx:constant="HAND" />
                      </cursor>
                   </Circle>
-                  <Label fx:id="lblPhongT" text="0" />
+                  <Label fx:id="lblPhongT" text="0">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor></Label>
                </children>
                <cursor>
                   <Cursor fx:constant="HAND" />
@@ -287,10 +293,13 @@
                <children>
                   <Circle fill="DODGERBLUE" radius="19.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" styleClass="circle-waitting">
                      <cursor>
-                        <Cursor fx:constant="DEFAULT" />
+                        <Cursor fx:constant="HAND" />
                      </cursor>
                   </Circle>
-                  <Label fx:id="lblPhongDat" text="0" />
+                  <Label fx:id="lblPhongDat" text="0">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor></Label>
                </children>
                <cursor>
                   <Cursor fx:constant="HAND" />
@@ -300,10 +309,13 @@
                <children>
                   <Circle fill="DODGERBLUE" radius="19.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" styleClass="circle-busy">
                      <cursor>
-                        <Cursor fx:constant="DEFAULT" />
+                        <Cursor fx:constant="HAND" />
                      </cursor>
                   </Circle>
-                  <Label fx:id="lblHetPhong" text="0" />
+                  <Label fx:id="lblHetPhong" text="0">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor></Label>
                </children>
                <cursor>
                   <Cursor fx:constant="HAND" />

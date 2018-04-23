@@ -157,9 +157,9 @@ public class PhieuDatPhongController implements Initializable {
     private final String BUSY = "busy";
     private final String CANCEL = "cancel";
     private final String FINISH = "finish";
-    private final String DADAT = "Đã đặt";
-    private final String PHONGTRONG = "Phòng trống";
-    private final String HETPHONG = "Hết phòng";
+    private final String DADAT = "Đã Đặt";
+    private final String PHONGTRONG = "Phòng Trống";
+    private final String HETPHONG = "Hết Phòng";
     public String user = "admin";
     @FXML
     private Tab tabIndex1;
