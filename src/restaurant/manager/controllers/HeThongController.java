@@ -102,6 +102,12 @@ public class HeThongController implements Initializable {
         tblColChucVu.setCellValueFactory(new PropertyValueFactory<>("chucVu"));
     }
     private void insertHeThong() throws SQLException {
+        if(txtMaNhanVien.getText().equals("Select * from hethong")){
+            thongBao();
+            alert.setContentText("Mã Nhân Viên Đã Có Tài Khoản");
+        }
+        else
+        {
         String sql = String.format("INSERT INTO hethong(username, manhanvien,password)"
                 + "VALUES (?, ?, ?)");
 
@@ -116,15 +122,16 @@ public class HeThongController implements Initializable {
             alert.setContentText("Thêm Thành Công");
         }
     }
+    }
     private void updateHeThong() throws SQLException {
         String sql = String.format("UPDATE hethong SET \n"
-                + "manhanvien = ?,\n"
                 + "password = ?\n"
-                + "WHERE username = ? ");
+                + "WHERE username = ? "
+                + "and manhanvien = ?");
         PreparedStatement p = jdbcConfig.connection.prepareStatement(sql);
-        p.setString(1, txtMaNhanVien.getText());
-        p.setString(2, md5(txtMatKhau.getText()));
-        p.setString(3, txtTenNhanVien.getText());
+        p.setString(1, md5(txtMatKhau.getText()));
+        p.setString(2, txtTenNhanVien.getText());
+        p.setString(3, txtMaNhanVien.getText());
         int row = p.executeUpdate();
         if (row == 1) {
             setTableHeThong(getHeThong());
