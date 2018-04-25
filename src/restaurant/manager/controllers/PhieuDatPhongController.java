@@ -46,7 +46,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import restaurant.manager.MainController;
 import restaurant.manager.models.KiemTraPhong;
 import restaurant.manager.models.PhieuDatPhong;
 import restaurant.manager.models.Phong;
@@ -147,7 +146,11 @@ public class PhieuDatPhongController implements Initializable {
     private TabPane tabIndex;
     @FXML
     private Tab tabIndex2;
-
+    @FXML
+    private Tab tabIndex1;
+    @FXML
+    private Button btnNhanPhong;
+    
     private ObservableList<PhieuDatPhong> listPhieuDatPhong = null;
     private ObservableList<Phong> listPhongDat = null;
     private ObservableList<KiemTraPhong> listPhongKT = null;
@@ -161,10 +164,6 @@ public class PhieuDatPhongController implements Initializable {
     private final String PHONGTRONG = "Phòng Trống";
     private final String HETPHONG = "Hết Phòng";
     public String user = "admin";
-    @FXML
-    private Tab tabIndex1;
-    @FXML
-    private Button btnNhanPhong;
 
     private ObservableList<PhieuDatPhong> getPhieuDatPhong() {
 
@@ -270,21 +269,29 @@ public class PhieuDatPhongController implements Initializable {
     }
 
     @FXML
-    private void setKhachHang(ActionEvent e) throws SQLException {
+    public void setKhachHang(ActionEvent e) {
+        getThongTinKH();
+    }
 
-        String sql = "SELECT * FROM khachhang WHERE tenkhachhang = ?";
-        PreparedStatement p = jdbcConfig.connection.prepareStatement(sql);
-        p.setString(1, cbbKhachHang.getValue());
-        ResultSet r = jdbcConfig.ExecuteQuery(p);
-        while (r.next()) {
-            lblMaKhachHang.setText(r.getString(1));
-            lblTenKhachHang.setText(r.getString(2));
-            lblGioiTinh.setText(r.getString(3));
-            lblCMND.setText(r.getString(4));
-            lblDiaChi.setText(r.getString(5));
-            lblCoQuan.setText(r.getString(6));
-            lblDienThoai.setText(r.getString(7));
-            lblEmail.setText(r.getString(8));
+    private void getThongTinKH() {
+        try {
+            String sql = "SELECT * FROM khachhang WHERE tenkhachhang = ?";
+            PreparedStatement p = jdbcConfig.connection.prepareStatement(sql);
+            p.setString(1, cbbKhachHang.getValue());
+            ResultSet r = jdbcConfig.ExecuteQuery(p);
+            while (r.next()) {
+                lblMaKhachHang.setText(r.getString(1));
+                lblTenKhachHang.setText(r.getString(2));
+                lblGioiTinh.setText(r.getString(3));
+                lblCMND.setText(r.getString(4));
+                lblDiaChi.setText(r.getString(5));
+                lblCoQuan.setText(r.getString(6));
+                lblDienThoai.setText(r.getString(7));
+                lblEmail.setText(r.getString(8));
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(PhieuDatPhongController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -300,7 +307,20 @@ public class PhieuDatPhongController implements Initializable {
         jdbcConfig.setTableView(tblPhieuDatDS, mapCol, getPhieuDatPhong());
     }
 
-    private void setTableChiTietDatPhong() throws SQLException {
+    public void sendMaPhieuDat(String maPhieuDat) {
+        lblMaPhieuDat.setText(maPhieuDat);
+        listPhieuDatPhong.forEach((v) -> {
+            cbbKhachHang.setValue(v.getTenKH());
+            txtSoNguoi.setText(String.valueOf(v.getSoNguoi()));
+            txtDatCoc.setText(String.valueOf(v.getSoTienCoc()));
+            dpkNgayDen.setValue(v.getNgayDen().toLocalDateTime().toLocalDate());
+            dpkNgayDi.setValue(v.getNgayDi().toLocalDateTime().toLocalDate());
+            setTableChiTietDatPhong();
+            getThongTinKH();
+        });
+    }
+
+    private void setTableChiTietDatPhong() {
         Map<TableColumn, String> mapCol = new HashMap<>();
         mapCol.put(tblColPhong, "maPhong");
         mapCol.put(tblColLoaiPhong, "maLoai");
@@ -494,6 +514,12 @@ public class PhieuDatPhongController implements Initializable {
                     "Ngày đi phải lớn hơn ngày đến",
                     "Vui lòng nhập lại ngày đến và ngày đi");
             return false;
+        } else if (dpkNgayDen.getValue().toEpochDay() == dpkNgayDi.getValue().toEpochDay()) {
+            setAlertInfo(
+                    "Thông báo",
+                    "Ngày đi phải khác ngày đến",
+                    "Vui lòng nhập lại ngày đến và ngày đi");
+            return false;
         } else {
             return true;
         }
@@ -545,24 +571,21 @@ public class PhieuDatPhongController implements Initializable {
 
     @FXML
     public void selectItem(MouseEvent e) {
-        try {
-            if (tblPhieuDatDS.getSelectionModel().getSelectedItem() != null) {
-                lblMaPhieuDat.setText(tblPhieuDatDS.getSelectionModel()
-                        .getSelectedItem().getMaPhieuDat());
-                cbbKhachHang.setValue(tblPhieuDatDS.getSelectionModel()
-                        .getSelectedItem().getTenKH());
-                txtSoNguoi.setText(String.valueOf(tblPhieuDatDS.getSelectionModel()
-                        .getSelectedItem().getSoNguoi()));
-                txtDatCoc.setText(String.valueOf(tblPhieuDatDS.getSelectionModel()
-                        .getSelectedItem().getSoTienCoc()));
-                dpkNgayDen.setValue(tblPhieuDatDS.getSelectionModel()
-                        .getSelectedItem().getNgayDen().toLocalDateTime().toLocalDate());
-                dpkNgayDi.setValue(tblPhieuDatDS.getSelectionModel()
-                        .getSelectedItem().getNgayDi().toLocalDateTime().toLocalDate());
-                setTableChiTietDatPhong();
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(PhieuDatPhongController.class.getName()).log(Level.SEVERE, null, ex);
+        if (tblPhieuDatDS.getSelectionModel().getSelectedItem() != null) {
+            lblMaPhieuDat.setText(tblPhieuDatDS.getSelectionModel()
+                    .getSelectedItem().getMaPhieuDat());
+            cbbKhachHang.setValue(tblPhieuDatDS.getSelectionModel()
+                    .getSelectedItem().getTenKH());
+            txtSoNguoi.setText(String.valueOf(tblPhieuDatDS.getSelectionModel()
+                    .getSelectedItem().getSoNguoi()));
+            txtDatCoc.setText(String.valueOf(tblPhieuDatDS.getSelectionModel()
+                    .getSelectedItem().getSoTienCoc()));
+            dpkNgayDen.setValue(tblPhieuDatDS.getSelectionModel()
+                    .getSelectedItem().getNgayDen().toLocalDateTime().toLocalDate());
+            dpkNgayDi.setValue(tblPhieuDatDS.getSelectionModel()
+                    .getSelectedItem().getNgayDi().toLocalDateTime().toLocalDate());
+            setTableChiTietDatPhong();
+
         }
     }
 
@@ -660,7 +683,7 @@ public class PhieuDatPhongController implements Initializable {
                 }
             }
         } catch (SQLException ex) {
-            Logger.getLogger(PhieuDatPhongController.class.getName()).log(Level.SEVERE, null, ex);
+            jdbcConfig.connection.rollback();
         }
     }
 
