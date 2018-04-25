@@ -35,6 +35,7 @@ import restaurant.manager.models.KhachHang;
 import restaurant.manager.models.PhieuThuePhong;
 import static util.AlertCustom.setAlertConf;
 import static util.FormatNumber.formatNumber;
+
 /**
  * FXML Controller class
  *
@@ -401,22 +402,32 @@ public class PhieuThuePhongController implements Initializable {
             Logger.getLogger(PhieuThuePhongController.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        lblTongThanhTien.setText(formatNumber((int)tongTien) + " VNĐ");
+        lblTongThanhTien.setText(formatNumber((int) tongTien) + " VNĐ");
     }
 
     public void sendIdPhieuThue(String idPhieuThue) {
         cbbMaPhieuThue.getSelectionModel().select(idPhieuThue);
     }
 
+    public void sendIdPhieuThueVaPhong(String idPhieuThue, String idPhong) {
+        cbbMaPhieuThue.getSelectionModel().select(idPhieuThue);
+        getPhieuThuePhong();
+        getMaPhong();
+        getTableDichVu();
+        cbbMaPhong.getSelectionModel().select(idPhong);
+        getTableSuDungDV();
+
+    }
+
     private void setDefaultValue() {
         jdbcConfig.Connect();
         txtNgaySDDichVu.setEditable(false);
         txtNgaySDDichVu.setText(util.CurrentTime.getCurrentTime());
-        getTongThanhTien();
-        getTableDichVu();
         getPhieuThuePhong();
         getTableSuDungDV();
-
+        getTongThanhTien();
+        getTableDichVu();
+        getMaPhong();
     }
 
     @Override

@@ -36,7 +36,7 @@ public class Phong implements Serializable {
         this.xoaPhong = new Button("X");
     }
 
-    public Phong(String maPhong, String maLoai, double gia, int soNguoi ) {
+    public Phong(String maPhong, String maLoai, double gia, int soNguoi) {
         this.maPhong = maPhong;
         this.maLoai = maLoai;
         this.gia = gia;
@@ -49,6 +49,13 @@ public class Phong implements Serializable {
         this.maPhong = maPhong;
         this.maLoai = maLoai;
     }
+
+    public Phong(String maPhong, String maLoai, String trangThai) {
+        this.maPhong = maPhong;
+        this.maLoai = maLoai;
+        this.trangThai = trangThai;
+    }
+
 
     /**
      * @return the maPhong

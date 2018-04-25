@@ -53,9 +53,9 @@ public class LoginController implements Initializable {
 
     public String checkDangNhap() {
 
-        if ("".equals(txtMatKhau.getText())) {
+        if ("".equals(txtMatKhau.getText().trim())) {
             return "Mật khẩu không được để trống";
-        } else if ("".equals(txtDangNhap.getText())) {
+        } else if ("".equals(txtDangNhap.getText().trim())) {
             return "Tên đăng nhập không được để trống";
         } else {
             try {
@@ -65,7 +65,7 @@ public class LoginController implements Initializable {
                 ResultSet r = jdbcConfig.ExecuteQuery(p);
                 while (r.next()) {
                     if (r.getString(1).equals(txtDangNhap.getText().trim())
-                            && r.getString(2).equals(util.MD5Library.md5(txtMatKhau.getText().trim()))) {
+                            && r.getString(2).equals(util.MD5Library.md5(txtMatKhau.getText()))) {
                         FXMLLoader loader = new FXMLLoader(getClass()
                                 .getResource("/restaurant/manager/MainFXML.fxml"));
                         Parent root;

@@ -29,16 +29,21 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import restaurant.manager.controllers.PhieuThuePhongController;
 import restaurant.manager.models.Phong;
 
 /**
@@ -76,22 +81,51 @@ public class MainController implements Initializable {
     private HBox hbxQuanLyTaiKhoan;
     @FXML
     private JFXTextField txtTimKiem;
-    ObservableList<Phong> listPhong = null;
+    @FXML
+    private StackPane filterPT;
+    @FXML
+    private StackPane filterPD;
+    @FXML
+    private StackPane filterHP;
+    @FXML
+    private StackPane imgRefresh;
+    @FXML
+    private Label lblPhongT;
+    @FXML
+    private Label lblPhongDat;
+    @FXML
+    private Label lblHetPhong;
+    @FXML
+    private Label lblTongPhong;
+
+    private final String PHONGTRONG = "Phòng Trống";
+    private final String DADAT = "Đã Đặt";
+    private final String HETPHONG = "Hết Phòng";
+    private final String BUSY = "busy";
+    private int countPhongTrong = 0;
+    private int countPhongDat = 0;
+    private int countHetPhong = 0;
+    private int countTongPhong = 0;
+    ObservableList<Phong> listPhong = FXCollections.observableArrayList();
 
     public void setUsername(String username) {
         this.lblUser.setText(username);
     }
 
-    private ObservableList<Phong> getDSPhong() {
+    public ObservableList<Phong> getDSPhong() {
+        countTongPhong = 0;
         try {
+            paneDSPhong.getChildren().clear();
+            listPhong.clear();
             String sql = "SELECT * FROM phong";
             PreparedStatement p = jdbcConfig.connection.prepareStatement(sql);
             ResultSet r = jdbcConfig.ExecuteQuery(p);
-            listPhong = FXCollections.observableArrayList();
-            while (r.next()) {
-                listPhong.add(new Phong(r.getString(1), r.getString(2)));
-            }
 
+            while (r.next()) {
+                listPhong.add(new Phong(r.getString(1), r.getString(2), r.getString(3)));
+                countTongPhong++;
+            }
+            drawPhong(listPhong);
         } catch (SQLException ex) {
             Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -117,7 +151,6 @@ public class MainController implements Initializable {
     private void setPermistion(String permisstion) {
         switch (permisstion) {
             case "admin":
-                System.out.println("admin");
                 break;
             case "Quản lý":
                 hbxQuanLyTaiKhoan.setDisable(true);
@@ -143,6 +176,7 @@ public class MainController implements Initializable {
             Stage stage = new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);//stage lock form children
             stage.setTitle(titleStage);
+            stage.setResizable(false);
             stage.setScene(scene);
             stage.show();
         } catch (IOException ex) {
@@ -247,16 +281,17 @@ public class MainController implements Initializable {
         listPhong.clear();
         try {
             String sql = "SELECT * FROM phong\n"
-                    + "WHERE maphong LIKE ? OR maloai LIKE ?";
+                    + "WHERE maphong LIKE ? OR maloai LIKE ? OR trangthai LIKE ?";
             PreparedStatement p = jdbcConfig.connection.prepareStatement(sql);
             p.setString(1, "%" + txtTimKiem.getText().trim() + "%");
             p.setString(2, "%" + txtTimKiem.getText().trim() + "%");
+            p.setString(3, "%" + txtTimKiem.getText().trim() + "%");
             ResultSet r = jdbcConfig.ExecuteQuery(p);
 
             while (r.next()) {
-                listPhong.add(new Phong(r.getString(1), r.getString(2)));
+                listPhong.add(new Phong(r.getString(1), r.getString(2), r.getString(3)));
             }
-            drawPhong();
+
         } catch (SQLException ex) {
             Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -268,54 +303,139 @@ public class MainController implements Initializable {
         lblStatus.layoutYProperty().bind(paneDSPhong.heightProperty()
                 .subtract(lblStatus.heightProperty()).divide(2));//Cho nó ra giữa theo chiều cao pane
         if (listPhong.isEmpty()) {
+            lblStatus.setTextFill(Color.WHITE);
             lblStatus.setText("   Không tìm thấy phòng nào.\n"
                     + "Vui lòng sử dụng từ khóa khác!");
         } else {
+            drawPhong(listPhong);
             lblStatus.setText("");
         }
         paneDSPhong.getChildren().add(lblStatus);
     }
 
-    public void drawPhong() {
+    public void drawPhong(ObservableList<Phong> listP) {
         double i = 1;
         int x = 20;
         int y = 20;
-        for (Phong p : listPhong) {
+        countHetPhong = countPhongDat = countPhongTrong = 0;
+        for (Phong p : listP) {
             final int kichThuoc = 80;
             btnPhong = new Button();
             btnPhong.setMinWidth(kichThuoc);
             btnPhong.setMinHeight(kichThuoc);
-            btnPhong.setText(p.getMaPhong() + "\n" + p.getMaLoai());
+            btnPhong.setText(String.format("%s\n%s\n%s",
+                    p.getMaPhong(), p.getMaLoai(), p.getTrangThai()));
             btnPhong.setLayoutX(x);
             btnPhong.setLayoutY(y);
-            x += 100;
+            x += 110;
             i++;
-            if (i == 9) {
+            if (i == 8) {
                 y += kichThuoc + 20;
                 x = 20;
                 i = 1;
+
             }
-            btnPhong.getStyleClass().add("room");
+            switch (p.getTrangThai()) {
+                case DADAT:
+                    btnPhong.getStyleClass().add("room-waitting");
+                    countPhongDat++;
+                    break;
+                case HETPHONG:
+                    countHetPhong++;
+                    btnPhong.getStyleClass().add("room-busy");
+                    break;
+                default:
+                    countPhongTrong++;
+                    btnPhong.getStyleClass().add("room");
+                    break;
+            }
+            lblHetPhong.setText(String.valueOf(countHetPhong));
+            lblPhongDat.setText(String.valueOf(countPhongDat));
+            lblPhongT.setText(String.valueOf(countPhongTrong));
+            lblTongPhong.setText(String.valueOf(countTongPhong));
+
             btnPhong.setCursor(Cursor.HAND);
-            //then you specify the class you would give to the button
             paneDSPhong.getChildren().add(btnPhong); //add button to your pane   
+            btnPhong.setOnAction((e) -> {
+                if (p.getTrangThai().equals(HETPHONG)) {
+                    try {
+                        System.err.println(p.getMaPhong());
+                        String idPhieuDat = openFormDatPhong(p.getMaPhong());
+                        FXMLLoader loader = new FXMLLoader(getClass()
+                                .getResource("views/PhieuThuePhongFXML.fxml"));// set resource file FXML form
+                        Parent root = (Parent) loader.load();
+                        PhieuThuePhongController control = loader.getController();//form Phieuthuephong
+                        control.sendIdPhieuThueVaPhong(idPhieuDat, p.getMaPhong());
+                        Scene scene = new Scene(root);
+                        Stage stage = new Stage();
+                        stage.initModality(Modality.APPLICATION_MODAL);//stage lock form children
+                        stage.setTitle("Quản lý phòng");
+                        stage.setScene(scene);
+                        stage.show();
+                    } catch (IOException ex) {
+                        Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                } else if (p.getTrangThai().equals(PHONGTRONG)) {
+                    try {
+                        FXMLLoader loader = new FXMLLoader(getClass()
+                                .getResource("views/PhieuDatPhongFXML.fxml"));// set resource file FXML form
+                        Parent root = (Parent) loader.load();
+                        Scene scene = new Scene(root);
+                        Stage stage = new Stage();
+                        stage.initModality(Modality.APPLICATION_MODAL);//stage lock form children
+                        stage.setTitle("Phiếu đặt phòng");
+                        stage.setScene(scene);
+                        stage.show();
+                    } catch (IOException ex) {
+                        Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                } else {
+                }
+            });
         }
-        
+
     }
-    
-    private void contextMenu(){
-        paneDSPhong.setOnMouseClicked((e->{
-            
-        }));
-        ContextMenu contextMenu = new ContextMenu();
-        MenuItem hoaDon = new MenuItem("Hóa đơn");
-        contextMenu.getItems().add(hoaDon);
+
+    public String openFormDatPhong(String idPhong) {
+        try {
+            String sql = "SELECT pt.maphieuthue FROM chitietdatphong as ct, "
+                    + "phieudatphong as pd, phieuthuephong as pt\n"
+                    + "WHERE ct.maphieudat = pd.maphieudat AND maphong= ? AND tinhtrang = ?\n"
+                    + "AND pt.maphieudat = pd.maphieudat";
+            PreparedStatement p = jdbcConfig.connection.prepareStatement(sql);
+            p.setString(1, idPhong);
+            p.setString(2, BUSY);
+
+            ResultSet r = jdbcConfig.ExecuteQuery(p);
+            while (r.next()) {
+                return r.getString(1);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return "";
     }
-    
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        jdbcConfig.Connect();
         getDSPhong();
-        drawPhong();
+        imgRefresh.setOnMouseClicked((e) -> {
+            txtTimKiem.setText("");
+            getDSPhong();
+        });
+        filterHP.setOnMouseClicked((e) -> {
+            txtTimKiem.setText(HETPHONG);
+            timKiemPhong();
+        });
+        filterPD.setOnMouseClicked((e) -> {
+            txtTimKiem.setText(DADAT);
+            timKiemPhong();
+        });
+        filterPT.setOnMouseClicked((e) -> {
+            txtTimKiem.setText(PHONGTRONG);
+            timKiemPhong();
+        });
     }
 
 }

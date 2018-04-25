@@ -3,4 +3,7 @@ build/
 nbbuild/
 dist/
 nbdist/
-.nb-gradle/
+/private.xml
+/build.xml
+/manifest.mf
+/applet.policy

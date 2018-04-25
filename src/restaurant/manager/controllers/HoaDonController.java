@@ -124,6 +124,7 @@ public class HoaDonController implements Initializable {
     private ObservableList<DichVuSuDung> listDichVuSuDung = null;
     private ObservableList<PhongSuDung> listPhongSudung = null;
     private final String FINISH = "finish";
+    private final String PHONGTRONG = "Phòng Trống";
     private final String username = "admin";
     private int tongTienDichVu = 0;
     private int tongTienPhong = 0;
@@ -272,6 +273,22 @@ public class HoaDonController implements Initializable {
         }
     }
 
+    private int updateTrangThaiPhong(String idPhong, String trangThai) {
+        int i = 0;
+        try {
+            String sql = "UPDATE phong SET trangthai = ?\n"
+                    + "WHERE maphong = ?";
+
+            PreparedStatement p = jdbcConfig.connection.prepareStatement(sql);
+            p.setString(1, trangThai);
+            p.setString(2, idPhong);
+            i = jdbcConfig.ExecuteUpdateQuery(p);
+        } catch (SQLException ex) {
+            Logger.getLogger(PhieuDatPhongController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return i;
+    }
+
     private void tinhTien() {
         try {
             if (tblPhieuThue.getSelectionModel()
@@ -299,6 +316,10 @@ public class HoaDonController implements Initializable {
                     p2.setString(2, idMaPhieuThue);
                     int j = jdbcConfig.ExecuteUpdateQuery(p2);
                     if (j == 1) {
+                        listPhongSudung.forEach((value)->{
+                            
+                            updateTrangThaiPhong(value.getMaPhong(), PHONGTRONG);
+                        });
                         p.close();
                         p2.close();
                         jdbcConfig.connection.commit();
