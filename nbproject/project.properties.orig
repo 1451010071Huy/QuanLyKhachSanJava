@@ -32,16 +32,12 @@ excludes=
 <<<<<<< HEAD
 <<<<<<< HEAD
 file.reference.jfoenix-1.8.0.jar=C:\\Users\\Luxury\\Downloads\\jar_files\\jfoenix-1.8.0.jar
-file.reference.jfoenix-1.8.0.jar-1=F:\\HUY\\Java\\jar_files\\jfoenix-1.8.0.jar
-file.reference.mssql-jdbc-6.4.0.jre8.jar-1=F:\\HUY\\Java\\sqljdbc_6.4\\enu\\mssql-jdbc-6.4.0.jre8.jar
 =======
-file.reference.jfoenix-1.6.0.jar=C:\\Users\\sky\\Desktop\\New folder (2)\\jfoenix-1.6.0.jar
-file.reference.mssql-jdbc-6.4.0.jre8.jar=C:\\Users\\sky\\Desktop\\New folder (2)\\sqljdbc_6.4\\enu\\mssql-jdbc-6.4.0.jre8.jar
 >>>>>>> thien123
 =======
-file.reference.jfoenix-1.6.0.jar=C:\\Users\\sky\\Desktop\\New folder (2)\\jfoenix-1.6.0.jar
-file.reference.mssql-jdbc-6.4.0.jre8.jar=C:\\Users\\sky\\Desktop\\New folder (2)\\sqljdbc_6.4\\enu\\mssql-jdbc-6.4.0.jre8.jar
 >>>>>>> e680eb076d2c715fc29282adf3dc74c62340fa2c
+file.reference.jfoenix-1.8.0.jar-1=F:\\HUY\\Java\\jar_files\\jfoenix-1.8.0.jar
+file.reference.mssql-jdbc-6.4.0.jre8.jar-1=F:\\HUY\\Java\\sqljdbc_6.4\\enu\\mssql-jdbc-6.4.0.jre8.jar
 includes=**
 # Non-JavaFX jar file creation is deactivated in JavaFX 2.0+ projects
 jar.archive.disabled=true
@@ -49,6 +45,12 @@ jar.compress=false
 javac.classpath=\
     ${javafx.classpath.extension}:\
 <<<<<<< HEAD
+    ${file.reference.mssql-jdbc-6.4.0.jre8.jar-1}:\
+    ${file.reference.jfoenix-1.8.0.jar-1}
+=======
+    ${file.reference.jfoenix-1.8.0.jar-1}:\
+    ${file.reference.mssql-jdbc-6.4.0.jre8.jar-1}
+>>>>>>> e959b5078e317f2a3a1a8f868b1301efb9be6eb9
     <<<<<<< HEAD:\
     ${file.reference.jfoenix-1.8.0.jar-1}
     ${file.reference.jfoenix-1.8.0.jar}:\
@@ -132,6 +134,7 @@ run.classpath=\
     ${dist.jar}:\
     ${javac.classpath}:\
     ${build.classes.dir}
+run.jvmargs=-Djava.security.policy=applet.policy
 run.test.classpath=\
     ${javac.test.classpath}:\
     ${build.test.classes.dir}

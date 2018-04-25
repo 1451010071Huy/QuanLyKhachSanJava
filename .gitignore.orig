@@ -1,0 +1,15 @@
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+<<<<<<< HEAD
+.nb-gradle/
+=======
+/private.xml
+/build.xml
+/manifest.mf
+/applet.policy
+nbproject/
+nbproject/project.properties
+>>>>>>> e959b5078e317f2a3a1a8f868b1301efb9be6eb9
