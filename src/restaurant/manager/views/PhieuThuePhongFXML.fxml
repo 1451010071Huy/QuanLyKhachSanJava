@@ -76,8 +76,9 @@
                   </TableView>
                </content>
             </TitledPane>
-            <HBox alignment="CENTER_RIGHT" prefHeight="30.0" prefWidth="513.0" spacing="10.0">
+            <HBox alignment="CENTER_RIGHT" prefHeight="30.0" prefWidth="513.0" spacing="30.0">
                <children>
+                  <Button fx:id="btnThanhToan" mnemonicParsing="false" text="Thanh toán" />
                   <Label text="Tổng thành tiền : " />
                   <Label fx:id="lblTongThanhTien" text="-----" />
                </children>

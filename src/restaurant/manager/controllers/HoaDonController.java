@@ -289,7 +289,8 @@ public class HoaDonController implements Initializable {
         return i;
     }
 
-    private void tinhTien() {
+    private void tinhTien() throws SQLException {
+        PreparedStatement p = null, p2 = null;
         try {
             if (tblPhieuThue.getSelectionModel()
                     .getSelectedItem() != null) {
@@ -299,7 +300,7 @@ public class HoaDonController implements Initializable {
                 String sql = "INSERT INTO hoadon(mahoadon, ngaythanhtoan,"
                         + "tongtien,maphieuthue,makhachhang,username)\n"
                         + "VALUES(?,?,?,?,?,?)";
-                PreparedStatement p = jdbcConfig.connection.prepareStatement(sql);
+                p = jdbcConfig.connection.prepareStatement(sql);
                 p.setString(1, lblMaHoaDon.getText());
                 p.setString(2, txtNgayThanhToan.getText());
                 p.setInt(3, tienThanhToan);
@@ -311,13 +312,13 @@ public class HoaDonController implements Initializable {
                     String capNhatTrangThai = "UPDATE phieudatphong SET tinhtrang = ?\n"
                             + "FROM phieudatphong as pd, phieuthuephong as pt\n"
                             + "WHERE pt.maphieudat = pd.maphieudat AND pt.maphieuthue = ?";
-                    PreparedStatement p2 = jdbcConfig.connection.prepareStatement(capNhatTrangThai);
+                    p2 = jdbcConfig.connection.prepareStatement(capNhatTrangThai);
                     p2.setString(1, FINISH);
                     p2.setString(2, idMaPhieuThue);
                     int j = jdbcConfig.ExecuteUpdateQuery(p2);
                     if (j == 1) {
-                        listPhongSudung.forEach((value)->{
-                            
+                        listPhongSudung.forEach((value) -> {
+
                             updateTrangThaiPhong(value.getMaPhong(), PHONGTRONG);
                         });
                         p.close();
@@ -337,7 +338,15 @@ public class HoaDonController implements Initializable {
                         "Vui lòng chọn phiếu để thanh toán");
             }
         } catch (SQLException ex) {
-            Logger.getLogger(HoaDonController.class.getName()).log(Level.SEVERE, null, ex);
+            jdbcConfig.connection.rollback();
+
+        } finally {
+            if (p != null) {
+                p.close();
+            }
+            if (p2 != null) {
+                p2.close();
+            }
         }
 
     }
@@ -569,12 +578,17 @@ public class HoaDonController implements Initializable {
                         "Bạn có muốn in hóa đơn không\n"
                         + "Khách hàng : " + lblTenKH.getText(),
                         "Bấm yes để in và thanh toán!");
-                if (r.get() == ButtonType.YES) {
-                    inHoaDon();
-                    tinhTien();
-                } else {
-                    tinhTien();
+                try {
+                    if (r.get() == ButtonType.YES) {
+                        inHoaDon();
+                        tinhTien();
+                    } else {
+                        tinhTien();
+                    }
+                } catch (SQLException ex) {
+                    Logger.getLogger(HoaDonController.class.getName()).log(Level.SEVERE, null, ex);
                 }
+
             } else {
                 util.AlertCustom.setAlertInfo("Thông báo",
                         "Tính tiền không thành công",

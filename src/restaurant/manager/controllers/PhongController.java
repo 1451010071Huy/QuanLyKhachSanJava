@@ -135,7 +135,7 @@ public class PhongController implements Initializable {
                 + "VALUES (?, ?, ?)");
 
         PreparedStatement p = jdbcConfig.connection.prepareStatement(sql);
-        p.setString(1, getIDLoaiPhong());
+        p.setString(1, txtMaLoai.getText());
         p.setString(2, txtGia.getText());
         p.setString(3, txtSoNguoi.getText());
         int rows = jdbcConfig.ExecuteUpdateQuery(p);
@@ -151,7 +151,7 @@ public class PhongController implements Initializable {
         String sql = String.format("INSERT INTO phong(maphong ,maloai,trangthai) "
                 + "VALUES (?, ?, ?)");
         PreparedStatement p = jdbcConfig.connection.prepareStatement(sql);
-        p.setString(1, getIDPhong());
+        p.setString(1, txtPhong.getText());
         p.setString(2, cbbLoaiPhong.getValue());
         p.setString(3, cbbTrangThaiPhong.getValue().toString());
         int rows = jdbcConfig.ExecuteUpdateQuery(p);
@@ -298,24 +298,10 @@ public class PhongController implements Initializable {
         alert.setHeaderText(null);
         alert.show();
     }
-    private String getIDPhong() {
-        return util.RandomId.createNewID("PH");
-    }
-
-    private String getIDLoaiPhong() {
-        return util.RandomId.createNewID("LP");
-    }
-
-    private void getDefaultValue() {
-        txtPhong.setText(getIDPhong());
-        txtMaLoai.setText(getIDLoaiPhong());
-    }
-
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
         jdbcConfig.Connect();
-        getDefaultValue();
         try {   
             getLPhong();
             ObservableList<TrangThaiPhong> listttp = getTrangThaiPhong();

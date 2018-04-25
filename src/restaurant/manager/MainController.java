@@ -26,10 +26,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
-import javafx.scene.control.MenuItem;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -37,12 +34,12 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import restaurant.manager.controllers.PhieuDatPhongController;
 import restaurant.manager.controllers.PhieuThuePhongController;
 import restaurant.manager.models.Phong;
 
@@ -98,6 +95,7 @@ public class MainController implements Initializable {
     @FXML
     private Label lblTongPhong;
 
+    private final String WAITTING = "waitting";
     private final String PHONGTRONG = "Phòng Trống";
     private final String DADAT = "Đã Đặt";
     private final String HETPHONG = "Hết Phòng";
@@ -357,43 +355,79 @@ public class MainController implements Initializable {
             btnPhong.setCursor(Cursor.HAND);
             paneDSPhong.getChildren().add(btnPhong); //add button to your pane   
             btnPhong.setOnAction((e) -> {
-                if (p.getTrangThai().equals(HETPHONG)) {
-                    try {
-                        System.err.println(p.getMaPhong());
-                        String idPhieuDat = openFormDatPhong(p.getMaPhong());
-                        FXMLLoader loader = new FXMLLoader(getClass()
-                                .getResource("views/PhieuThuePhongFXML.fxml"));// set resource file FXML form
-                        Parent root = (Parent) loader.load();
-                        PhieuThuePhongController control = loader.getController();//form Phieuthuephong
-                        control.sendIdPhieuThueVaPhong(idPhieuDat, p.getMaPhong());
-                        Scene scene = new Scene(root);
-                        Stage stage = new Stage();
-                        stage.initModality(Modality.APPLICATION_MODAL);//stage lock form children
-                        stage.setTitle("Quản lý phòng");
-                        stage.setScene(scene);
-                        stage.show();
-                    } catch (IOException ex) {
-                        Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+                try {
+                    switch (p.getTrangThai()) {
+                        case HETPHONG: {
+                            System.err.println(p.getMaPhong());
+                            String idPhieuDat = openFormDatPhong(p.getMaPhong());
+                            FXMLLoader loader = new FXMLLoader(getClass()
+                                    .getResource("views/PhieuThuePhongFXML.fxml"));// set resource file FXML form
+                            Parent root = (Parent) loader.load();
+                            PhieuThuePhongController control = loader.getController();//form Phieuthuephong
+                            control.sendIdPhieuThueVaPhong(idPhieuDat, p.getMaPhong());
+                            Scene scene = new Scene(root);
+                            Stage stage = new Stage();
+                            stage.initModality(Modality.APPLICATION_MODAL);//stage lock form children
+                            stage.setTitle("Quản lý phòng");
+                            stage.setScene(scene);
+                            stage.show();
+                            break;
+                        }
+                        case DADAT: {
+
+                            FXMLLoader loader = new FXMLLoader(getClass()
+                                    .getResource("views/PhieuDatPhongFXML.fxml"));// set resource file FXML form
+                            Parent root = (Parent) loader.load();
+                            PhieuDatPhongController control = loader.getController();
+                            control.sendMaPhieuDat(getMaPhieuDatByIdPhong(p.getMaPhong()));
+                            Scene scene = new Scene(root);
+                            Stage stage = new Stage();
+                            stage.initModality(Modality.APPLICATION_MODAL);//stage lock form children
+                            stage.setTitle("Phiếu đặt phòng");
+                            stage.setScene(scene);
+                            stage.show();
+                            break;
+                        }
+                        default: {
+                            FXMLLoader loader = new FXMLLoader(getClass()
+                                    .getResource("views/PhieuDatPhongFXML.fxml"));// set resource file FXML form
+                            Parent root = (Parent) loader.load();
+                            Scene scene = new Scene(root);
+                            Stage stage = new Stage();
+                            stage.initModality(Modality.APPLICATION_MODAL);//stage lock form children
+                            stage.setTitle("Phiếu đặt phòng");
+                            stage.setScene(scene);
+                            stage.show();
+                            break;
+                        }
                     }
-                } else if (p.getTrangThai().equals(PHONGTRONG)) {
-                    try {
-                        FXMLLoader loader = new FXMLLoader(getClass()
-                                .getResource("views/PhieuDatPhongFXML.fxml"));// set resource file FXML form
-                        Parent root = (Parent) loader.load();
-                        Scene scene = new Scene(root);
-                        Stage stage = new Stage();
-                        stage.initModality(Modality.APPLICATION_MODAL);//stage lock form children
-                        stage.setTitle("Phiếu đặt phòng");
-                        stage.setScene(scene);
-                        stage.show();
-                    } catch (IOException ex) {
-                        Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                } else {
+                } catch (IOException ex) {
+                    Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
                 }
             });
         }
 
+    }
+
+    private String getMaPhieuDatByIdPhong(String idPhong) {
+        String maPhieuDat = "";
+        try {
+            String sql = "SELECT pd.maphieudat FROM phong as p,"
+                    + " chitietdatphong as ct, phieudatphong as pd\n"
+                    + "WHERE p.maphong = ct.maphong "
+                    + "AND pd.maphieudat = ct.maphieudat\n"
+                    + "AND p.maphong = ? AND tinhtrang = ?";
+            PreparedStatement p = jdbcConfig.connection.prepareStatement(sql);
+            p.setString(1, idPhong);
+            p.setString(2, WAITTING);
+            ResultSet r = jdbcConfig.ExecuteQuery(p);
+            while (r.next()) {
+                maPhieuDat = r.getString(1);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return maPhieuDat;
     }
 
     public String openFormDatPhong(String idPhong) {
@@ -409,9 +443,11 @@ public class MainController implements Initializable {
             ResultSet r = jdbcConfig.ExecuteQuery(p);
             while (r.next()) {
                 return r.getString(1);
+
             }
         } catch (SQLException ex) {
-            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MainController.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
         return "";
     }
