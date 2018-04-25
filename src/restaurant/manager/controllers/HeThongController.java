@@ -12,6 +12,7 @@ package restaurant.manager.controllers;
 
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 import config.jdbcConfig;
 import java.net.URL;
@@ -47,7 +48,7 @@ public class HeThongController implements Initializable {
     @FXML
     private JFXTextField txtTenNhanVien;
     @FXML
-    private JFXTextField txtMatKhau;
+    private JFXPasswordField txtMatKhau;
     @FXML
     private JFXTextField txtTimKiem;
     @FXML
@@ -75,10 +76,10 @@ public class HeThongController implements Initializable {
     private final Alert alert = new Alert(Alert.AlertType.INFORMATION);
     
     private ObservableList<HeThong> getHeThong() throws SQLException {
-        String sql = "SELECT ht.manhanvien, nv.tennhanvien, ht.username ,"
+        String sql = "SELECT nv.manhanvien, nv.tennhanvien, ht.username ,"
                                 + "ht.password, nv.chucvu "
                                 + "FROM hethong as  ht , nhanvien as nv "
-                                + "WHERE ht.manhanvien = nv.manhanvien";
+                                + "WHERE nv.manhanvien = ht.manhanvien";
         PreparedStatement p = jdbcConfig.connection.prepareStatement(sql);
 
         ResultSet r = jdbcConfig.ExecuteQuery(p);//Thực thi câu truy vấn
@@ -102,15 +103,8 @@ public class HeThongController implements Initializable {
         tblColChucVu.setCellValueFactory(new PropertyValueFactory<>("chucVu"));
     }
     private void insertHeThong() throws SQLException {
-        if(txtMaNhanVien.getText().equals("Select * from hethong")){
-            thongBao();
-            alert.setContentText("Mã Nhân Viên Đã Có Tài Khoản");
-        }
-        else
-        {
         String sql = String.format("INSERT INTO hethong(username, manhanvien,password)"
                 + "VALUES (?, ?, ?)");
-
         PreparedStatement p = jdbcConfig.connection.prepareStatement(sql);
         p.setString(1, txtTenNhanVien.getText());
         p.setString(2, txtMaNhanVien.getText());
@@ -121,7 +115,6 @@ public class HeThongController implements Initializable {
             thongBao();
             alert.setContentText("Thêm Thành Công");
         }
-    }
     }
     private void updateHeThong() throws SQLException {
         String sql = String.format("UPDATE hethong SET \n"

@@ -38,7 +38,9 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import restaurant.manager.models.ChucVu;
 import restaurant.manager.models.GioiTinh;
+import restaurant.manager.models.HeThong;
 import restaurant.manager.models.NhanVien;
+import static util.MD5Library.md5;
 
 /**
  * FXML Controller class
@@ -90,9 +92,12 @@ public class NhanVienController implements Initializable {
     Button btnXoa;
     @FXML
     Button btnHuy;
+
     private ObservableList<NhanVien> listNhanVien;
     private FilteredList<NhanVien> filteredData;
+    private ObservableList<HeThong> listHeThong;
     private final Alert alert = new Alert(Alert.AlertType.INFORMATION);
+    private String manhanvien;
     private ObservableList<NhanVien> getNhanVien() throws SQLException {
         String sql = "SELECT * FROM nhanvien";
         PreparedStatement p = jdbcConfig.connection.prepareStatement(sql);
@@ -122,10 +127,9 @@ public class NhanVienController implements Initializable {
     }
 
     private ObservableList<ChucVu> getChucVu() {
-        ChucVu cv1 = new ChucVu("admin");
-        ChucVu cv2 = new ChucVu("Nhân Viên");
-        ChucVu cv3 = new ChucVu("Quản Lý");
-        ObservableList<ChucVu> list = FXCollections.observableArrayList(cv1, cv2, cv3);
+        ChucVu cv1 = new ChucVu("Nhân Viên");
+        ChucVu cv2 = new ChucVu("Quản Lý");
+        ObservableList<ChucVu> list = FXCollections.observableArrayList(cv1, cv2);
         return list;
     }
 
@@ -194,6 +198,7 @@ public class NhanVienController implements Initializable {
     }  
     
     private void insertNhanVien() throws SQLException {
+        manhanvien = txtMaNhanVien.getText();
         try {
             if(txtMaNhanVien.getText().equals("")){
                 thongBao();
@@ -217,7 +222,7 @@ public class NhanVienController implements Initializable {
                 +",tennhanvien,ngaysinh,phai , diachi ,phone ,chucvu )"
                 +" VALUES(? ,? , ? , ? , ?, ?, ?)");
                 PreparedStatement p = jdbcConfig.connection.prepareStatement(sql);
-                p.setString(1, txtMaNhanVien.getText());
+                p.setString(1, manhanvien);
                 p.setString(2, txtTenNhanVien.getText());
                 p.setString(3, dpkNgaySinh.getValue().toString());
                 p.setString(4, cbbGioiTinh.getValue().toString());
@@ -226,8 +231,9 @@ public class NhanVienController implements Initializable {
                 p.setString(7, cbbChucVu.getValue().toString());   
                 int rows = jdbcConfig.ExecuteUpdateQuery(p);
                 if (rows != 0) {
+                    insertHeThong();
                     setNhanVien(getNhanVien());
-                    thongBao();
+                    thongBao(); 
                     alert.setContentText("Thêm Thành Công");
                 }           
             }
@@ -288,6 +294,7 @@ public class NhanVienController implements Initializable {
                 p.setString(7, txtMaNhanVien.getText());
                 int row = p.executeUpdate();
                 if (row == 1) {
+                    insertHeThong();
                     setNhanVien(getNhanVien());
                     thongBao();
                     alert.setContentText("Sửa Thành Công");
@@ -298,7 +305,22 @@ public class NhanVienController implements Initializable {
             alert.setContentText("Ngày Sinh Nhân Viên Không Được Rỗng");
         }
         
+    }  
+    
+    private void insertHeThong() throws SQLException {
+        String sql = String.format("INSERT INTO hethong(username, manhanvien,password)"
+                + "VALUES (?, ?, ?)");
+        PreparedStatement p = jdbcConfig.connection.prepareStatement(sql);
+        p.setString(1, "");
+        p.setString(2, manhanvien);
+        p.setString(3, "");
+        int rows = jdbcConfig.ExecuteUpdateQuery(p);
+        if (rows == 1) {
+            thongBao();
+            alert.setContentText("Thêm thành Công hệ thống");
+        }
     }
+    
     private void ClearNhanVien() throws SQLException {
         txtMaNhanVien.setText("");
         txtTenNhanVien.setText("");
@@ -319,6 +341,8 @@ public class NhanVienController implements Initializable {
     private void getDefaultValue() {
         txtMaNhanVien.setText(getIDNhanVien());
     }
+    
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         jdbcConfig.Connect();
