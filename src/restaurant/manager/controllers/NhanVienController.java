@@ -98,6 +98,7 @@ public class NhanVienController implements Initializable {
     private ObservableList<HeThong> listHeThong;
     private final Alert alert = new Alert(Alert.AlertType.INFORMATION);
     private String manhanvien;
+    private String username;
     private ObservableList<NhanVien> getNhanVien() throws SQLException {
         String sql = "SELECT * FROM nhanvien";
         PreparedStatement p = jdbcConfig.connection.prepareStatement(sql);
@@ -311,7 +312,7 @@ public class NhanVienController implements Initializable {
         String sql = String.format("INSERT INTO hethong(username, manhanvien,password)"
                 + "VALUES (?, ?, ?)");
         PreparedStatement p = jdbcConfig.connection.prepareStatement(sql);
-        p.setString(1, "");
+        p.setString(1, getUserHeThong());
         p.setString(2, manhanvien);
         p.setString(3, "");
         int rows = jdbcConfig.ExecuteUpdateQuery(p);
@@ -341,7 +342,9 @@ public class NhanVienController implements Initializable {
     private void getDefaultValue() {
         txtMaNhanVien.setText(getIDNhanVien());
     }
-    
+    private String getUserHeThong() {
+        return util.RandomId.createNewID("UR");
+    }
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {

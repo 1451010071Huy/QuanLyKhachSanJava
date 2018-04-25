@@ -118,9 +118,9 @@ public class HeThongController implements Initializable {
     }
     private void updateHeThong() throws SQLException {
         String sql = String.format("UPDATE hethong SET \n"
-                + "password = ?\n"
-                + "WHERE username = ? "
-                + "and manhanvien = ?");
+                + "password = ?,\n"
+                + "username = ? "
+                + "WHERE manhanvien = ?");
         PreparedStatement p = jdbcConfig.connection.prepareStatement(sql);
         p.setString(1, md5(txtMatKhau.getText()));
         p.setString(2, txtTenNhanVien.getText());
