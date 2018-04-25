@@ -8,3 +8,4 @@ nbdist/
 /manifest.mf
 /applet.policy
 nbproject/
+nbproject/project.properties

@@ -100,6 +100,9 @@ public class MainController implements Initializable {
     private final String DADAT = "Đã Đặt";
     private final String HETPHONG = "Hết Phòng";
     private final String BUSY = "busy";
+    private final String QUANLY = "Quản lý";
+    private final String NHANVIEN = "Nhân viên";
+    private final String ADMIN = "admin";
     private int countPhongTrong = 0;
     private int countPhongDat = 0;
     private int countHetPhong = 0;
@@ -138,7 +141,7 @@ public class MainController implements Initializable {
             p.setString(1, username);
             ResultSet r = jdbcConfig.ExecuteQuery(p);
             while (r.next()) {
-                setPermistion(r.getString(1));
+                checkPermission(r.getString(1));
             }
         } catch (SQLException ex) {
             Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
@@ -146,23 +149,19 @@ public class MainController implements Initializable {
 
     }
 
-    private void setPermistion(String permisstion) {
-        switch (permisstion) {
-            case "admin":
-                break;
-            case "Quản lý":
-                hbxQuanLyTaiKhoan.setDisable(true);
-                break;
-            case "Nhân viên":
-                hbxBaoCao.setDisable(true);
-                hbxNhanVien.setDisable(true);
-                hbxQuanLyTaiKhoan.setDisable(true);
-                hbxPhong.setDisable(true);
-                hbxDichVu.setDisable(true);
-                break;
-            default:
-                break;
+    private void checkPermission(String permisstion) {
+        if (permisstion.equalsIgnoreCase(QUANLY)) {
+            hbxQuanLyTaiKhoan.setDisable(true);
+        } else if (permisstion.equalsIgnoreCase(NHANVIEN)) {
+            hbxBaoCao.setDisable(true);
+            hbxNhanVien.setDisable(true);
+            hbxQuanLyTaiKhoan.setDisable(true);
+            hbxPhong.setDisable(true);
+            hbxDichVu.setDisable(true);
+        } else {
+            
         }
+
     }
 
     public void openForm(String resource, String titleStage) {
