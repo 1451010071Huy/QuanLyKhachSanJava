@@ -7,3 +7,4 @@ nbdist/
 /build.xml
 /manifest.mf
 /applet.policy
+nbproject/
