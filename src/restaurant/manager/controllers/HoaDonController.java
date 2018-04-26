@@ -19,7 +19,6 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -43,6 +42,7 @@ import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
 import static java.awt.print.Printable.NO_SUCH_PAGE;
 import static java.awt.print.Printable.PAGE_EXISTS;
+import javafx.stage.Stage;
 import static util.FormatNumber.formatNumber;
 
 public class HoaDonController implements Initializable {
@@ -560,6 +560,19 @@ public class HoaDonController implements Initializable {
         }
     }
 
+    public void sendMaPhieuThue(String maPhieuThue) {
+        getTableDichVuByIdPhieuThue(maPhieuThue);
+        getTablePhongSDById(maPhieuThue);
+        getKHByIdPhieuThue(maPhieuThue);
+        getTienCoc(maPhieuThue);
+        lblTienDatCoc.setText(formatNumber(tienCoc));
+        lblTienPhong.setText(formatNumber(tongTienPhong));
+        lblTienDichVu.setText(formatNumber(tongTienDichVu));
+        tienThanhToan = (tongTienPhong + tongTienDichVu) - tienCoc;
+        lblTongTien.setText(formatNumber(tongTienPhong + tongTienDichVu));
+        lblTienThanhToan.setText(String.format("%s VNĐ", formatNumber(tienThanhToan)));
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         jdbcConfig.Connect();
@@ -569,7 +582,8 @@ public class HoaDonController implements Initializable {
                     "Bấm Yes để thoát", "Bạn có muốn thoát không");
             if (r.get() == ButtonType.YES) {
                 jdbcConfig.Disconnect();
-                Platform.exit();
+                Stage stage = (Stage) btnThoat.getScene().getWindow();
+                stage.close();
             }
         });
         btnTinhTien.setOnAction((e) -> {

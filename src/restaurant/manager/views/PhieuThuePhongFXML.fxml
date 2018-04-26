@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.paint.*?>
 <?import javafx.geometry.*?>
 <?import com.jfoenix.controls.*?>
 <?import com.jfoenix.validation.*?>
@@ -19,7 +20,7 @@
    <children>
       <VBox layoutX="373.0" layoutY="7.0" prefHeight="503.0" prefWidth="648.0" spacing="10.0">
          <children>
-            <TitledPane animated="false" contentDisplay="TEXT_ONLY" graphicTextGap="8.0" prefHeight="216.0" prefWidth="509.0" text="KHÁCH HÀNG">
+            <TitledPane animated="false" collapsible="false" contentDisplay="TEXT_ONLY" graphicTextGap="8.0" prefHeight="216.0" prefWidth="509.0" text="KHÁCH HÀNG">
                <content>
                   <Pane prefHeight="190.0" prefWidth="551.0">
                      <children>
@@ -39,13 +40,13 @@
                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                           </rowConstraints>
                            <children>
-                              <Label text="Mã khách hàng" />
-                              <Label text="Tên khách hàng" GridPane.rowIndex="1" />
-                              <Label text="CMND/Passport" GridPane.rowIndex="3" />
-                              <Label text="Địa chỉ" GridPane.rowIndex="4" />
-                              <Label text="Cơ quan" GridPane.rowIndex="5" />
-                              <Label text="Số điện thoại" GridPane.rowIndex="6" />
-                              <Label text="Email" GridPane.rowIndex="7" />
+                              <Label text="Mã khách hàng" textFill="#32322f" />
+                              <Label text="Tên khách hàng" textFill="#32322f" GridPane.rowIndex="1" />
+                              <Label text="CMND/Passport" textFill="#32322f" GridPane.rowIndex="3" />
+                              <Label text="Địa chỉ" textFill="#32322f" GridPane.rowIndex="4" />
+                              <Label text="Cơ quan" textFill="#32322f" GridPane.rowIndex="5" />
+                              <Label text="Số điện thoại" textFill="#32322f" GridPane.rowIndex="6" />
+                              <Label text="Email" textFill="#32322f" GridPane.rowIndex="7" />
                               <Label fx:id="lblMaKH" text="--------" GridPane.columnIndex="1" />
                               <Label fx:id="lblTenKH" text="________" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                               <Label fx:id="lblCmnd" text="--------" GridPane.columnIndex="1" GridPane.rowIndex="3" />
@@ -53,7 +54,7 @@
                               <Label fx:id="lblCoQuan" text="--------" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                               <Label fx:id="lblSdt" text="--------" GridPane.columnIndex="1" GridPane.rowIndex="6" />
                               <Label fx:id="lblEmail" text="--------" GridPane.columnIndex="1" GridPane.rowIndex="7" />
-                              <Label text="Giới tính" GridPane.rowIndex="2" />
+                              <Label text="Giới tính" textFill="#32322f" GridPane.rowIndex="2" />
                               <Label fx:id="lblGioiTinh" text="--------" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                            </children>
                         </GridPane>
@@ -61,7 +62,7 @@
                   </Pane>
                </content>
             </TitledPane>
-            <TitledPane animated="false" contentDisplay="TEXT_ONLY" graphicTextGap="8.0" prefHeight="226.0" prefWidth="634.0" text="DỊCH VỤ ĐÃ MUA">
+            <TitledPane animated="false" collapsible="false" contentDisplay="TEXT_ONLY" graphicTextGap="8.0" prefHeight="226.0" prefWidth="634.0" text="DỊCH VỤ ĐÃ MUA">
                <content>
                   <TableView fx:id="tblDichVuSD" prefHeight="197.0" prefWidth="644.0">
                     <columns>
@@ -99,7 +100,13 @@
       </VBox>
       <VBox prefHeight="518.0" prefWidth="373.0" spacing="20.0">
          <children>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Phiếu thuê phòng / Sử dụng dịch vụ phòng" wrappingWidth="229.83984375" />
+            <Text smooth="false" stroke="#e40d0d" strokeType="OUTSIDE" strokeWidth="0.0" text="Phiếu thuê phòng / Sử dụng dịch vụ phòng" wrappingWidth="292.83984375">
+               <font>
+                  <Font size="14.0" />
+               </font>
+               <effect>
+                  <InnerShadow />
+               </effect></Text>
             <GridPane prefHeight="231.0" prefWidth="348.0">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="157.0" minWidth="10.0" prefWidth="105.0" />
@@ -114,16 +121,16 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Label text="Mã phiếu thuê" />
-                  <Label text="Mã phòng" GridPane.rowIndex="1" />
-                  <Label text="Giá" GridPane.rowIndex="3" />
-                  <Label text="Số lượng" GridPane.rowIndex="4" />
-                  <Label text="Ngày sử dụng DV" GridPane.rowIndex="5" />
+                  <Label text="Mã phiếu thuê" textFill="#32322f" />
+                  <Label text="Mã phòng" textFill="#32322f" GridPane.rowIndex="1" />
+                  <Label text="Giá" textFill="#32322f" GridPane.rowIndex="3" />
+                  <Label text="Số lượng" textFill="#32322f" GridPane.rowIndex="4" />
+                  <Label text="Ngày sử dụng DV" textFill="#32322f" GridPane.rowIndex="5" />
                   <ComboBox fx:id="cbbMaPhieuThue" onAction="#clickComboBoxShowItemsKH" prefHeight="25.0" prefWidth="226.0" promptText="--- Chọn phiếu thuê phòng ---" GridPane.columnIndex="1" />
                   <ComboBox fx:id="cbbMaPhong" onAction="#clickComboBoxShowItemsDV" prefHeight="25.0" prefWidth="231.0" promptText="--- Chọn phòng ---" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                   <Label fx:id="lblGiaDichVu" text="--------" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                   <TextField fx:id="txtSoLuong" promptText="1" text="1" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                  <Label text="Tên dịch vụ" GridPane.rowIndex="2" />
+                  <Label text="Tên dịch vụ" textFill="#32322f" GridPane.rowIndex="2" />
                   <Label fx:id="lblTenDichVu" text="--------" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                   <TextField fx:id="txtNgaySDDichVu" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                </children>
@@ -133,9 +140,12 @@
             </GridPane>
             <HBox prefHeight="29.0" prefWidth="363.0">
                <children>
-                  <Label prefHeight="31.0" prefWidth="125.0" text="Nhập tên / mã DV :" />
+                  <Label prefHeight="25.0" prefWidth="123.0" text="Nhập tên / mã DV :" textFill="#32322f" />
                   <TextField fx:id="txtTimKiemDV" prefHeight="25.0" prefWidth="218.0" promptText="Tìm kiếm" />
                </children>
+               <opaqueInsets>
+                  <Insets left="10.0" />
+               </opaqueInsets>
             </HBox>
             <TableView fx:id="tblDichVu" onMouseClicked="#clickItem" prefHeight="153.0" prefWidth="363.0">
               <columns>

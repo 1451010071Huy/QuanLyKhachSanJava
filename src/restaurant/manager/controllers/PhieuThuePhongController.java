@@ -445,6 +445,8 @@ public class PhieuThuePhongController implements Initializable {
                         .getResource("/restaurant/manager/views/HoaDonFXML.fxml"));// set resource file FXML form
                 
                 Parent root = (Parent) loader.load();
+                HoaDonController control = loader.getController();
+                control.sendMaPhieuThue(getMaPhieuThue());
                 Scene scene = new Scene(root);
                 Stage stage = new Stage();
                 stage.initModality(Modality.APPLICATION_MODAL);//stage lock form children
